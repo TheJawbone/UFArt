@@ -1,0 +1,9 @@
+﻿@model IEnumerable<News>
+
+@foreach(var news in Model)
+{
+    <img src="@news.ImageUrl" />
+    <h3>@news.Header</h3>
+    <h4>@news.Timestamp</h4>
+    <p>@news.Text</p>
+}

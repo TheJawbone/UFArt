@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Urszula Figiel Art</title>
+</head>
+<body>
+    <a asp-controller="Home"
+       asp-action="Index">Strona startowa</a>
+    <a asp-controller="Newsfeed"
+       asp-action="Index">Aktualności</a>
+    <a asp-controller="Gallery"
+       asp-action="ListOilPaintings">Galeria</a>
+    <a asp-controller="About"
+       asp-action="Index">O autorce</a>
+    <a asp-controller="Contact"
+       asp-action="Index">Kontakt</a>
+    <div>
+        @RenderBody()
+    </div>
+</body>
+</html>

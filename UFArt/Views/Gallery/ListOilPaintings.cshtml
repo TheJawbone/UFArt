@@ -1,0 +1,14 @@
+﻿@model PaintingsViewModel
+
+@foreach(var p in Model.Elements)
+{
+    <div>
+        <img src="@p.ImageUrl" />
+        <p>@p.Name</p>
+        <p>@p.ForSale</p>
+        <p>@p.Technique.Name</p>
+        <p>@p.Dimensions</p>
+    </div>
+}
+
+<div page-model="@Model.PagingInfo" page-action="ListOilPaintings"></div>
