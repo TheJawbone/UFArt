@@ -3,19 +3,51 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/vendor.min.js"></script>
+    <link rel="stylesheet" asp-href-include="~/css/vendor.min.css" />
     <title>Urszula Figiel Art</title>
 </head>
 <body>
-    <a asp-controller="Home"
-       asp-action="Index">Strona startowa</a>
-    <a asp-controller="Newsfeed"
-       asp-action="Index">Aktualności</a>
-    <a asp-controller="Gallery"
-       asp-action="ListOilPaintings">Galeria</a>
-    <a asp-controller="About"
-       asp-action="Index">O autorce</a>
-    <a asp-controller="Contact"
-       asp-action="Index">Kontakt</a>
+    <div class="navbar-fixed-top navbar-light navbar-expand-md navbar-collapse bg-light" role="navigation">
+        <div class="navbar-nav">
+            <a class="navbar-brand"
+               asp-controller="Home"
+               asp-action="Index">Urszula Figiel Art</a>
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <a class="navlink"
+                       asp-controller="Newsfeed"
+                       asp-action="Index">Aktualności</a>
+                </li>
+                <li class="list-inline-item">
+                    <div class="dropdown">
+                        <a class="list-inline-item dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Galeria
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item"
+                               asp-controller="Gallery"
+                               asp-action="ListOilPaintings">Obrazy</a>
+                            <a class="dropdown-item"
+                               asp-controller="Gallery"
+                               asp-action="ListPottery">Ceramika</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-inline-item">
+                    <a class="navlink"
+                       asp-controller="About"
+                       asp-action="Index">O autorce</a>
+                </li>
+                <li class="list-inline-item">
+                    <a class="navlink"
+                       asp-controller="Contact"
+                       asp-action="Index">Kontakt</a>
+                </li>
+            </ul>
+        </div>
+    </div>
     <div>
         @RenderBody()
     </div>

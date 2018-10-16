@@ -21,6 +21,10 @@ namespace UFArt.Infrastructure
         public ViewContext ViewContext { get; set; }
         public PagingInfo PageModel { get; set; }
         public string PageAction { get; set; }
+        public bool PageClassesEnabled { get; set; } = false;
+        public string PageClass { get; set; }
+        public string PageClassNormal { get; set; }
+        public string PageClassSelected { get; set; }
 
         public PageLinkTagHelper(IUrlHelperFactory urlHelperFactory)
         {
@@ -35,9 +39,15 @@ namespace UFArt.Infrastructure
             for (int i = 1; i <= PageModel.TotalPages; i++)
             {
                 TagBuilder tag = new TagBuilder("a");
-                tag.Attributes["href"] = urlHelper.Action(PageAction, new { productPage = i });
+                tag.Attributes["href"] = urlHelper.Action(PageAction, new { pageNumber = i });
                 tag.InnerHtml.Append(i.ToString());
                 result.InnerHtml.AppendHtml(tag);
+
+                if(PageClassesEnabled)
+                {
+                    tag.AddCssClass(PageClass);
+                    tag.AddCssClass(i == PageModel.CurrentPage ? PageClassSelected : PageClassNormal);
+                }
             }
 
             output.Content.AppendHtml(result.InnerHtml);

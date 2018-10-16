@@ -18,18 +18,35 @@ namespace UFArt.Controllers
             _repository = repository;
         }
 
-        public IActionResult ListOilPaintings(int productPage = 1)
+        public IActionResult ListOilPaintings(int pageNumber = 1)
         {
             return View(new PaintingsViewModel
             {
                 Elements = _repository.OilPaintings
                     .Where(painting => painting.Technique.Name == "Olej na płótnie")
                     .OrderBy(painting => painting.Name)
-                    .Skip((productPage - 1) * PageSize)
+                    .Skip((pageNumber - 1) * PageSize)
                     .Take(PageSize),
                 PagingInfo = new PagingInfo
                 {
-                    CurrentPage = productPage,
+                    CurrentPage = pageNumber,
+                    ItemsPerPage = PageSize,
+                    TotalItems = _repository.OilPaintings.Count()
+                }
+            });
+        }
+
+        public IActionResult ListPottery(int pageNumber = 1)
+        {
+            return View(new PotteryViewModel
+            {
+                Elements = _repository.Potteries
+                    .OrderBy(pottery => pottery.Name)
+                    .Skip((pageNumber - 1) * PageSize)
+                    .Take(PageSize),
+                PagingInfo = new PagingInfo
+                {
+                    CurrentPage = pageNumber,
                     ItemsPerPage = PageSize,
                     TotalItems = _repository.OilPaintings.Count()
                 }

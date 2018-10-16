@@ -1,0 +1,1 @@
+Fix gallery urls - when entering via navbar, url displays controller name. When using pagination, it fixes itself.

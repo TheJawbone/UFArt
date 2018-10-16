@@ -40,8 +40,20 @@ namespace UFArt
             {
                 routes.MapRoute(
                     name: "oil_paintings_pagination",
-                    template: "OilPaintings/Page{productPage}",
+                    template: "OilPaintings/Page{pageNumber}",
                     defaults: new { Controller = "Gallery", action = "ListOilPaintings" });
+                routes.MapRoute(
+                    name: "oil_paintings",
+                    template: "OilPaintings/Page1",
+                    defaults: new { Controller = "Gallery", action = "ListOilPaintings" });
+                routes.MapRoute(
+                    name: "pottery_pagination",
+                    template: "Pottery/Page{pageNumber}",
+                    defaults: new { Controller = "Gallery", action = "ListPottery" });
+                routes.MapRoute(
+                    name: "pottery",
+                    template: "Pottery/Page1",
+                    defaults: new { Controller = "Gallery", action = "ListPottery" });
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
