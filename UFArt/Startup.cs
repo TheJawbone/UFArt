@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using UFArt.Models;
 using UFArt.Models.Configuration;
 using UFArt.Models.Gallery;
+using UFArt.Models.Newsfeed;
 
 namespace UFArt
 {
@@ -26,13 +27,9 @@ namespace UFArt
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration["Data:UFArtDb:ConnectionString"]));
-            services.AddTransient<IDataRepository, DataRepository>();
-            services.AddTransient<IGalleryRepositories, GalleryRepositories>();
-            services.AddTransient<IOilPaintingsRepository, OilPaintingsRepository>();
-            services.AddTransient<IWatercolorPaintingsRepository, WatercolorPaintingsRepository>();
-            services.AddTransient<IPotteryRepository, PotteryRepository>();
             services.AddTransient<IGalleryRepository, GalleryRepository>();
             services.AddTransient<ITechniqueRepository, TechniqueRepository>();
+            services.AddTransient<INewsfeedRepository, NewsfeedRepository>();
             services.Configure<StorageSettings>(Configuration.GetSection("StorageSettings"));
         }
 

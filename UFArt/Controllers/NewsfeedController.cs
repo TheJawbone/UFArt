@@ -4,21 +4,22 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UFArt.Models;
+using UFArt.Models.Newsfeed;
 
 namespace UFArt.Controllers
 {
     public class NewsfeedController : Controller
     {
-        private IDataRepository _repository;
+        private INewsfeedRepository _repo;
 
-        public NewsfeedController(IDataRepository repository)
+        public NewsfeedController(INewsfeedRepository repo)
         {
-            _repository = repository;
+            _repo = repo;
         }
 
         public IActionResult Index()
         {
-            return View(_repository.News);
+            return View();
         }
     }
 }

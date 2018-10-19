@@ -11,16 +11,23 @@
 <body>
     <div class="navbar-fixed-top navbar-light navbar-expand-md navbar-collapse bg-light" role="navigation">
         <div class="navbar-nav">
+
+            <!--BRAND-->
             <a class="navbar-brand"
                asp-controller="Home"
                asp-action="Index">Urszula Figiel Art</a>
+            
+            <!--NAV LINKS-->
             <ul class="list-inline">
+
+                <!--NEWS-->
                 <li class="list-inline-item">
                     <a class="nav-link"
                        asp-controller="Newsfeed"
                        asp-action="Index">Aktualności</a>
                 </li>
-                <!--DROPDOWN-->
+
+                <!--GALLERY DROPDOWN-->
                 <li class="list-inline-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Galeria
@@ -32,14 +39,14 @@
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="Gallery"
-                                       asp-action="ListTest"
+                                       asp-action="List"
                                        asp-route-techniqueCodeName="OP"
                                        asp-route-pageNumber="1">Olej na płótnie</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="Gallery"
-                                       asp-action="ListTest"
+                                       asp-action="List"
                                        asp-route-techniqueCodeName="WP"
                                        asp-route-pageNumber="1">Akwarele</a>
                                 </li>
@@ -48,27 +55,44 @@
                         <li>
                             <a class="dropdown-item"
                                asp-controller="Gallery"
-                               asp-action="ListTest"
+                               asp-action="List"
                                asp-route-techniqueCodeName="PO"
                                asp-route-pageNumber="1">Ceramika</a>
                         </li>
                     </ul>
                 </li>
-                <!--END-DROPDOWN-->
+
+                <!--ABOUT-->
                 <li class="list-inline-item">
                     <a class="nav-link"
                        asp-controller="About"
                        asp-action="Index">O autorce</a>
                 </li>
+
+                <!--CONTACT-->
                 <li class="list-inline-item">
                     <a class="nav-link"
                        asp-controller="Contact"
                        asp-action="Index">Kontakt</a>
                 </li>
-                <li class="list-inline-item">
-                    <a class="nav-link"
-                       asp-controller="GalleryEditor"
-                       asp-action="Index">Edytor</a>
+
+                <!--EDITOR DROPDOWN-->
+                <li class="list-inline-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Edytor
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="GalleryEditor"
+                               asp-action="AddGalleryElement">Dodaj pracę do galerii</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="GalleryEditor"
+                               asp-action="AddNews">Dodaj wpis aktualności</a>
+                        </li>
+                    </ul>
                 </li>
             </ul>
         </div>

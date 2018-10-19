@@ -9,6 +9,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using UFArt.Models;
 using UFArt.Models.Configuration;
 using UFArt.Models.Gallery;
+using UFArt.Models.Newsfeed;
 using UFArt.Models.ViewModels;
 
 namespace UFArt.Controllers
@@ -21,12 +22,14 @@ namespace UFArt.Controllers
         private readonly IOptions<StorageSettings> _storageSettings;
         private IGalleryRepository _galleryRepo;
         private ITechniqueRepository _techniqueRepo;
+        private INewsfeedRepository _newsRepo;
 
-        public GalleryEditorController(IOptions<StorageSettings> storageSettings, IGalleryRepository repo, ITechniqueRepository techniqueRepo)
+        public GalleryEditorController(IOptions<StorageSettings> storageSettings, IGalleryRepository repo, ITechniqueRepository techniqueRepo, INewsfeedRepository newsRepo)
         {
-            _storageSettings = storageSettings;
             _galleryRepo = repo;
+            _newsRepo = newsRepo;
             _techniqueRepo = techniqueRepo;
+            _storageSettings = storageSettings;
             ConfigureStorage();
         }
 
@@ -38,9 +41,14 @@ namespace UFArt.Controllers
             await _blobContainer.CreateIfNotExistsAsync();
         }
 
-        public IActionResult Index()
+        public IActionResult AddGalleryElement()
         {
             return View(new ArtPieceCreationViewModel(_techniqueRepo));
+        }
+
+        public IActionResult AddNews()
+        {
+            return View();
         }
 
         [HttpPost]

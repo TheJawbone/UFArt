@@ -11,19 +11,17 @@ namespace UFArt.Controllers
 {
     public class GalleryController : Controller
     {
-        private IGalleryRepositories _repos;
         private IGalleryRepository _galleryRepo;
         private ITechniqueRepository _techniqueRepo;
         public int PageSize = 9;
 
-        public GalleryController(IGalleryRepositories repos, IGalleryRepository galleryRepo, ITechniqueRepository techniqueRepo)
+        public GalleryController(IGalleryRepository galleryRepo, ITechniqueRepository techniqueRepo)
         {
-            _repos = repos;
             _galleryRepo = galleryRepo;
             _techniqueRepo = techniqueRepo;
         }
 
-        public IActionResult ListTest(string techniqueCodeName, int pageNumber = 1)
+        public IActionResult List(string techniqueCodeName, int pageNumber = 1)
         {
             var techniqueName = _techniqueRepo.Techniques.Where(t => t.CodeName == techniqueCodeName).FirstOrDefault().Name;
             return View(new GalleryElementsViewModel

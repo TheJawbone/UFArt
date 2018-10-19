@@ -15,8 +15,6 @@ namespace UFArt.Models
 
         public DbSet<ArtPiece> ArtPieces { get; set; }
         public DbSet<TechniqueDict> Techniques { get; set; }
-        public DbSet<Painting> Paintings { get; set; }
-        public DbSet<Pottery> Potteries { get; set; }
         public DbSet<News> News { get; set; }
     }
 }
