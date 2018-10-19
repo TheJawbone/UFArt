@@ -39,5 +39,12 @@ namespace UFArt.Controllers
                 }
             });
         }
+
+        public IActionResult Details(int id)
+        {
+            var artPiece = _galleryRepo.ArtPieces.Where(ap => ap.ID == id).FirstOrDefault();
+            if (artPiece != null) return View(new GalleryElementDetailsViewModel(artPiece));
+            else return View("Error");
+        }
     }
 }

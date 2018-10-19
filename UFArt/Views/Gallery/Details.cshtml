@@ -1,1 +1,25 @@
-﻿
+﻿@model GalleryElementDetailsViewModel
+
+<div class="w-100">
+    <div class="d-inline-responsive w-details-image text-center test">
+        <img class="img-thumbnail img-details" src="@Model.ImageUri" />
+    </div>
+    <div class="d-inline-responsive w-details-table text-center">
+        <table class="table table-borderless text-left">
+            @foreach (var labelValue in Model.LabelValueDict)
+            {
+                <tr>
+                    <td class="font-weight-bold text-primary align-middle">@labelValue.Key</td>
+                    <td class="align-middle">@labelValue.Value</td>
+                </tr>
+            }
+            @if(Model.ForSale)
+            {
+                <tr>
+                    <td class="font-weight-bold text-primary align-middle">Dostępny na sprzedaż</td>
+                    <td><a asp-action="Test" asp-controller="Test" class="btn btn-primary align-middle">Zapytaj o cenę</a></td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>

@@ -1,20 +1,82 @@
-﻿.dropdown-item-toggle:hover {
-    cursor: pointer;
+﻿html {
+    height: 100%;
 }
 
-div > a {
-    cursor: pointer;
+body {
+    height: 90%;
+}
+
+td {
+    vertical-align: bottom;
+}
+
+.h-per-10 {
+    height: 10%;
+}
+
+.list-inline {
+    margin-bottom: 0;
+}
+
+.w-details-image {
+    width: 100%;
+}
+
+.w-details-table {
+    width: 100%;
+}
+
+.bg-white {
+    background-color: white;
 }
 
 .container {
-    text-align: center;
+    min-height: 100%;
+    box-shadow: 0 0 20px gray;
+    padding-top: 10px;
 }
 
-.gallery-img {
+.img-gallery {
     height: 200px;
 }
 
+@media only screen and (min-width: 1024px) {
+    .d-inline-responsive {
+        display: inline-block;
+    }
+
+    .test {
+        vertical-align: top;
+    }
+
+    .w-details-image {
+        width: 60%;
+    }
+
+    .w-details-table {
+        width: 35%;
+    }
+}
+
+.wrapper-image-details {
+    text-align: center;
+}
+
+.img-details {
+    display: inline-block;
+    max-width: 100%;
+    max-height: 500px;
+    width: auto;
+    height: auto;
+    margin: auto;
+    padding: auto;
+}
+
 .gallery-wrapper {
+    text-align: center;
+}
+
+.gallery-pagination {
     text-align: center;
 }
 

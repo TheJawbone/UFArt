@@ -1,17 +1,19 @@
 ﻿@model GalleryElementsViewModel
 
-<div class="container">
-    <div class="gallery-wrapper">
-        @foreach (var p in Model.Elements)
-        {
-            <div class="d-inline-flex">
-                <a href="#">
-                    <img class="gallery-img img-thumbnail" src="@p.ImageUri" />
-                </a>
-            </div>
-        }
-    </div>
+<div class="gallery-wrapper">
+    @foreach (var p in Model.Elements)
+    {
+        <div class="d-inline-flex">
+            <a asp-controller="Gallery"
+               asp-action="Details"
+               asp-route-id=@p.ID>
+                <img class="img-gallery img-thumbnail" src="@p.ImageUri" />
+            </a>
+        </div>
+    }
+</div>
 
+<div class="gallery-pagination">
     <div page-model="@Model.PagingInfo" page-action="ListOilPaintings" page-classes-enabled="true"
          page-class="btn" page-class-normal="btn-secondary"
          page-class-selected="btn-primary" class="btn-group pull-right m-1"></div>

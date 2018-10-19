@@ -2,33 +2,36 @@
 @model ArtPieceCreationViewModel
 
 <form id="form" method="post" enctype="multipart/form-data" asp-controller="GalleryEditor" asp-action="UploadAsync">
-    <p>
+    <div class="form-group">
         <label asp-for="ArtPiece.Name">Nazwa/tytuł:</label>
-        <input asp-for="ArtPiece.Name" />
-    </p>
-    <p>
+        <input asp-for="ArtPiece.Name" class="form-control" />
+    </div>
+    <div class="form-group">
         <label asp-for="ArtPiece.Description">Opis:</label>
-        <input asp-for="ArtPiece.Description" />
-    </p>
-    <p>
+        <input asp-for="ArtPiece.Description" class="form-control" />
+    </div>
+    <div class="form-group">
         <label asp-for="ArtPiece.Dimensions">Wymiary/format:</label>
-        <input asp-for="ArtPiece.Dimensions" />
-    </p>
-    <p>
+        <input asp-for="ArtPiece.Dimensions" class="form-control" />
+    </div>
+    <div class="form-group">
         <label asp-for="ArtPiece.Technique">Technika:</label>
         <select asp-for="ArtPiece.Technique"
-                asp-items="@(new SelectList(Model.Techniques()))">
+                asp-items="@(new SelectList(Model.Techniques()))"
+                class="form-control">
             <option>Wybierz technikę</option>
         </select>
-    </p>
-    <p>
+    </div>
+    <div class="form-group">
         <label asp-for="ArtPiece.CreationDate">Data powstania:</label>
-        <input asp-for="ArtPiece.CreationDate" />
-    </p>
-    <p>
+        <input asp-for="ArtPiece.CreationDate" class="form-control" />
+    </div>
+    <div class="form-group">
         <label asp-for="ArtPiece.ForSale">Dostępny na sprzedaż:</label>
         <input asp-for="ArtPiece.ForSale" />
-    </p>
-    <input type="file" id="file" name="files" />
-    <input type="submit" value="Zatwierdź" />
+    </div>
+    <input type="file" class="btn p-0" id="file" name="files" />
+    <div class="text-center">
+        <input type="submit" class="btn btn-primary" value="Zatwierdź" />
+    </div>
 </form>

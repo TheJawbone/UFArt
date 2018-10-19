@@ -12,6 +12,11 @@ namespace UFArt.Models.Newsfeed
 
         public IQueryable<News> News => _context.News;
 
+        public NewsfeedRepository(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
         public bool Save(News news)
         {
             try

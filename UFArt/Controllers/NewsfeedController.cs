@@ -19,7 +19,7 @@ namespace UFArt.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(_repo.News);
         }
     }
 }

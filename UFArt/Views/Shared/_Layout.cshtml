@@ -8,12 +8,12 @@
     <link rel="stylesheet" asp-href-include="~/css/dropdown.css" />
     <title>Urszula Figiel Art</title>
 </head>
-<body>
-    <div class="navbar-fixed-top navbar-light navbar-expand-md navbar-collapse bg-light" role="navigation">
+<body class="bg-light">
+    <div class="navbar navbar-fixed-top navbar-light navbar-expand-md navbar-collapse bg-dark h-per-10" role="navigation">
         <div class="navbar-nav">
 
             <!--BRAND-->
-            <a class="navbar-brand"
+            <a class="navbar-brand text-light"
                asp-controller="Home"
                asp-action="Index">Urszula Figiel Art</a>
             
@@ -22,14 +22,14 @@
 
                 <!--NEWS-->
                 <li class="list-inline-item">
-                    <a class="nav-link"
+                    <a class="nav-link text-light"
                        asp-controller="Newsfeed"
                        asp-action="Index">Aktualności</a>
                 </li>
 
                 <!--GALLERY DROPDOWN-->
                 <li class="list-inline-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Galeria
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -64,21 +64,21 @@
 
                 <!--ABOUT-->
                 <li class="list-inline-item">
-                    <a class="nav-link"
+                    <a class="nav-link text-light"
                        asp-controller="About"
                        asp-action="Index">O autorce</a>
                 </li>
 
                 <!--CONTACT-->
                 <li class="list-inline-item">
-                    <a class="nav-link"
+                    <a class="nav-link text-light"
                        asp-controller="Contact"
                        asp-action="Index">Kontakt</a>
                 </li>
 
                 <!--EDITOR DROPDOWN-->
                 <li class="list-inline-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Edytor
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -97,7 +97,7 @@
             </ul>
         </div>
     </div>
-    <div>
+    <div class="container bg-white">
         @RenderBody()
     </div>
 
