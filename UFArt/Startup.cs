@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UFArt.Models;
+using UFArt.Models.Configuration;
+using UFArt.Models.Gallery;
 
 namespace UFArt
 {
@@ -25,6 +27,13 @@ namespace UFArt
                 options.UseSqlServer(
                     Configuration["Data:UFArtDb:ConnectionString"]));
             services.AddTransient<IDataRepository, DataRepository>();
+            services.AddTransient<IGalleryRepositories, GalleryRepositories>();
+            services.AddTransient<IOilPaintingsRepository, OilPaintingsRepository>();
+            services.AddTransient<IWatercolorPaintingsRepository, WatercolorPaintingsRepository>();
+            services.AddTransient<IPotteryRepository, PotteryRepository>();
+            services.AddTransient<IGalleryRepository, GalleryRepository>();
+            services.AddTransient<ITechniqueRepository, TechniqueRepository>();
+            services.Configure<StorageSettings>(Configuration.GetSection("StorageSettings"));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -43,16 +52,12 @@ namespace UFArt
                     template: "OilPaintings/Page{pageNumber}",
                     defaults: new { Controller = "Gallery", action = "ListOilPaintings" });
                 routes.MapRoute(
-                    name: "oil_paintings",
-                    template: "OilPaintings/Page1",
-                    defaults: new { Controller = "Gallery", action = "ListOilPaintings" });
+                    name: "watercolor_paintings_pagination",
+                    template: "WatercolorPaintings/Page{pageNumber}",
+                    defaults: new { Controller = "Gallery", action = "ListWatercolorPaintings" });
                 routes.MapRoute(
                     name: "pottery_pagination",
                     template: "Pottery/Page{pageNumber}",
-                    defaults: new { Controller = "Gallery", action = "ListPottery" });
-                routes.MapRoute(
-                    name: "pottery",
-                    template: "Pottery/Page1",
                     defaults: new { Controller = "Gallery", action = "ListPottery" });
                 routes.MapRoute(
                     name: "default",

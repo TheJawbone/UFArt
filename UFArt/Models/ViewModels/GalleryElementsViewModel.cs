@@ -6,9 +6,9 @@ using UFArt.Models.Gallery;
 
 namespace UFArt.Models.ViewModels
 {
-    public class PaintingsViewModelOld
+    public class GalleryElementsViewModel
     {
-        public IEnumerable<Painting> Elements { get; set; }
+        public IEnumerable<ArtPiece> Elements { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }
 }

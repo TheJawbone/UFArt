@@ -1,1 +1,6 @@
-Fix gallery urls - when entering via navbar, url displays controller name. When using pagination, it fixes itself.
+Create admin view
+	Create an interface responsible for storing elements in database
+	Find out how to get image from Azure storage and how to display it on a page: https://azure.microsoft.com/en-us/resources/samples/storage-blobs-dotnet-webapp/
+	Create functionality of adding images using storage emulator
+Work on the page style, especially gallery.
+Fill the contact and about pages with data.

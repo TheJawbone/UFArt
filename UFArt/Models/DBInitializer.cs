@@ -25,51 +25,17 @@ namespace UFArt.Models
                 .ApplicationServices.GetService(typeof(ApplicationDbContext));
             context.Database.Migrate();
 
-            var techniques = new List<TechniqueDict>()
+            if (context.ArtPieces.Count() == 0)
             {
-                new TechniqueDict { Name = "Olej na płótnie" },
-                new TechniqueDict { Name = "Akwarele" }
-            };
-
-            if(!context.Techniques.Any())
-            {
-                context.Techniques.AddRange(techniques);
-                context.SaveChanges();
-            }
-
-            if(!context.Paintings.Any())
-            {
-                context.Paintings.AddRange(
-                    new Painting { Name = "Bohomaz1", ImageUrl = @"/img/gallery/oil_paintings/painting1.png", ForSale = false, Technique = techniques[0], Dimensions = "100x100cm" },
-                    new Painting { Name = "Bohomaz2", ImageUrl = @"/img/gallery/oil_paintings/painting2.png", ForSale = false, Technique = techniques[0], Dimensions = "10x20cm" },
-                    new Painting { Name = "Bohomaz3", ImageUrl = @"/img/gallery/oil_paintings/painting3.png", ForSale = true, Technique = techniques[0], Dimensions = "200x300cm" },
-                    new Painting { Name = "Bohomaz4", ImageUrl = @"/img/gallery/oil_paintings/painting4.png", ForSale = true, Technique = techniques[0], Dimensions = "15x15cm" },
-                    new Painting { Name = "Obraz1", ImageUrl = @"/img/gallery/oil_paintings/painting1.png", ForSale = false, Technique = techniques[1], Dimensions = "A4" },
-                    new Painting { Name = "Obraz2", ImageUrl = @"/img/gallery/oil_paintings/painting2.png", ForSale = false, Technique = techniques[1], Dimensions = "A3" },
-                    new Painting { Name = "Obraz3", ImageUrl = @"/img/gallery/oil_paintings/painting3.png", ForSale = true, Technique = techniques[1], Dimensions = "A4" },
-                    new Painting { Name = "Obraz4", ImageUrl = @"/img/gallery/oil_paintings/painting4.png", ForSale = true, Technique = techniques[1], Dimensions = "A4" }
-                );
-            }
-
-            if(!context.Potteries.Any())
-            {
-                context.Potteries.AddRange(
-                    new Pottery { Name = "Dzbanek", ForSale = true },
-                    new Pottery { Name = "Garnek", ForSale = false }
-                );
-            }
-
-            if(!context.News.Any())
-            {
-                context.News.AddRange(
-                    new News { Header = "Breaking news!", Text = "These are breaking news",
-                        ImageUrl = @"img/gallery/oil_paintings/painting1.png",
-                        Timestamp = DateTime.Now },
-                    new News
-                    { Header = "Even more breaking news!", Text = "Whoa!",
-                        ImageUrl = @"img/gallery/oil_paintings/painting2.png",
-                        Timestamp = DateTime.Now }
-                );
+                context.ArtPieces.Add(new ArtPiece
+                {
+                    Name = "Test",
+                    Description = "Test",
+                    Technique = "Test",
+                    CreationDate = DateTime.Now,
+                    ForSale = true,
+                    ImageUri = @"img/gallery/oil_paintings/painting1.png"
+                });
             }
 
             context.SaveChanges();

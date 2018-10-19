@@ -5,5 +5,5 @@ using System.Threading.Tasks;
 
 namespace UFArt.Models.Gallery
 {
-    public class Pottery : ArtPiece { }
+    public class Pottery : ArtPieceOld { }
 }

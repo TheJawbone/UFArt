@@ -3,46 +3,23 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UFArt.Models;
 
 namespace UFArt.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181019082258_EditedTechnique")]
+    partial class EditedTechnique
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("UFArt.Models.Gallery.ArtPiece", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("CreationDate");
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Dimensions");
-
-                    b.Property<bool>("ForSale");
-
-                    b.Property<string>("ImageUri");
-
-                    b.Property<string>("Name");
-
-                    b.Property<string>("Technique");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("ArtPieces");
-                });
 
             modelBuilder.Entity("UFArt.Models.Gallery.Painting", b =>
                 {

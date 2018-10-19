@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace UFArt.Models.Gallery
 {
-    public class TechniqueDict
+    public class ArtPieceOld
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public string CodeName { get; set; }
+        public string ImageUrl { get; set; }
+        public bool ForSale { get; set; }
     }
 }

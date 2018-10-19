@@ -1,0 +1,23 @@
+﻿.dropdown-item-toggle:hover {
+    cursor: pointer;
+}
+
+div > a {
+    cursor: pointer;
+}
+
+.container {
+    text-align: center;
+}
+
+.gallery-img {
+    height: 200px;
+}
+
+.gallery-wrapper {
+    text-align: center;
+}
+
+.d-inline-flex {
+    margin: 0 auto;
+}

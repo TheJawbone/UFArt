@@ -1,0 +1,34 @@
+﻿@using UFArt.Models.Gallery
+@model ArtPieceCreationViewModel
+
+<form id="form" method="post" enctype="multipart/form-data" asp-controller="GalleryEditor" asp-action="UploadAsync">
+    <p>
+        <label asp-for="ArtPiece.Name">Nazwa/tytuł:</label>
+        <input asp-for="ArtPiece.Name" />
+    </p>
+    <p>
+        <label asp-for="ArtPiece.Description">Opis:</label>
+        <input asp-for="ArtPiece.Description" />
+    </p>
+    <p>
+        <label asp-for="ArtPiece.Dimensions">Wymiary/format:</label>
+        <input asp-for="ArtPiece.Dimensions" />
+    </p>
+    <p>
+        <label asp-for="ArtPiece.Technique">Technika:</label>
+        <select asp-for="ArtPiece.Technique"
+                asp-items="@(new SelectList(Model.Techniques()))">
+            <option>Wybierz technikę</option>
+        </select>
+    </p>
+    <p>
+        <label asp-for="ArtPiece.CreationDate">Data powstania:</label>
+        <input asp-for="ArtPiece.CreationDate" />
+    </p>
+    <p>
+        <label asp-for="ArtPiece.ForSale">Dostępny na sprzedaż:</label>
+        <input asp-for="ArtPiece.ForSale" />
+    </p>
+    <input type="file" id="file" name="files" />
+    <input type="submit" value="Zatwierdź" />
+</form>

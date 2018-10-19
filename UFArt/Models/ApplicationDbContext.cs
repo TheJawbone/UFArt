@@ -13,6 +13,7 @@ namespace UFArt.Models
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options) { }
 
+        public DbSet<ArtPiece> ArtPieces { get; set; }
         public DbSet<TechniqueDict> Techniques { get; set; }
         public DbSet<Painting> Paintings { get; set; }
         public DbSet<Pottery> Potteries { get; set; }

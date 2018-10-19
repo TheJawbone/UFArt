@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace UFArt.Models.Gallery
 {
-    public class Painting : ArtPiece
+    public class Painting : ArtPieceOld
     {
         public string Dimensions { get; set; }
         public TechniqueDict Technique { get; set; }

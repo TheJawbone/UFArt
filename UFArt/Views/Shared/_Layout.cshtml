@@ -3,9 +3,9 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <script src="~/js/jquery.min.js"></script>
-    <script src="~/js/vendor.min.js"></script>
     <link rel="stylesheet" asp-href-include="~/css/vendor.min.css" />
+    <link rel="stylesheet" asp-href-include="~/css/style.css" />
+    <link rel="stylesheet" asp-href-include="~/css/dropdown.css" />
     <title>Urszula Figiel Art</title>
 </head>
 <body>
@@ -16,34 +16,59 @@
                asp-action="Index">Urszula Figiel Art</a>
             <ul class="list-inline">
                 <li class="list-inline-item">
-                    <a class="navlink"
+                    <a class="nav-link"
                        asp-controller="Newsfeed"
                        asp-action="Index">Aktualności</a>
                 </li>
-                <li class="list-inline-item">
-                    <div class="dropdown">
-                        <a class="list-inline-item dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Galeria
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <!--DROPDOWN-->
+                <li class="list-inline-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Galeria
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item dropdown-toggle" href="#">Obrazy</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Gallery"
+                                       asp-action="ListTest"
+                                       asp-route-techniqueCodeName="OP"
+                                       asp-route-pageNumber="1">Olej na płótnie</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Gallery"
+                                       asp-action="ListTest"
+                                       asp-route-techniqueCodeName="WP"
+                                       asp-route-pageNumber="1">Akwarele</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
                             <a class="dropdown-item"
                                asp-controller="Gallery"
-                               asp-action="ListOilPaintings">Obrazy</a>
-                            <a class="dropdown-item"
-                               asp-controller="Gallery"
-                               asp-action="ListPottery">Ceramika</a>
-                        </div>
-                    </div>
+                               asp-action="ListTest"
+                               asp-route-techniqueCodeName="PO"
+                               asp-route-pageNumber="1">Ceramika</a>
+                        </li>
+                    </ul>
                 </li>
+                <!--END-DROPDOWN-->
                 <li class="list-inline-item">
-                    <a class="navlink"
+                    <a class="nav-link"
                        asp-controller="About"
                        asp-action="Index">O autorce</a>
                 </li>
                 <li class="list-inline-item">
-                    <a class="navlink"
+                    <a class="nav-link"
                        asp-controller="Contact"
                        asp-action="Index">Kontakt</a>
+                </li>
+                <li class="list-inline-item">
+                    <a class="nav-link"
+                       asp-controller="GalleryEditor"
+                       asp-action="Index">Edytor</a>
                 </li>
             </ul>
         </div>
@@ -51,5 +76,9 @@
     <div>
         @RenderBody()
     </div>
+
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/vendor.min.js"></script>
+    <script src="~/js/dropdown.js"></script>
 </body>
 </html>

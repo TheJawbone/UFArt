@@ -2,9 +2,9 @@
   {
     "outputFileName": "wwwroot/css/vendor.min.css",
     "inputFiles": [
-      "node_modules/bootstrap/dist/css/bootstrap.min.css"
+      "node_modules/bootstrap/dist/css/bootstrap.css"
     ],
-    "minify": { "enabled": false }
+    "minify": { "enabled": true }
   },
   {
     "outputFileName": "wwwroot/js/vendor.min.js",
