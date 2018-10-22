@@ -32,7 +32,7 @@ namespace UFArt.Models
                     Name = "Test",
                     Description = "Test",
                     Technique = "Test",
-                    CreationDate = DateTime.Now,
+                    CreationDate = "01-1990",
                     ForSale = true,
                     ImageUri = @"img/gallery/oil_paintings/painting1.png"
                 });

@@ -1,6 +1,7 @@
 ﻿@using UFArt.Models.Gallery
 @model ArtPieceCreationViewModel
 
+<div asp-validation-summary="All" class="text-danger"></div>
 <form id="form" method="post" enctype="multipart/form-data" asp-controller="GalleryEditor" asp-action="UploadAsync">
     <div class="form-group">
         <label asp-for="ArtPiece.Name">Nazwa/tytuł:</label>
@@ -19,18 +20,20 @@
         <select asp-for="ArtPiece.Technique"
                 asp-items="@(new SelectList(Model.Techniques()))"
                 class="form-control">
-            <option>Wybierz technikę</option>
         </select>
     </div>
     <div class="form-group">
         <label asp-for="ArtPiece.CreationDate">Data powstania:</label>
-        <input asp-for="ArtPiece.CreationDate" class="form-control" />
+        <input asp-for="ArtPiece.CreationDate" placeholder="mm-rrrr" class="form-control" />
     </div>
     <div class="form-group">
         <label asp-for="ArtPiece.ForSale">Dostępny na sprzedaż:</label>
         <input asp-for="ArtPiece.ForSale" />
     </div>
-    <input type="file" class="btn p-0" id="file" name="files" />
+    <div class="form-group">
+        <label asp-for"@ArtPiece.ImageUri">Wybierz zdjęcie:</label>
+        <input type="file" class="btn" id="file" name="files" />
+    </div>
     <div class="text-center">
         <input type="submit" class="btn btn-primary" value="Zatwierdź" />
     </div>

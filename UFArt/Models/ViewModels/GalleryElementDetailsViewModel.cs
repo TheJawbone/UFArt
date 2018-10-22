@@ -11,20 +11,22 @@ namespace UFArt.Models.ViewModels
         public ArtPiece ArtPiece { get; }
         public Dictionary<string, string> LabelValueDict { get; }
         public string ImageUri { get; }
+        public string ReturnUrl { get; }
         public bool ForSale { get; }
 
-        public GalleryElementDetailsViewModel(ArtPiece artPiece)
+        public GalleryElementDetailsViewModel(ArtPiece artPiece, string returnUrl)
         {
             LabelValueDict = new Dictionary<string, string>();
 
             ArtPiece = artPiece;
             ImageUri = artPiece.ImageUri;
             ForSale = artPiece.ForSale;
+            ReturnUrl = returnUrl;
 
             if (artPiece.Name != null) LabelValueDict["Tytuł"] = artPiece.Name;
             if (artPiece.Description != null) LabelValueDict["Opis"] = artPiece.Description;
             LabelValueDict["Technika"] = artPiece.Technique;
-            if (artPiece.CreationDate != null) LabelValueDict["Data powstania"] = string.Format("{0}.{1}", artPiece.CreationDate.Month, artPiece.CreationDate.Year);
+            if (artPiece.CreationDate != null) LabelValueDict["Data powstania"] = artPiece.CreationDate;
         }
     }
 }

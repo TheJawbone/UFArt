@@ -1,0 +1,22 @@
+﻿@using UFArt.Models.Gallery
+@model News
+
+<div asp-validation-summary="All" class="text-danger"></div>
+<form id="form" method="post" enctype="multipart/form-data" asp-controller="NewsfeedEditor" asp-action="UploadAsync">
+    <div class="form-group">
+        <label asp-for="Header">Tytuł:</label>
+        <input asp-for="Header" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Text">Treść:</label>
+        <textarea asp-for="Text" class="form-control"></textarea>
+    </div>
+    <div class="form-group">
+        <label asp-for="ImageUrl">Wybierz zdjęcie:</label>
+        <input type="file" class="btn" id="file" name="files" />
+    </div>
+    <input asp-for="Timestamp" type="hidden" value="@DateTime.Now" />
+    <div class="text-center">
+        <input type="submit" class="btn btn-primary" value="Zatwierdź" />
+    </div>
+</form>

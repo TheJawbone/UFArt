@@ -3,10 +3,11 @@
 <div class="gallery-wrapper">
     @foreach (var p in Model.Elements)
     {
-        <div class="d-inline-flex">
+        <div class="d-inline-flex gallery-element-container">
             <a asp-controller="Gallery"
                asp-action="Details"
-               asp-route-id=@p.ID>
+               asp-route-id=@p.ID
+               asp-route-returnUrl=@ViewContext.HttpContext.Request.PathAndQuery()>
                 <img class="img-gallery img-thumbnail" src="@p.ImageUri" />
             </a>
         </div>
@@ -14,7 +15,16 @@
 </div>
 
 <div class="gallery-pagination">
-    <div page-model="@Model.PagingInfo" page-action="ListOilPaintings" page-classes-enabled="true"
+    <div page-model="@Model.PagingInfo" page-action="@ViewContext.RouteData.Values["action"].ToString()" page-classes-enabled="true"
          page-class="btn" page-class-normal="btn-secondary"
          page-class-selected="btn-primary" class="btn-group pull-right m-1"></div>
 </div>
+
+<script>
+    function goToDetails(id, returnUrl) {
+        var url = "/Gallery/Details/" + id;
+        $.(url, { Name: item }, function (data) {
+            window.location.href = "/Home/Index";
+        });
+    }
+</script>

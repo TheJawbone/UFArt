@@ -61,7 +61,6 @@ namespace UFArt
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            //DBInitializer.ClearDatabase(app);
             DBInitializer.EnsurePopulated(app);
         }
     }

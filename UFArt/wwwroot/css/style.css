@@ -26,6 +26,31 @@ td {
     width: 100%;
 }
 
+.w-69 {
+    width: 69%;
+}
+
+.w-95 {
+    width: 95%;
+}
+
+.w-99 {
+    width: 99%;
+}
+
+.carousel-photo {
+    max-width: 100%;
+    max-height: 550px;
+}
+
+.carousel {
+    margin: auto;
+}
+
+.carousel-inner img {
+    margin: auto;
+}
+
 .bg-white {
     background-color: white;
 }
@@ -38,6 +63,26 @@ td {
 
 .img-gallery {
     height: 200px;
+}
+
+.img-newsfeed {
+    max-height: 300px;
+    max-width: 100%;
+}
+
+.d-newsfeed {
+    padding: 20px 0 20px 0;
+    border-bottom:2px solid #CCCCCC;
+}
+
+.d-newsfeed-imagewrapper {
+    width: 30%;
+    text-align: center;
+}
+
+.newsfeed-timestamp {
+    float: right;
+    color: #CCCCCC;
 }
 
 @media only screen and (min-width: 1024px) {

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using UFArt.Infrastructure;
 using UFArt.Models;
 using UFArt.Models.Configuration;
 using UFArt.Models.Gallery;
@@ -16,39 +17,23 @@ namespace UFArt.Controllers
 {
     public class GalleryEditorController : Controller
     {
-        private static CloudBlobClient _blobClient;
-        private const string _blobContainerName = "webappstoragedotnet-imagecontainer";
-        private static CloudBlobContainer _blobContainer;
-        private readonly IOptions<StorageSettings> _storageSettings;
+        private StorageFacade _storageFacade;
         private IGalleryRepository _galleryRepo;
-        private ITechniqueRepository _techniqueRepo;
-        private INewsfeedRepository _newsRepo;
+        private readonly ITechniqueRepository _techniqueRepo;
+        private readonly IOptions<StorageSettings> _storageSettings;
 
-        public GalleryEditorController(IOptions<StorageSettings> storageSettings, IGalleryRepository repo, ITechniqueRepository techniqueRepo, INewsfeedRepository newsRepo)
+
+        public GalleryEditorController(IOptions<StorageSettings> storageSettings, IGalleryRepository repo, ITechniqueRepository techniqueRepo)
         {
             _galleryRepo = repo;
-            _newsRepo = newsRepo;
             _techniqueRepo = techniqueRepo;
             _storageSettings = storageSettings;
-            ConfigureStorage();
+            _storageFacade = new StorageFacade(storageSettings);
         }
 
-        private async void ConfigureStorage()
-        {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_storageSettings.Value.DevConnectionString);
-            _blobClient = storageAccount.CreateCloudBlobClient();
-            _blobContainer = _blobClient.GetContainerReference(_blobContainerName);
-            await _blobContainer.CreateIfNotExistsAsync();
-        }
-
-        public IActionResult AddGalleryElement()
+        public IActionResult Index()
         {
             return View(new ArtPieceCreationViewModel(_techniqueRepo));
-        }
-
-        public IActionResult AddNews()
-        {
-            return View();
         }
 
         [HttpPost]
@@ -57,17 +42,15 @@ namespace UFArt.Controllers
             try
             {
                 var file = Request.Form.Files.FirstOrDefault();
-                if (file != null)
+                if(file == null) ModelState.AddModelError("FileNotSelected", "Plik ze zdjęciem nie został wybrany");
+
+                if (ModelState.IsValid)
                 {
-                    CloudBlockBlob blob = _blobContainer.GetBlockBlobReference(GetRandomBlobName(file.FileName));
-                    await blob.UploadFromStreamAsync(file.OpenReadStream());
-
-                    artPiece.ImageUri = blob.Uri.ToString();
+                    artPiece.ImageUri = await _storageFacade.UploadImageBlob(file);
                     _galleryRepo.Save(artPiece);
-
-                    return RedirectToAction("Index");
+                    return View("Success", new string[] { "Element galerii został dodany", "/GalleryEditor" });
                 }
-                else return View("Error");
+                else return View("Index", new ArtPieceCreationViewModel(_techniqueRepo));
             }
             catch (Exception ex)
             {
@@ -75,12 +58,6 @@ namespace UFArt.Controllers
                 ViewData["trace"] = ex.StackTrace;
                 return View("Error");
             }
-        }
-
-        private string GetRandomBlobName(string filename)
-        {
-            string ext = Path.GetExtension(filename);
-            return string.Format("{0:10}_{1}{2}", DateTime.Now.Ticks, Guid.NewGuid(), ext);
         }
     }
 }

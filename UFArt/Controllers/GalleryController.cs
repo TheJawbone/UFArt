@@ -21,10 +21,19 @@ namespace UFArt.Controllers
             _techniqueRepo = techniqueRepo;
         }
 
-        public IActionResult List(string techniqueCodeName, int pageNumber = 1)
+        public IActionResult ListOilPaintings(int pageNumber = 1) =>
+            GenerateResultView("OP", pageNumber);
+
+        public IActionResult ListWatercolorPaintings(int pageNumber = 1) =>
+            GenerateResultView("WP", pageNumber);
+
+        public IActionResult ListPottery(int pageNumber = 1) =>
+            GenerateResultView("PO", pageNumber);
+
+        private IActionResult GenerateResultView(string techniqueCodeName, int pageNumber = 1)
         {
             var techniqueName = _techniqueRepo.Techniques.Where(t => t.CodeName == techniqueCodeName).FirstOrDefault().Name;
-            return View(new GalleryElementsViewModel
+            return View("List", new GalleryElementsViewModel
             {
                 Elements = _galleryRepo.ArtPieces
                     .Where(ap => ap.Technique == techniqueName)
@@ -35,15 +44,18 @@ namespace UFArt.Controllers
                 {
                     CurrentPage = pageNumber,
                     ItemsPerPage = PageSize,
-                    TotalItems = _galleryRepo.ArtPieces.Count()
+                    TotalItems = _galleryRepo.ArtPieces
+                    .Where(p => p.Technique == _techniqueRepo.Techniques
+                        .Where(t => t.CodeName == techniqueCodeName).FirstOrDefault().Name)
+                    .Count()
                 }
             });
         }
 
-        public IActionResult Details(int id)
+        public IActionResult Details(int id, string returnUrl)
         {
             var artPiece = _galleryRepo.ArtPieces.Where(ap => ap.ID == id).FirstOrDefault();
-            if (artPiece != null) return View(new GalleryElementDetailsViewModel(artPiece));
+            if (artPiece != null) return View(new GalleryElementDetailsViewModel(artPiece, returnUrl));
             else return View("Error");
         }
     }

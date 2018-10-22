@@ -10,7 +10,7 @@ namespace UFArt.Models.Newsfeed
     {
         private ApplicationDbContext _context;
 
-        public IQueryable<News> News => _context.News;
+        public IQueryable<News> News => _context.News.OrderByDescending(n => n.Timestamp);
 
         public NewsfeedRepository(ApplicationDbContext context)
         {

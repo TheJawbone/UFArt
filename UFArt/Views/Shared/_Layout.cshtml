@@ -39,15 +39,13 @@
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="Gallery"
-                                       asp-action="List"
-                                       asp-route-techniqueCodeName="OP"
+                                       asp-action="ListOilPaintings"
                                        asp-route-pageNumber="1">Olej na płótnie</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="Gallery"
-                                       asp-action="List"
-                                       asp-route-techniqueCodeName="WP"
+                                       asp-action="ListWatercolorPaintings"
                                        asp-route-pageNumber="1">Akwarele</a>
                                 </li>
                             </ul>
@@ -55,8 +53,7 @@
                         <li>
                             <a class="dropdown-item"
                                asp-controller="Gallery"
-                               asp-action="List"
-                               asp-route-techniqueCodeName="PO"
+                               asp-action="ListPottery"
                                asp-route-pageNumber="1">Ceramika</a>
                         </li>
                     </ul>
@@ -85,12 +82,12 @@
                         <li>
                             <a class="dropdown-item"
                                asp-controller="GalleryEditor"
-                               asp-action="AddGalleryElement">Dodaj pracę do galerii</a>
+                               asp-action="Index">Dodaj pracę do galerii</a>
                         </li>
                         <li>
                             <a class="dropdown-item"
-                               asp-controller="GalleryEditor"
-                               asp-action="AddNews">Dodaj wpis aktualności</a>
+                               asp-controller="NewsfeedEditor"
+                               asp-action="Index">Dodaj wpis aktualności</a>
                         </li>
                     </ul>
                 </li>
