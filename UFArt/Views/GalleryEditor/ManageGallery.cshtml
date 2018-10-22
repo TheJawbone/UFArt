@@ -1,0 +1,30 @@
+﻿@model IGalleryRepository
+
+<table class="table table-striped">
+    <thead>
+        <tr class="text-center text-primary font-weight-bold">
+            <td>Zdjęcie</td>
+            <td>Nazwa</td>
+            <td>Wymiary</td>
+            <td>Technika</td>
+            <td>Na sprzedaż</td>
+            <td>Data utworzenia</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var element in Model.ArtPieces)
+        {
+            <tr>
+                <td class="text-center"><img class="img-editor" src="@element.ImageUri" /></td>
+                <td>@element.Name</td>
+                <td>@element.Dimensions</td>
+                <td>@element.Technique</td>
+                <td>@(element.ForSale ? "Tak" : "Nie")</td>
+                <td>@element.CreationDate</td>
+                <td><a asp-controller="GalleryEditor"
+                       asp-action=""></a></td>
+                <td></td>
+            </tr>
+        }
+     </tbody>
+</table>

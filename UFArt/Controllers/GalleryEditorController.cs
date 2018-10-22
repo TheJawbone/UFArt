@@ -22,7 +22,6 @@ namespace UFArt.Controllers
         private readonly ITechniqueRepository _techniqueRepo;
         private readonly IOptions<StorageSettings> _storageSettings;
 
-
         public GalleryEditorController(IOptions<StorageSettings> storageSettings, IGalleryRepository repo, ITechniqueRepository techniqueRepo)
         {
             _galleryRepo = repo;
@@ -31,13 +30,18 @@ namespace UFArt.Controllers
             _storageFacade = new StorageFacade(storageSettings);
         }
 
-        public IActionResult Index()
+        public IActionResult AddGalleryElement()
         {
             return View(new ArtPieceCreationViewModel(_techniqueRepo));
         }
 
+        public IActionResult ManageGallery()
+        {
+            return View(_galleryRepo);
+        }
+
         [HttpPost]
-        public async Task<ActionResult> UploadAsync(ArtPiece artPiece)
+        public async Task<IActionResult> UploadAsync(ArtPieceCreationViewModel viewModel)
         {
             try
             {
@@ -46,11 +50,13 @@ namespace UFArt.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    artPiece.ImageUri = await _storageFacade.UploadImageBlob(file);
-                    _galleryRepo.Save(artPiece);
-                    return View("Success", new string[] { "Element galerii został dodany", "/GalleryEditor" });
+                    viewModel.ArtPiece.ImageUri = await _storageFacade.UploadImageBlob(file);
+                    _galleryRepo.Save(viewModel.ArtPiece);
+                    return View("Success", new string[] { "Element galerii został dodany", "/GalleryEditor/AddGalleryElement" });
                 }
-                else return View("Index", new ArtPieceCreationViewModel(_techniqueRepo));
+                //else return View("AddGalleryElement", new ArtPieceCreationViewModel(_techniqueRepo));
+                //else return RedirectToAction("AddGalleryElement");
+                else return View("AddGalleryElement");
             }
             catch (Exception ex)
             {

@@ -2,6 +2,7 @@
 @model ArtPieceCreationViewModel
 
 <div asp-validation-summary="All" class="text-danger"></div>
+
 <form id="form" method="post" enctype="multipart/form-data" asp-controller="GalleryEditor" asp-action="UploadAsync">
     <div class="form-group">
         <label asp-for="ArtPiece.Name">Nazwa/tytuł:</label>
@@ -19,8 +20,7 @@
         <label asp-for="ArtPiece.Technique">Technika:</label>
         <select asp-for="ArtPiece.Technique"
                 asp-items="@(new SelectList(Model.Techniques()))"
-                class="form-control">
-        </select>
+                class="form-control"></select>
     </div>
     <div class="form-group">
         <label asp-for="ArtPiece.CreationDate">Data powstania:</label>

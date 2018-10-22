@@ -10,8 +10,25 @@ td {
     vertical-align: bottom;
 }
 
+.h-100-px {
+    height: 100px;
+}
+
+.h-100-per {
+    height: 100%;
+}
+
 .h-per-10 {
     height: 10%;
+}
+
+.w-200-px {
+    width: 200px;
+}
+
+.img-editor {
+    height: 100px;
+    max-width: 200px;
 }
 
 .list-inline {

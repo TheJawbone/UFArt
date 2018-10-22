@@ -16,7 +16,7 @@
             <a class="navbar-brand text-light"
                asp-controller="Home"
                asp-action="Index">Urszula Figiel Art</a>
-            
+
             <!--NAV LINKS-->
             <ul class="list-inline">
 
@@ -80,14 +80,34 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            <a class="dropdown-item"
-                               asp-controller="GalleryEditor"
-                               asp-action="Index">Dodaj pracę do galerii</a>
+                            <a class="dropdown-item dropdown-toggle" href="#">Galeria</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="GalleryEditor"
+                                       asp-action="AddGalleryElement">Dodaj pracę do galerii</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="GalleryEditor"
+                                       asp-action="ManageGallery">Zarządzaj galerią</a>
+                                </li>
+                            </ul>
                         </li>
                         <li>
-                            <a class="dropdown-item"
-                               asp-controller="NewsfeedEditor"
-                               asp-action="Index">Dodaj wpis aktualności</a>
+                            <a class="dropdown-item dropdown-toggle" href="#">Aktualności</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="NewsfeedEditor"
+                                       asp-action="Index">Dodaj wpis aktualności</a>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="GalleryEditor"
+                                       asp-action="Index">Zarządzaj aktualnościami</a>
+                                </li>
+                            </ul>
+
                         </li>
                     </ul>
                 </li>

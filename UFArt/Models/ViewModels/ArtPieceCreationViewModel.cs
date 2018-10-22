@@ -20,9 +20,8 @@ namespace UFArt.Models.ViewModels
             return techniques;
         }
 
-        public ArtPieceCreationViewModel(ITechniqueRepository repo)
-        {
-            _repo = repo;
-        }
+        public ArtPieceCreationViewModel() { }
+
+        public ArtPieceCreationViewModel(ITechniqueRepository repo) => _repo = repo;
     }
 }
