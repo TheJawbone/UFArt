@@ -21,9 +21,15 @@ namespace UFArt.Controllers
             _storageFacade = new StorageFacade(options);
         }
 
-        public IActionResult Index()
+        public IActionResult AddNews() => View();
+
+        public IActionResult ManageNews() => View(_repo);
+
+        public IActionResult UpdateNews(int id)
         {
-            return View();
+            var news = _repo.News.Where(n => n.ID == id).FirstOrDefault();
+            if (news != null) return View("AddNews", news);
+            else return View("Error");
         }
 
         [HttpPost]
@@ -35,8 +41,16 @@ namespace UFArt.Controllers
                 {
                     var file = Request.Form.Files.FirstOrDefault();
                     if (file != null) news.ImageUrl = await _storageFacade.UploadImageBlob(file);
-                    _repo.Save(news);
-                    return View("Success", new string[] { "Wpis do aktualności został dodany", "/NewsfeedEditor" });
+                    if (news.ID == 0)
+                    {
+                        _repo.Save(news);
+                        return View("Success", new string[] { "Wpis aktualności został dodany", "/NewsfeedEditor/AddNews" });
+                    }
+                    else
+                    {
+                        _repo.Update(news);
+                        return View("Success", new string[] { "Wpis aktualności został zaktualizowany", "/NewsfeedEditor/ManageNews" });
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -45,7 +59,13 @@ namespace UFArt.Controllers
                     return View("Error");
                 }
             }
-            else return View("Index");
+            else return View("AddNews");
+        }
+
+        public async Task<IActionResult> DeleteNews(int id)
+        {
+            await _repo.Delete(id);
+            return RedirectToAction("ManageNews");
         }
     }
 }

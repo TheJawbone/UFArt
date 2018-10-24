@@ -48,6 +48,12 @@
                                        asp-action="ListWatercolorPaintings"
                                        asp-route-pageNumber="1">Akwarele</a>
                                 </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="Gallery"
+                                       asp-action="ListSketches"
+                                       asp-route-pageNumber="1">Szkice</a>
+                                </li>
                             </ul>
                         </li>
                         <li>
@@ -100,11 +106,11 @@
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="NewsfeedEditor"
-                                       asp-action="Index">Dodaj wpis aktualności</a>
+                                       asp-action="AddNews">Dodaj wpis aktualności</a>
                                 <li>
                                     <a class="dropdown-item"
-                                       asp-controller="GalleryEditor"
-                                       asp-action="Index">Zarządzaj aktualnościami</a>
+                                       asp-controller="NewsfeedEditor"
+                                       asp-action="ManageNews">Zarządzaj aktualnościami</a>
                                 </li>
                             </ul>
 

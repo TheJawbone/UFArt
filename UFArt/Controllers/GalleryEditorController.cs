@@ -30,14 +30,16 @@ namespace UFArt.Controllers
             _storageFacade = new StorageFacade(storageSettings);
         }
 
-        public IActionResult AddGalleryElement()
-        {
-            return View(new ArtPieceCreationViewModel(_techniqueRepo));
-        }
+        public IActionResult AddGalleryElement() => View(new ArtPieceCreationViewModel(_techniqueRepo));
 
-        public IActionResult ManageGallery()
+        public IActionResult ManageGallery() => View(_galleryRepo);
+
+        public IActionResult UpdateGalleryElement(int id)
         {
-            return View(_galleryRepo);
+            var viewModel = new ArtPieceCreationViewModel(_techniqueRepo);
+            var artPiece = _galleryRepo.ArtPieces.Where(ap => ap.ID == id).FirstOrDefault();
+            if(artPiece != null) viewModel.ArtPiece = artPiece;
+            return View("AddGalleryElement", viewModel);
         }
 
         [HttpPost]
@@ -46,17 +48,23 @@ namespace UFArt.Controllers
             try
             {
                 var file = Request.Form.Files.FirstOrDefault();
-                if(file == null) ModelState.AddModelError("FileNotSelected", "Plik ze zdjęciem nie został wybrany");
+                if(file == null && viewModel.ArtPiece.ImageUri == null) ModelState.AddModelError("FileNotSelected", "Plik ze zdjęciem nie został wybrany");
 
                 if (ModelState.IsValid)
                 {
-                    viewModel.ArtPiece.ImageUri = await _storageFacade.UploadImageBlob(file);
-                    _galleryRepo.Save(viewModel.ArtPiece);
-                    return View("Success", new string[] { "Element galerii został dodany", "/GalleryEditor/AddGalleryElement" });
+                    if(file != null) viewModel.ArtPiece.ImageUri = await _storageFacade.UploadImageBlob(file);
+                    if (viewModel.ArtPiece.ID == 0)
+                    {
+                        _galleryRepo.Save(viewModel.ArtPiece);
+                        return View("Success", new string[] { "Element galerii został dodany", "/GalleryEditor/AddGalleryElement" });
+                    }
+                    else
+                    {
+                        _galleryRepo.Update(viewModel.ArtPiece);
+                        return View("Success", new string[] { "Element galerii został zaktualizowany", "/GalleryEditor/ManageGallery" });
+                    }
                 }
-                //else return View("AddGalleryElement", new ArtPieceCreationViewModel(_techniqueRepo));
-                //else return RedirectToAction("AddGalleryElement");
-                else return View("AddGalleryElement");
+                else return View("AddGalleryElement", new ArtPieceCreationViewModel(_techniqueRepo));
             }
             catch (Exception ex)
             {
@@ -64,6 +72,12 @@ namespace UFArt.Controllers
                 ViewData["trace"] = ex.StackTrace;
                 return View("Error");
             }
+        }
+
+        public IActionResult DeleteGalleryElement(int id)
+        {
+            _galleryRepo.Delete(id);
+            return RedirectToAction("ManageGallery");
         }
     }
 }

@@ -27,6 +27,9 @@ namespace UFArt.Controllers
         public IActionResult ListWatercolorPaintings(int pageNumber = 1) =>
             GenerateResultView("WP", pageNumber);
 
+        public IActionResult ListSketches(int pageNumber = 1) =>
+            GenerateResultView("SK", pageNumber);
+
         public IActionResult ListPottery(int pageNumber = 1) =>
             GenerateResultView("PO", pageNumber);
 

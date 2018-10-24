@@ -9,14 +9,12 @@ namespace UFArt.Models.Gallery
 {
     public class ArtPiece
     {
-        [BindNever]
         public int ID { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Dimensions { get; set; }
         [Required(ErrorMessage = "Wybierz jedną z dostępnych technik")]
         public string Technique { get; set; }
-        [BindNever]
         public string ImageUri { get; set; }
         public bool ForSale { get; set; }
         [RegularExpression(@"^(((0)[0-9])|((1)[0-2]))(-)\d{4}$", ErrorMessage = "Wprowadź datę w formacie mm-rrrr")]

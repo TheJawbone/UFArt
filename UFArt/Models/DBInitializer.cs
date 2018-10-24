@@ -25,7 +25,7 @@ namespace UFArt.Models
                 .ApplicationServices.GetService(typeof(ApplicationDbContext));
             context.Database.Migrate();
 
-            if (context.ArtPieces.Count() == 0)
+            /*if (context.ArtPieces.Count() == 0)
             {
                 context.ArtPieces.Add(new ArtPiece
                 {
@@ -36,7 +36,7 @@ namespace UFArt.Models
                     ForSale = true,
                     ImageUri = @"img/gallery/oil_paintings/painting1.png"
                 });
-            }
+            }*/
 
             context.SaveChanges();
         }

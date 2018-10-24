@@ -9,6 +9,7 @@ namespace UFArt.Models.Newsfeed
     {
         IQueryable<News> News { get; }
         bool Save(News news);
+        bool Update(News news);
         Task<bool> Delete(int id);
     }
 }

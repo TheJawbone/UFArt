@@ -9,6 +9,7 @@ namespace UFArt.Models.Gallery
     {
         IQueryable<ArtPiece> ArtPieces { get; }
         bool Save(ArtPiece artPiece);
+        bool Update(ArtPiece artPiece);
         Task<bool> Delete(int id);
     }
 }

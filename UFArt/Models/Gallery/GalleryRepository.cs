@@ -53,6 +53,24 @@ namespace UFArt.Models.Gallery
             }
         }
 
+        public bool Update(ArtPiece artPiece)
+        {
+            try
+            {
+                _context.ArtPieces.Update(artPiece);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (ex is DbUpdateException || ex is DbUpdateConcurrencyException)
+                {
+                    return false;
+                }
+                throw;
+            }
+        }
+
         public async Task<bool> Delete(int id)
         {
             ArtPiece artPiece = _context.ArtPieces.Where(p => p.ID == id).FirstOrDefault();
@@ -60,13 +78,11 @@ namespace UFArt.Models.Gallery
             {
                 Uri uri = new Uri(artPiece.ImageUri);
                 string filename = Path.GetFileName(uri.LocalPath);
-                var blob = blobContainer.GetBlockBlobReference(filename);
-                await blob.DeleteIfExistsAsync();
+
                 try
                 {
                     _context.ArtPieces.Remove(artPiece);
                     _context.SaveChanges();
-                    return true;
                 }
                 catch (Exception ex)
                 {
@@ -76,6 +92,10 @@ namespace UFArt.Models.Gallery
                     }
                     throw;
                 }
+
+                var blob = blobContainer.GetBlockBlobReference(filename);
+                await blob.DeleteIfExistsAsync();
+                return true;
             }
             return false;
         }

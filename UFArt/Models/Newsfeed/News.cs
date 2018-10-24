@@ -9,7 +9,6 @@ namespace UFArt.Models.Newsfeed
 {
     public class News
     {
-        [BindNever]
         public int ID { get; set; }
         public string Header { get; set; }
         [Required(ErrorMessage = "Wprowadź treść aktualności")]

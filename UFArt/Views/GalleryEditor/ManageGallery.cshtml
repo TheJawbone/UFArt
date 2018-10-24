@@ -14,16 +14,21 @@
     <tbody>
         @foreach (var element in Model.ArtPieces)
         {
-            <tr>
+            <tr class="text-center">
                 <td class="text-center"><img class="img-editor" src="@element.ImageUri" /></td>
-                <td>@element.Name</td>
-                <td>@element.Dimensions</td>
-                <td>@element.Technique</td>
-                <td>@(element.ForSale ? "Tak" : "Nie")</td>
-                <td>@element.CreationDate</td>
-                <td><a asp-controller="GalleryEditor"
-                       asp-action=""></a></td>
-                <td></td>
+                <td class="align-middle">@element.Name</td>
+                <td class="align-middle">@element.Dimensions</td>
+                <td class="align-middle">@element.Technique</td>
+                <td class="align-middle">@(element.ForSale ? "Tak" : "Nie")</td>
+                <td class="align-middle">@element.CreationDate</td>
+                <td class="align-middle"><a asp-controller="GalleryEditor"
+                       asp-action="UpdateGalleryElement"
+                       asp-route-id="@element.ID"
+                       class="btn btn-primary">Zmień</a></td>
+                <td class="align-middle"><a asp-controller="GalleryEditor"
+                       asp-action="DeleteGalleryElement"
+                       asp-route-ID="@element.ID"
+                       class="btn btn-primary">Usuń</a></td>
             </tr>
         }
      </tbody>

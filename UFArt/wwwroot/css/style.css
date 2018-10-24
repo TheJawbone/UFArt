@@ -95,6 +95,7 @@ td {
 .d-newsfeed-imagewrapper {
     width: 30%;
     text-align: center;
+    padding: 0 20px;
 }
 
 .newsfeed-timestamp {
