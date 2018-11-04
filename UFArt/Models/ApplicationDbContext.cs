@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UFArt.Models.Gallery;
+using UFArt.Models.Identity;
 using UFArt.Models.Newsfeed;
 
 namespace UFArt.Models
@@ -16,5 +18,6 @@ namespace UFArt.Models
         public DbSet<ArtPiece> ArtPieces { get; set; }
         public DbSet<TechniqueDict> Techniques { get; set; }
         public DbSet<News> News { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

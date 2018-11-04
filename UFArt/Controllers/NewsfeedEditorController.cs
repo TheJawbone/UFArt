@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using UFArt.Models;
@@ -10,6 +11,7 @@ using UFArt.Models.Newsfeed;
 
 namespace UFArt.Controllers
 {
+    [Authorize(Roles = "editor")]
     public class NewsfeedEditorController : Controller
     {
         private INewsfeedRepository _repo;

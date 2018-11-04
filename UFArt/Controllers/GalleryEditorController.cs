@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.WindowsAzure.Storage;
@@ -15,6 +16,7 @@ using UFArt.Models.ViewModels;
 
 namespace UFArt.Controllers
 {
+    [Authorize(Roles = "editor")]
     public class GalleryEditorController : Controller
     {
         private StorageFacade _storageFacade;

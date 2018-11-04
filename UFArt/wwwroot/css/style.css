@@ -26,6 +26,21 @@ td {
     width: 200px;
 }
 
+.entry-button {
+    position: absolute;
+    width: 200px;
+    top: 60%;
+    margin-left: 50%;
+    left: -100px;
+}
+
+.entry-text {
+    position: absolute;
+    width: 100%;
+    top: 40%;
+    text-align: center;
+}
+
 .img-editor {
     height: 100px;
     max-width: 200px;
