@@ -57,6 +57,7 @@ namespace UFArt.Controllers
             return View(details);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

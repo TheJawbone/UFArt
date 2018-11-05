@@ -79,7 +79,7 @@ namespace UFArt
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            DBInitializer.MigrateDatabase(app);
+            DBInitializer.EnsurePopulated(app);
         }
     }
 }

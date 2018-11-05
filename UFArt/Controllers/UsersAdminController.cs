@@ -15,13 +15,15 @@ namespace UFArt.Controllers
         private UserManager<User> _userManager;
         private IUserValidator<User> _userValidator;
         private IPasswordHasher<User> _passwordHasher;
+        private RoleManager<IdentityRole> _roleManager;
         private IPasswordValidator<User> _passwordValidator;
 
-        public UsersAdminController(UserManager<User> userManager, IUserValidator<User> userValidator, IPasswordHasher<User> passwordHasher, IPasswordValidator<User> passwordValidator)
+        public UsersAdminController(UserManager<User> userManager, IUserValidator<User> userValidator, IPasswordHasher<User> passwordHasher, RoleManager<IdentityRole> roleManager, IPasswordValidator<User> passwordValidator)
         {
             _userManager = userManager;
             _userValidator = userValidator;
             _passwordHasher = passwordHasher;
+            _roleManager = roleManager;
             _passwordValidator = passwordValidator;
         }
 
@@ -37,12 +39,14 @@ namespace UFArt.Controllers
             if (ModelState.IsValid)
             {
                 User user = new User { UserName = model.Name, Email = model.Email };
-                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+                IdentityResult createResult = await _userManager.CreateAsync(user, model.Password);
+                IdentityResult addToUsersResult = await _userManager.AddToRoleAsync(user, "user");
 
-                if (result.Succeeded) return View("Success", new string[] { "Pomyślnie dodano użytkownika", "/UsersAdmin/" });
+                if (createResult.Succeeded && addToUsersResult.Succeeded)
+                    return View("Success", new string[] { "Pomyślnie dodano użytkownika", "/UsersAdmin/" });
                 else
                 {
-                    var errors = result.Errors.GroupBy(e => e.Code).Select(g => g.First()); // for some reason email error was duplicated
+                    var errors = createResult.Errors.GroupBy(e => e.Code).Select(g => g.First()); // for some reason email error was duplicated
                     foreach (var error in errors)
                     {
                         ModelState.AddModelError("", error.Description);
