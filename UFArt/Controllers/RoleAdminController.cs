@@ -10,7 +10,7 @@ using UFArt.Models.Identity;
 
 namespace UFArt.Controllers
 {
-    //[Authorize(Roles = "admin")]
+    [Authorize(Roles = "admin")]
     public class RoleAdminController : Controller
     {
         private RoleManager<IdentityRole> _roleManager;

@@ -9,6 +9,7 @@ using UFArt.Models.Identity;
 
 namespace UFArt.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class UsersAdminController : Controller
     {
         private UserManager<User> _userManager;
