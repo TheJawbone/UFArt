@@ -7,6 +7,6 @@ namespace UFArt.Models.Configuration
 {
     public class StorageSettings
     {
-        public string DevConnectionString { get; set; }
+        public string StorageConnectionString { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace UFArt.Models.Gallery
 
         private async void ConfigureStorage()
         {
-            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_storageSettings.Value.DevConnectionString);
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_storageSettings.Value.StorageConnectionString);
             blobClient = storageAccount.CreateCloudBlobClient();
             blobContainer = blobClient.GetContainerReference(blobContainerName);
             await blobContainer.CreateIfNotExistsAsync();
