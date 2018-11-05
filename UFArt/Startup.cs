@@ -27,9 +27,9 @@ namespace UFArt
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration["DbConnectionString"]))
+                    options.UseSqlServer(Configuration["ConnectionStrings:DbConnectionString"]))
                 .AddDbContext<AppIdentityDbContext>(options =>
-                    options.UseSqlServer(Configuration["DbConnectionString"]));
+                    options.UseSqlServer(Configuration["ConnectionStrings:DbConnectionString"]));
 
             services.AddIdentity<User, IdentityRole>(options => {
                 options.User.RequireUniqueEmail = true;
