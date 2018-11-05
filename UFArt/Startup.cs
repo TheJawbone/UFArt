@@ -43,7 +43,7 @@ namespace UFArt
             services.AddTransient<IUserValidator<User>, UserValidator<User>>();
             services.AddTransient<ITechniqueRepository, TechniqueRepository>();
 
-            services.Configure<StorageSettings>(Configuration.GetSection("StorageSettings"));
+            services.Configure<StorageSettings>(Configuration.GetSection("ConnectionStrings:StorageSettings"));
             services.ConfigureApplicationCookie(opts => {
                 opts.LoginPath = "/Users/Login";
                 opts.AccessDeniedPath = "/Users/AccessDenied";
