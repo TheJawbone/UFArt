@@ -8,12 +8,12 @@ namespace UFArt.Models.ViewModels
 {
     public class ArtPieceCreationViewModel
     {
-        private ITechniqueRepository _repo;
+        public ITechniqueRepository TechniqueRepository { get; set; }
         public ArtPiece ArtPiece { get; set; }
         public List<string> Techniques()
         {
             List<string> techniques = new List<string>();
-            foreach(var technique in _repo.Techniques)
+            foreach(var technique in TechniqueRepository.Techniques)
             {
                 techniques.Add(technique.Name);
             }
@@ -22,6 +22,6 @@ namespace UFArt.Models.ViewModels
 
         public ArtPieceCreationViewModel() { }
 
-        public ArtPieceCreationViewModel(ITechniqueRepository repo) => _repo = repo;
+        public ArtPieceCreationViewModel(ITechniqueRepository repo) => TechniqueRepository = repo;
     }
 }

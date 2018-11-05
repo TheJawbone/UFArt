@@ -61,7 +61,7 @@ namespace UFArt.Controllers
                     return View("Error");
                 }
             }
-            else return View("AddNews");
+            else return View("AddNews", news);
         }
 
         public async Task<IActionResult> DeleteNews(int id)

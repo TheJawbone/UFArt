@@ -4,18 +4,18 @@
 <div asp-validation-summary="All" class="text-danger"></div>
 <form id="form" method="post" enctype="multipart/form-data" asp-controller="NewsfeedEditor" asp-action="UploadAsync">
     <div class="form-group">
-        <label asp-for="Header">Tytuł:</label>
+        <label asp-for="Header">Tytuł<span class="text-danger font-weight-bold">*</span></label>
         <input asp-for="Header" class="form-control" />
     </div>
     <div class="form-group">
-        <label asp-for="Text">Treść:</label>
+        <label asp-for="Text">Treść<span class="text-danger font-weight-bold">*</span></label>
         <textarea asp-for="Text" class="form-control"></textarea>
     </div>
     <div class="form-group">
         @if (Model?.ImageUrl != null)
-        {<label asp-for="ImageUrl">Wybierz zdjęcie <b>(pomiń, jeśli chcesz zostawić istniejące)</b>:</label> }
+        {<label asp-for="ImageUrl">Wybierz zdjęcie <b>(pomiń, jeśli chcesz zostawić istniejące)</b><span class="text-danger font-weight-bold">*</span></label> }
         else
-        { <label asp-for="ImageUrl">Wybierz zdjęcie:</label>}
+        { <label asp-for="ImageUrl">Wybierz zdjęcie<span class="text-danger font-weight-bold">*</span></label>}
         <input type="file" class="btn" id="file" name="files" />
     </div>
     <input asp-for="Timestamp" type="hidden" value="@DateTime.Now" />
@@ -26,5 +26,6 @@
     }
     <div class="text-center">
         <input type="submit" class="btn btn-primary" value="Zatwierdź" />
+        <a asp-controller="NewsfeedEditor" asp-action="ManageNews" class="btn btn-secondary">Anuluj</a>
     </div>
 </form>

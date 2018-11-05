@@ -10,9 +10,11 @@ namespace UFArt.Models.Newsfeed
     public class News
     {
         public int ID { get; set; }
+        [Required(ErrorMessage = "Wprowadź tytuł")]
         public string Header { get; set; }
         [Required(ErrorMessage = "Wprowadź treść aktualności")]
         public string Text { get; set; }
+        [Required(ErrorMessage = "Wybierz zdjęcie")]
         public string ImageUrl { get; set; }
         public DateTime Timestamp { get; set; }
     }

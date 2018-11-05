@@ -54,7 +54,7 @@ namespace UFArt.Controllers
 
                 if (ModelState.IsValid)
                 {
-                    if(file != null) viewModel.ArtPiece.ImageUri = await _storageFacade.UploadImageBlob(file);
+                    if (file != null) viewModel.ArtPiece.ImageUri = await _storageFacade.UploadImageBlob(file);
                     if (viewModel.ArtPiece.ID == 0)
                     {
                         _galleryRepo.Save(viewModel.ArtPiece);
@@ -66,7 +66,12 @@ namespace UFArt.Controllers
                         return View("Success", new string[] { "Element galerii został zaktualizowany", "/GalleryEditor/ManageGallery" });
                     }
                 }
-                else return View("AddGalleryElement", new ArtPieceCreationViewModel(_techniqueRepo));
+                else
+                {
+                    viewModel.TechniqueRepository = _techniqueRepo;
+                    return View("AddGalleryElement", viewModel);
+                }
+                //return View("AddGalleryElement", new ArtPieceCreationViewModel(_techniqueRepo));
             }
             catch (Exception ex)
             {

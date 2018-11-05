@@ -16,8 +16,10 @@ namespace UFArt.Models.Gallery
         [Required(ErrorMessage = "Wybierz jedną z dostępnych technik")]
         public string Technique { get; set; }
         public string ImageUri { get; set; }
+        [Required]
         public bool ForSale { get; set; }
-        [RegularExpression(@"^(((0)[0-9])|((1)[0-2]))(-)\d{4}$", ErrorMessage = "Wprowadź datę w formacie mm-rrrr")]
+        [RegularExpression(@"^((((0)[0-9])|((1)[0-2]))(-)\d{4})|(\d{4})$", ErrorMessage = "Wprowadź datę w formacie rrrr lub mm-rrrr")]
         public string CreationDate { get; set; }
+        public string AdditionalInfo { get; set; }
     }
 }
