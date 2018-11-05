@@ -27,9 +27,9 @@ namespace UFArt
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration["Data:UFArtDb:ConnectionString"]))
+                    options.UseSqlServer(Configuration["DbConnectionString"]))
                 .AddDbContext<AppIdentityDbContext>(options =>
-                    options.UseSqlServer(Configuration["Data:UFArtDb:ConnectionString"]));
+                    options.UseSqlServer(Configuration["DbConnectionString"]));
 
             services.AddIdentity<User, IdentityRole>(options => {
                 options.User.RequireUniqueEmail = true;
@@ -42,11 +42,12 @@ namespace UFArt
             services.AddTransient<INewsfeedRepository, NewsfeedRepository>();
             services.AddTransient<IUserValidator<User>, UserValidator<User>>();
             services.AddTransient<ITechniqueRepository, TechniqueRepository>();
+
+            services.Configure<StorageSettings>(Configuration.GetSection("StorageSettings"));
             services.ConfigureApplicationCookie(opts => {
                 opts.LoginPath = "/Users/Login";
                 opts.AccessDeniedPath = "/Users/AccessDenied";
                 });
-            services.Configure<StorageSettings>(Configuration.GetSection("StorageSettings"));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -78,7 +79,7 @@ namespace UFArt
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            DBInitializer.EnsurePopulated(app);
+            DBInitializer.MigrateDatabase(app);
         }
     }
 }

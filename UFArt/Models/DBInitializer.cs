@@ -19,26 +19,17 @@ namespace UFArt.Models
             context.Database.EnsureDeleted();
         }
 
-        public static void EnsurePopulated(IApplicationBuilder app)
+        public static void MigrateDatabase(IApplicationBuilder app)
         {
             ApplicationDbContext context = (ApplicationDbContext)app
                 .ApplicationServices.GetService(typeof(ApplicationDbContext));
             context.Database.Migrate();
-
-            /*if (context.ArtPieces.Count() == 0)
-            {
-                context.ArtPieces.Add(new ArtPiece
-                {
-                    Name = "Test",
-                    Description = "Test",
-                    Technique = "Test",
-                    CreationDate = "01-1990",
-                    ForSale = true,
-                    ImageUri = @"img/gallery/oil_paintings/painting1.png"
-                });
-            }*/
-
             context.SaveChanges();
+
+            AppIdentityDbContext identityContext = (AppIdentityDbContext)app
+                .ApplicationServices.GetService(typeof(AppIdentityDbContext));
+            identityContext.Database.Migrate();
+            identityContext.SaveChanges();
         }
     }
 }
