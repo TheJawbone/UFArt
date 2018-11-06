@@ -40,17 +40,27 @@ td {
 .entry-button {
     position: absolute;
     width: 200px;
-    top: 60%;
+    height: 60px;
+    top: 80%;
     margin-left: 50%;
     left: -100px;
+    background-color: rgba(50, 50, 50, 0.4);
+    font-size: 1.2rem;
+    border: none;
+    line-height: 40px;
+    box-sizing: border-box;
 }
 
 .entry-text {
     position: absolute;
+    font-family: 'Shadows Into Light', cursive;
     width: 100%;
-    top: 40%;
+    top: 38%;
     text-align: center;
 }
+    .entry-text > h1 {
+        font-size: 7em;
+    }
 
 .img-editor {
     height: 100px;
