@@ -38,10 +38,10 @@ namespace UFArt.Infrastructure.Mailing
             message.FromAddress = new EmailAddress() { Address = _emailConfiguration.SmtpUsername };
             message.ToAddresses.Add(new EmailAddress() { Address = offer.Email });
             message.Subject = "Potwierdzenie złożenia oferty";
-            message.Content = "Dziękujemy za wyrażenie zainteresowania kupnem przedmiotu." +
+            message.Content = string.Format("Witaj {0},\r\nDziękujemy za wyrażenie zainteresowania kupnem przedmiotu. " +
                 "Skontaktujemy się z Tobą jak najszybciej w celu omówienia szczegółów.\r\n\r\n" +
                 "Pozdrawiamy,\r\nZespół Urszula Figiel Art\r\n\r\n" +
-                "Wiadomość została wygenerowana automatycznie.";
+                "Wiadomość została wygenerowana automatycznie.", offer.ClientName);
             return message;
         }
     }
