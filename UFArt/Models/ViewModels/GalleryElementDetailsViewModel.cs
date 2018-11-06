@@ -27,6 +27,7 @@ namespace UFArt.Models.ViewModels
             if (artPiece.Description != null) LabelValueDict["Opis"] = artPiece.Description;
             LabelValueDict["Technika"] = artPiece.Technique;
             if (artPiece.CreationDate != null) LabelValueDict["Data powstania"] = artPiece.CreationDate;
+            if (artPiece.AdditionalInfo != null) LabelValueDict["Dodatkowe informacje"] = artPiece.AdditionalInfo;
         }
     }
 }
