@@ -68,7 +68,7 @@ namespace UFArt.Models
             }
             if (!adminExists)
             {
-                User user = new User { UserName = "Admin" };
+                User user = new User { UserName = "Admin", Email = "admin@a.a" };
                 var passwordHasher = (IPasswordHasher<User>)app.ApplicationServices.GetService(typeof(IPasswordHasher<User>));
                 user.PasswordHash = passwordHasher.HashPassword(user, "Admin1.");
                 await userManager.AddToRoleAsync(user, "admin");

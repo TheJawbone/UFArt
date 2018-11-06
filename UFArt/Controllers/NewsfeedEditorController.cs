@@ -37,11 +37,14 @@ namespace UFArt.Controllers
         [HttpPost]
         public async Task<ActionResult> UploadAsync(News news)
         {
-            if (ModelState.IsValid)
+            try
             {
-                try
+                var file = Request.Form.Files.FirstOrDefault();
+                if (file == null && news.ImageUrl == null) ModelState.AddModelError("FileNotSelected", "Plik ze zdjęciem nie został wybrany");
+
+                if (ModelState.IsValid)
                 {
-                    var file = Request.Form.Files.FirstOrDefault();
+
                     if (file != null) news.ImageUrl = await _storageFacade.UploadImageBlob(file);
                     if (news.ID == 0)
                     {
@@ -54,14 +57,14 @@ namespace UFArt.Controllers
                         return View("Success", new string[] { "Wpis aktualności został zaktualizowany", "/NewsfeedEditor/ManageNews" });
                     }
                 }
-                catch (Exception ex)
-                {
-                    ViewData["message"] = ex.Message;
-                    ViewData["trace"] = ex.StackTrace;
-                    return View("Error");
-                }
+                else return View("AddNews", news);
             }
-            else return View("AddNews", news);
+            catch (Exception ex)
+            {
+                ViewData["message"] = ex.Message;
+                ViewData["trace"] = ex.StackTrace;
+                return View("Error");
+            }
         }
 
         public async Task<IActionResult> DeleteNews(int id)
