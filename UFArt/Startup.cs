@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using UFArt.Infrastructure;
+using UFArt.Infrastructure.Mailing;
 using UFArt.Models;
 using UFArt.Models.Configuration;
 using UFArt.Models.Gallery;
@@ -38,10 +39,12 @@ namespace UFArt
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
+            services.AddTransient<IEmailService, EmailService>();
             services.AddTransient<IGalleryRepository, GalleryRepository>();
             services.AddTransient<INewsfeedRepository, NewsfeedRepository>();
             services.AddTransient<IUserValidator<User>, UserValidator<User>>();
             services.AddTransient<ITechniqueRepository, TechniqueRepository>();
+            services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("ConnectionStrings:EmailConfiguration").Get<EmailConfiguration>());
 
             services.Configure<StorageSettings>(Configuration.GetSection("ConnectionStrings:StorageSettings"));
             services.ConfigureApplicationCookie(opts => {
