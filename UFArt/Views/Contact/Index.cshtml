@@ -1,1 +1,19 @@
-﻿<form method="post" asp-controller="Contact" asp-action="SendTestMail"><button type=submit>Wyślij maila!</button></form>
+﻿@model string
+
+<h1 class="text-dark">Kontakt</h1>
+<div class="d-inline-flex w-100">
+    <div class="w-49">
+        <p>Info kontaktowe</p>
+    </div>
+    <div class="w-49">
+        <form method="post" asp-controller="Contact" asp-action="SendMessage">
+            <div class="form-group">
+                <label>Treść wiadomości</label>
+                <textarea id="content" name="content" class="form-control"></textarea>
+            </div>
+            <div class="text-center">
+                <input type=submit class="btn btn-primary" value="Wyślij wiadomość" />
+            </div>
+        </form>
+    </div>
+</div>

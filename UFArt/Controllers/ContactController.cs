@@ -10,10 +10,12 @@ namespace UFArt.Controllers
     public class ContactController : Controller
     {
         private IEmailService _emailService;
+        private IEmailConfiguration _emailConfiguration;
 
-        public ContactController(IEmailService emailService)
+        public ContactController(IEmailService emailService, IEmailConfiguration emailConfiguration)
         {
             _emailService = emailService;
+            _emailConfiguration = emailConfiguration;
         }
 
         public IActionResult Index()
@@ -22,13 +24,13 @@ namespace UFArt.Controllers
         }
 
         [HttpPost]
-        public IActionResult SendTestMail()
+        public IActionResult SendMessage(string content)
         {
-            EmailMessage message = new EmailMessage();
-            message.Content = "Hello";
-            message.Subject = "Test";
-            _emailService.Send(message);
-            return View("Index");
+            var message = new EmailMessageFactory(_emailConfiguration).CreateContactMessage(content);
+            var result = _emailService.Send(message);
+            if(result.Succeeded)
+                return View("Success", new string[] { "Pomyślnie wysłano wiadomość", "/Contact" });
+            else return View("Error");
         }
     }
 }

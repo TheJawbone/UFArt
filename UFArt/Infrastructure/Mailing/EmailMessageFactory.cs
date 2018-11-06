@@ -21,7 +21,7 @@ namespace UFArt.Infrastructure.Mailing
             var message = new EmailMessage();
             message.FromAddress = new EmailAddress() { Address = offer.Email };
             message.ToAddresses.Add(new EmailAddress() { Address = _emailConfiguration.SmtpUsername });
-            message.Subject = "Oferta kupna obrazu";
+            message.Subject = "UFArt - Oferta kupna obrazu";
             StringBuilder contentBuilder = new StringBuilder();
             contentBuilder.AppendLine(string.Format("Numer ID obrazu: {0}", offer.ArtPieceId));
             contentBuilder.AppendLine(string.Format("Imię klienta: {0}", offer.ClientName));
@@ -32,12 +32,22 @@ namespace UFArt.Infrastructure.Mailing
             return message;
         }
 
+        public EmailMessage CreateContactMessage(string content)
+        {
+            var message = new EmailMessage();
+            message.FromAddress = new EmailAddress() { Address = _emailConfiguration.SmtpUsername };
+            message.ToAddresses.Add(new EmailAddress() { Address = _emailConfiguration.SmtpUsername });
+            message.Subject = "UFArt - Wiadomość kontaktowa";
+            message.Content = content;
+            return message;
+        }
+
         internal EmailMessage CreateOfferConfirmationMessage(OfferViewModel offer)
         {
             var message = new EmailMessage();
             message.FromAddress = new EmailAddress() { Address = _emailConfiguration.SmtpUsername };
             message.ToAddresses.Add(new EmailAddress() { Address = offer.Email });
-            message.Subject = "Potwierdzenie złożenia oferty";
+            message.Subject = "UFArt - Potwierdzenie złożenia oferty";
             message.Content = string.Format("Witaj {0},\r\nDziękujemy za wyrażenie zainteresowania kupnem przedmiotu. " +
                 "Skontaktujemy się z Tobą jak najszybciej w celu omówienia szczegółów.\r\n\r\n" +
                 "Pozdrawiamy,\r\nZespół Urszula Figiel Art\r\n\r\n" +
