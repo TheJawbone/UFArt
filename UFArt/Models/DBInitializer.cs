@@ -71,8 +71,13 @@ namespace UFArt.Models
                 User user = new User { UserName = "Admin", Email = "admin@a.a" };
                 var passwordHasher = (IPasswordHasher<User>)app.ApplicationServices.GetService(typeof(IPasswordHasher<User>));
                 user.PasswordHash = passwordHasher.HashPassword(user, "Admin1.");
-                await userManager.AddToRoleAsync(user, "admin");
-                await userManager.CreateAsync(user);
+                IdentityResult creationResult = await userManager.CreateAsync(user);
+                if (creationResult.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(user, "admin");
+                    await userManager.AddToRoleAsync(user, "editor");
+                    await userManager.AddToRoleAsync(user, "user");
+                }
             }
 
             identityContext.SaveChanges();
