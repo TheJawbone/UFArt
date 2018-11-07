@@ -14,5 +14,7 @@ namespace UFArt.Models.Identity
         public string Email { get; set; }
         [Required(ErrorMessage = "Wprowadź hasło")]
         public string Password { get; set; }
+        [Required(ErrorMessage ="Wprowadź potwierdzenie hasła")]
+        public string PasswordConfirmation { get; set; }
     }
 }

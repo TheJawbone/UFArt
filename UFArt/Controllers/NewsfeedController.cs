@@ -10,7 +10,7 @@ namespace UFArt.Controllers
 {
     public class NewsfeedController : Controller
     {
-        private INewsfeedRepository _repo;
+        private readonly INewsfeedRepository _repo;
 
         public NewsfeedController(INewsfeedRepository repo)
         {
@@ -19,7 +19,27 @@ namespace UFArt.Controllers
 
         public IActionResult Index()
         {
-            return View(_repo.News);
+            return View(new NewsfeedViewModel(_repo));
+        }
+
+        [HttpPost]
+        public IActionResult ShowMore(NewsfeedViewModel viewModel)
+        {
+            viewModel.Repo = _repo;
+            if (viewModel.NewsDisplayed + viewModel.NewsIncrement > viewModel.Repo.News.Count())
+                viewModel.NewsDisplayed = viewModel.Repo.News.Count();
+            else viewModel.NewsDisplayed += viewModel.NewsIncrement;
+            return View("Index", viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult ShowLess(NewsfeedViewModel viewModel)
+        {
+            viewModel.Repo = _repo;
+            if (viewModel.NewsDisplayed < 2 * viewModel.NewsIncrement)
+                viewModel.NewsDisplayed = viewModel.NewsIncrement;
+            else viewModel.NewsDisplayed -= viewModel.NewsIncrement;
+            return View("Index", viewModel);
         }
     }
 }

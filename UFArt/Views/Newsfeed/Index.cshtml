@@ -1,8 +1,8 @@
-﻿@model IEnumerable<News>
+﻿@model NewsfeedViewModel
 
 <h1 class="text-dark">Aktualności</h1>
 <div asp-validation-summary="All"></div>
-@foreach (var news in Model)
+@foreach (var news in Model.News)
 {
     <div class="d-newsfeed">
         @if (news.ImageUrl != null)
@@ -21,3 +21,26 @@
         </div>
     </div>
 }
+
+<div class="text-center w-100">
+    @if (Model.NewsDisplayed > Model.NewsIncrement)
+    {
+        <div class="d-inline-flex">
+            <form method="post" asp-controller="Newsfeed" asp-action="ShowLess">
+                <input asp-for="NewsDisplayed" type="hidden" value="@Model.NewsDisplayed" />
+                <input asp-for="NewsIncrement" type="hidden" value="@Model.NewsIncrement" />
+                <input type="submit" class="btn btn-primary" value="Pokaż mniej" />
+            </form>
+        </div>
+    }
+    @if (Model.NewsDisplayed < Model.Repo.News.Count())
+    {
+        <div class="d-inline-flex">
+            <form method="post" asp-controller="Newsfeed" asp-action="ShowMore">
+                <input asp-for="NewsDisplayed" type="hidden" value="@Model.NewsDisplayed" />
+                <input asp-for="NewsIncrement" type="hidden" value="@Model.NewsIncrement" />
+                <input type="submit" class="btn btn-primary" value="Pokaż więcej" />
+            </form>
+        </div>
+    }
+</div>

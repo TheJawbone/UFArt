@@ -36,6 +36,11 @@ namespace UFArt.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AddUserAsync(UserCreateModel model)
         {
+            if(model.Password != model.PasswordConfirmation)
+            {
+                ModelState.AddModelError("PasswordMismatchError", "Hasła muszą się zgadzać");
+            }
+
             if (ModelState.IsValid)
             {
                 User user = new User { UserName = model.Name, Email = model.Email };
