@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UFArt.Models.Gallery;
+using UFArt.Models.Identity;
 
 namespace UFArt.Infrastructure.Mailing
 {
@@ -52,6 +54,19 @@ namespace UFArt.Infrastructure.Mailing
                 "Skontaktujemy się z Tobą jak najszybciej w celu omówienia szczegółów.\r\n\r\n" +
                 "Pozdrawiamy,\r\nZespół Urszula Figiel Art\r\n\r\n" +
                 "Wiadomość została wygenerowana automatycznie.", offer.ClientName);
+            return message;
+        }
+
+        public EmailMessage CreateActivationMessage(User user, HttpRequest request)
+        {
+            var link = string.Format("{0}://{1}/AccountActivation?code={2}", request.Scheme, request.Host, user.Id.ToString());
+            var message = new EmailMessage();
+            message.FromAddress = new EmailAddress() { Address = _emailConfiguration.SmtpUsername };
+            message.ToAddresses.Add(new EmailAddress() { Address = user.Email });
+            message.Subject = "UFArt - aktywacja konta";
+            message.Content = string.Format("Witaj {0},\r\nDziękujemy za założenie konta w serwisie Urszula Figiel Art. " +
+                "Kliknij poniższy link, aby aktywować konto. \r\n{1}\r\n\r\nPozdrawiamy,\r\nZespół Urszula Figiel Art.",
+                user.UserName, link);
             return message;
         }
     }

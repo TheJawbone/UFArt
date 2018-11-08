@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using UFArt.Infrastructure.Mailing;
 using UFArt.Models.Identity;
 
 namespace UFArt.Controllers
@@ -17,14 +18,20 @@ namespace UFArt.Controllers
         private IPasswordHasher<User> _passwordHasher;
         private RoleManager<IdentityRole> _roleManager;
         private IPasswordValidator<User> _passwordValidator;
+        private IEmailService _emailService;
+        private IEmailConfiguration _emailConfiguration;
 
-        public UsersAdminController(UserManager<User> userManager, IUserValidator<User> userValidator, IPasswordHasher<User> passwordHasher, RoleManager<IdentityRole> roleManager, IPasswordValidator<User> passwordValidator)
+        public UsersAdminController(UserManager<User> userManager, IUserValidator<User> userValidator,
+            IPasswordHasher<User> passwordHasher, RoleManager<IdentityRole> roleManager,
+            IPasswordValidator<User> passwordValidator, IEmailService emailService, IEmailConfiguration emailConfiguration)
         {
             _userManager = userManager;
             _userValidator = userValidator;
             _passwordHasher = passwordHasher;
             _roleManager = roleManager;
             _passwordValidator = passwordValidator;
+            _emailService = emailService;
+            _emailConfiguration = emailConfiguration;
         }
 
         public IActionResult Index() => View(_userManager.Users);
@@ -37,9 +44,7 @@ namespace UFArt.Controllers
         public async Task<IActionResult> AddUserAsync(UserCreateModel model)
         {
             if(model.Password != model.PasswordConfirmation)
-            {
                 ModelState.AddModelError("PasswordMismatchError", "Hasła muszą się zgadzać");
-            }
 
             if (ModelState.IsValid)
             {
@@ -51,7 +56,11 @@ namespace UFArt.Controllers
                     IdentityResult addToUsersResult = await _userManager.AddToRoleAsync(user, "user");
 
                     if (createResult.Succeeded && addToUsersResult.Succeeded)
+                    {
+                        var message = new EmailMessageFactory(_emailConfiguration).CreateActivationMessage(user, Request);
+                        _emailService.Send(message);
                         return View("Success", new string[] { "Pomyślnie dodano użytkownika", "/UsersAdmin/" });
+                    }
                     else
                     {
                         var errors = createResult.Errors.GroupBy(e => e.Code).Select(g => g.First()); // for some reason email error was duplicated

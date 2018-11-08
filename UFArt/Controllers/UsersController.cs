@@ -45,10 +45,14 @@ namespace UFArt.Controllers
                 User user = await _userManager.FindByEmailAsync(details.Email);
                 if (user != null)
                 {
-                    await _signInManager.SignOutAsync();
-                    Microsoft.AspNetCore.Identity.SignInResult result =
-                        await _signInManager.PasswordSignInAsync(user, details.Password, true, false);
-                    if (result.Succeeded) return Redirect(returnUrl ?? "/About");
+                    if (user.EmailConfirmed == false) return View("AccountInactive");
+                    else
+                    {
+                        await _signInManager.SignOutAsync();
+                        Microsoft.AspNetCore.Identity.SignInResult result =
+                            await _signInManager.PasswordSignInAsync(user, details.Password, true, false);
+                        if (result.Succeeded) return Redirect(returnUrl ?? "/About");
+                    }
                 }
 
                 ModelState.AddModelError(nameof(UserLoginModel.Email), "Invalid user or password");
