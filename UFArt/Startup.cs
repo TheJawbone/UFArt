@@ -16,6 +16,7 @@ using UFArt.Models.Configuration;
 using UFArt.Models.Gallery;
 using UFArt.Models.Identity;
 using UFArt.Models.Newsfeed;
+using UFArt.Models.TextAssets;
 
 namespace UFArt
 {
@@ -39,11 +40,15 @@ namespace UFArt
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
-            services.AddTransient<IEmailService, EmailService>();
+            services.AddMemoryCache();
+            services.AddSession();
+
             services.AddTransient<IGalleryRepository, GalleryRepository>();
             services.AddTransient<INewsfeedRepository, NewsfeedRepository>();
-            services.AddTransient<IUserValidator<User>, UserValidator<User>>();
             services.AddTransient<ITechniqueRepository, TechniqueRepository>();
+            services.AddTransient<ITextAssetsRepository, TextAssetsRepository>();
+            services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IUserValidator<User>, UserValidator<User>>();
             services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("ConnectionStrings:EmailConfiguration").Get<EmailConfiguration>());
 
             services.Configure<StorageSettings>(Configuration.GetSection("ConnectionStrings:StorageSettings"));
@@ -63,6 +68,7 @@ namespace UFArt
 
             app.UseAuthentication();
             app.UseStaticFiles();
+            app.UseSession();
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

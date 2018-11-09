@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UFArt.Models.Gallery;
 using UFArt.Models.Identity;
 using UFArt.Models.Newsfeed;
+using UFArt.Models.TextAssets;
 
 namespace UFArt.Models
 {
@@ -19,5 +20,6 @@ namespace UFArt.Models
         public DbSet<TechniqueDict> Techniques { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<TextAsset> TextAssets { get; set; } 
     }
 }

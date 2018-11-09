@@ -1,11 +1,18 @@
-﻿@model string
+﻿@model ContactViewModel
 
-<h1 class="text-dark">Kontakt</h1>
+<h1 class="text-dark">@Model.GetText("contact_header")</h1>
 <div class="d-inline-flex w-100">
-    <div class="w-49">
-        <p>Info kontaktowe</p>
+    <div class="w-49 pt-3 pr-4">
+        <table class="table">
+            <tr>
+                <td><b>@Model.GetText("contact_telephone"):</b></td><td>@Model.GetText("contact_telephone_number")</td>
+            </tr>
+            <tr>
+                <td><b>@Model.GetText("contact_email")</b></td><td>@Model.GetText("contact_email_address")</td>
+            </tr>
+        </table>
     </div>
-    <div class="w-49">
+    <div class="w-50 pt-3 pl-4">
         <form method="post" asp-controller="Contact" asp-action="SendMessage">
             <div class="form-group">
                 <label>Treść wiadomości</label>

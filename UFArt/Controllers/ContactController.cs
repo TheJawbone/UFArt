@@ -4,23 +4,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UFArt.Infrastructure.Mailing;
+using UFArt.Models.Contact;
+using UFArt.Models.TextAssets;
 
 namespace UFArt.Controllers
 {
     public class ContactController : Controller
     {
         private IEmailService _emailService;
-        private IEmailConfiguration _emailConfiguration;
+        private readonly ITextAssetsRepository _textRepository;
+        private readonly IEmailConfiguration _emailConfiguration;
+        private readonly ContactViewModel _model;
 
-        public ContactController(IEmailService emailService, IEmailConfiguration emailConfiguration)
+        public ContactController(IEmailService emailService, IEmailConfiguration emailConfiguration, ITextAssetsRepository textRepository)
         {
             _emailService = emailService;
             _emailConfiguration = emailConfiguration;
+            _textRepository = textRepository;
         }
 
         public IActionResult Index()
         {
-            return View();
+            return View(new ContactViewModel(_textRepository, Request.HttpContext));
         }
 
         [HttpPost]
