@@ -1,0 +1,176 @@
+﻿<div class="navbar navbar-fixed-top navbar-light navbar-expand-md navbar-collapse bg-dark h-per-10" role="navigation">
+    <div class="navbar-nav">
+        <!--BRAND-->
+        <a class="navbar-brand text-light"
+           asp-controller="Home"
+           asp-action="Index">Urszula Figiel Art</a>
+
+        <!--NAV LINKS-->
+        <ul class="list-inline">
+
+            <!--ABOUT-->
+            <li class="list-inline-item">
+                <a class="nav-link text-light"
+                   asp-controller="About"
+                   asp-action="Index">O autorce</a>
+            </li>
+
+            <!--GALLERY DROPDOWN-->
+            <li class="list-inline-item dropdown">
+                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Galeria
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li>
+                        <a class="dropdown-item dropdown-toggle" href="#">Obrazy</a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="Gallery"
+                                   asp-action="ListOilPaintings"
+                                   asp-route-pageNumber="1">Olej na płótnie</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="Gallery"
+                                   asp-action="ListWatercolorPaintings"
+                                   asp-route-pageNumber="1">Akwarele</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="Gallery"
+                                   asp-action="ListSketches"
+                                   asp-route-pageNumber="1">Szkice</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="dropdown-item"
+                           asp-controller="Gallery"
+                           asp-action="ListPottery"
+                           asp-route-pageNumber="1">Ceramika</a>
+                    </li>
+                </ul>
+            </li>
+
+            <!--NEWS-->
+            <li class="list-inline-item">
+                <a class="nav-link text-light"
+                   asp-controller="Newsfeed"
+                   asp-action="Index">Aktualności</a>
+            </li>
+
+            <!--CONTACT-->
+            <li class="list-inline-item">
+                <a class="nav-link text-light"
+                   asp-controller="Contact"
+                   asp-action="Index">Kontakt</a>
+            </li>
+
+            <!--EDITOR DROPDOWN-->
+            @if (Context.User.IsInRole("editor"))
+            {
+                <li class="list-inline-item dropdown">
+                    <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Edytor
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item dropdown-toggle" href="#">Galeria</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="GalleryEditor"
+                                       asp-action="AddGalleryElement">Dodaj pracę do galerii</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="GalleryEditor"
+                                       asp-action="ManageGallery">Zarządzaj galerią</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="dropdown-item dropdown-toggle" href="#">Aktualności</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="NewsfeedEditor"
+                                       asp-action="AddNews">Dodaj wpis aktualności</a>
+                                <li>
+                                    <a class="dropdown-item"
+                                       asp-controller="NewsfeedEditor"
+                                       asp-action="ManageNews">Zarządzaj aktualnościami</a>
+                                </li>
+                            </ul>
+
+                        </li>
+                        @if (Context.User.IsInRole("admin"))
+                        {
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="UsersAdmin"
+                                   asp-action="Index">Zarządzaj użytkownikami</a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   asp-controller="RoleAdmin"
+                                   asp-action="Index">Zarządzaj rolami</a>
+                            </li>
+                        }
+                    </ul>
+
+                </li>
+            }
+        </ul>
+
+        <div class="float-right d-inline-flex pr-2" style="position: absolute; right: 0px;">
+            @if (!Context.User.Identity.IsAuthenticated)
+            {
+                <ul class="list-inline">
+                    <!--LOG IN-->
+                    <li class="list-inline-item">
+                        <a class="nav-link text-light"
+                           asp-controller="Users"
+                           asp-action="Login">Zaloguj</a>
+                    </li>
+
+                    <!--REGISTER-->
+                    <li class="list-inline-item">
+                        <a class="nav-link text-light"
+                           asp-controller="UsersAdmin"
+                           asp-action="CreateUser">Zarejestruj</a>
+                    </li>
+                </ul>
+            }
+            else
+            {
+                <p class="text-light pt-2 pb-2 pr-4 pl-4">Witaj @Context.User.Identity.Name</p>
+                <ul class="list-inline">
+                    <!--MANAGE ACCOUNT-->
+                    <li class="list-inline-item">
+                        <a class="nav-link text-light"
+                           asp-controller="Users"
+                           asp-action="ManageAccount">Moje konto</a>
+                    </li>
+
+                    <!--LOG OUT-->
+                    <li class="list-inline-item">
+                        <a class="nav-link text-light"
+                           asp-controller="Users"
+                           asp-action="Logout">Wyloguj</a>
+
+                    </li>
+                </ul>
+            }
+            <form method="post" asp-controller="Home" asp-action="SetLanguageToPl">
+                <input type="hidden" id="returnUri" name="returnUri" value="@Context.Request.PathAndQuery()" />
+                <input type="submit" class="btn btn-primary" value=" " />
+            </form>
+            <form method="post" asp-controller="Home" asp-action="SetLanguageToEn">
+                <input type="hidden" id="returnUri" name="returnUri" value="@Context.Request.PathAndQuery()" />
+                <input type="submit" class="btn btn-primary" value=" " />
+            </form>
+        </div>
+    </div>
+</div>
