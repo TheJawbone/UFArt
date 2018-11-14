@@ -163,14 +163,22 @@
                     </li>
                 </ul>
             }
-            <form method="post" asp-controller="Home" asp-action="SetLanguageToPl">
-                <input type="hidden" id="returnUri" name="returnUri" value="@Context.Request.PathAndQuery()" />
-                <input type="submit" class="btn btn-primary" value=" " />
-            </form>
-            <form method="post" asp-controller="Home" asp-action="SetLanguageToEn">
-                <input type="hidden" id="returnUri" name="returnUri" value="@Context.Request.PathAndQuery()" />
-                <input type="submit" class="btn btn-primary" value=" " />
-            </form>
+
+            <!--LANGUAGES-->
+            <div class="pl-3">
+                <div class="d-block mb-1">
+                    <form method="post" class="flag-icon" asp-controller="Home" asp-action="SetLanguageToPl">
+                        <input type="hidden" id="returnUri" name="returnUri" value="@Context.Request.PathAndQuery()" />
+                        <input type="image" class="flag-icon" src="https://urszulafigielart.blob.core.windows.net/webappstoragedotnet-imagecontainer/polish_flag.png" alt="Polski" />
+                    </form>
+                </div>
+                <div class="d-block m-0 p-0">
+                    <form method="post" class="flag-icon" asp-controller="Home" asp-action="SetLanguageToEn">
+                        <input type="hidden" id="returnUri" name="returnUri" value="@Context.Request.PathAndQuery()" />
+                        <input type="image" class="flag-icon" src="https://urszulafigielart.blob.core.windows.net/webappstoragedotnet-imagecontainer/uk_flag.png" alt="English" />
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

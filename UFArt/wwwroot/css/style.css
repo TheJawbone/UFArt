@@ -26,6 +26,11 @@ td {
     width: 200px;
 }
 
+.flag-icon {
+    width: 20px;
+    height: 10px;
+}
+
 .d-opaque-white-bg {
     position: absolute;
     top: 0;
