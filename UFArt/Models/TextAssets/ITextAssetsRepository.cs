@@ -10,5 +10,6 @@ namespace UFArt.Models.TextAssets
     {
         string GetTranslatedValue(string key, HttpContext context);
         TextAsset GetAsset(string key);
+        void SaveAsset(TextAsset asset);
     }
 }

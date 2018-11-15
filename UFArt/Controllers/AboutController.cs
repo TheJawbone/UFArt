@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UFArt.Models.TextAssets;
+using UFArt.Models.ViewModels;
 
 namespace UFArt.Controllers
 {
@@ -18,7 +19,7 @@ namespace UFArt.Controllers
 
         public IActionResult Index()
         {
-            return View("Index", _repo.GetTranslatedValue("about_header", Request.HttpContext));
+            return View(new ViewModel(_repo));
         }
     }
 }

@@ -12,6 +12,8 @@ namespace UFArt.Controllers
     {
         public IActionResult Index()
         {
+            if(Request.HttpContext.Session.GetString("language") == null)
+                Request.HttpContext.Session.SetString("language", "pl");
             return View();
         }
 

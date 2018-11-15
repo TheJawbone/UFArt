@@ -105,6 +105,11 @@
                             </ul>
 
                         </li>
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="AboutEditor"
+                               asp-action="Index">O autorce</a>
+                        </li>
                         @if (Context.User.IsInRole("admin"))
                         {
                             <li>

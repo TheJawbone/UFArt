@@ -71,7 +71,6 @@ namespace UFArt.Controllers
                     viewModel.TechniqueRepository = _techniqueRepo;
                     return View("AddGalleryElement", viewModel);
                 }
-                //return View("AddGalleryElement", new ArtPieceCreationViewModel(_techniqueRepo));
             }
             catch (Exception ex)
             {

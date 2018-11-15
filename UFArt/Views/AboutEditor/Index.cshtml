@@ -1,0 +1,22 @@
+﻿@model AboutViewModel
+
+<div asp-validation-summary="All" class="text-danger"></div>
+<p class="text-center text-secondary"><b>@Model.TextRepository.GetTranslatedValue("edit_language_message", Context)</b></p>
+<div class="w-100">
+    <form method="post" enctype="multipart/form-data" asp-controller="AboutEditor" asp-action="UploadAsync">
+        <div class="form-group">
+            <label asp-for="Text">Treść<b><span class="text-danger font-weight-bold">*</span></b></label>
+            <textarea asp-for="Text" class="form-control">@Model.Text?</textarea>
+        </div>
+        <div class="form-group">
+            @if (Model.ImageUri != null)
+            { <label>Wybierz nowe zdjęcie <b>(pomiń, jeśli chcesz zostawić istniejące)</b><span class="text-danger font-weight-bold">*</span></label> }
+            else
+            { <label>Wybierz zdjęcie<span class="text-danger font-weight-bold">*</span></label> }
+            <input type="file" class="btn" name="files" accept="image" />
+        </div>
+        <div class="text-center">
+            <input type="submit" class="btn btn-primary" value="Zatwierdź" />
+        </div>
+    </form>
+</div>

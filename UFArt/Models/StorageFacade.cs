@@ -44,5 +44,12 @@ namespace UFArt.Models
             await blob.UploadFromStreamAsync(file.OpenReadStream());
             return blob.Uri.ToString();
         }
+
+        public async Task<bool> DeleteImageBlob(string uri)
+        {
+            CloudBlockBlob blob = _imageBlobContainer.GetBlockBlobReference(uri);
+            var deleted = await blob.DeleteIfExistsAsync();
+            return deleted;
+        }
     }
 }
