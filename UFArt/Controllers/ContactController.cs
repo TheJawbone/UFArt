@@ -14,7 +14,6 @@ namespace UFArt.Controllers
         private IEmailService _emailService;
         private readonly ITextAssetsRepository _textRepository;
         private readonly IEmailConfiguration _emailConfiguration;
-        private readonly ContactViewModel _model;
 
         public ContactController(IEmailService emailService, IEmailConfiguration emailConfiguration, ITextAssetsRepository textRepository)
         {
@@ -25,7 +24,7 @@ namespace UFArt.Controllers
 
         public IActionResult Index()
         {
-            return View(new ContactViewModel(_textRepository, Request.HttpContext));
+            return View(new ContactViewModel(_textRepository));
         }
 
         [HttpPost]

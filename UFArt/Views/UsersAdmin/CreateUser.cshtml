@@ -1,24 +1,25 @@
 ﻿@model UserCreateModel
 
-<div class="bg-primary m-1 p-1 text-white"><h4>Stwórz użytkownika</h4></div>
-<div asp-validation-summary=" All" class="text-danger"></div>
-<form asp-action="AddUserAsync" method="post">
-    <div class="form-group">
-        <label asp-for="Name">Nazwa użytkownika:</label>
-        <input asp-for="Name" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Email">Adres e-mail</label>
-        <input asp-for="Email" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Password">Hasło</label>
-        <input asp-for="Password" type="password" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="PasswordConfirmation">Potwierdź hasło</label>
-        <input asp-for="PasswordConfirmation" type="password" class="form-control" />
-    </div>
-    <button type="submit" class="btn btn-primary">Stwórz</button>
-    <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
-</form>
+<div class="p-3">
+    <div asp-validation-summary=" All" class="text-danger"></div>
+    <form asp-action="AddUserAsync" method="post">
+        <div class="form-group">
+            <label asp-for="Name">Nazwa użytkownika:</label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Email">Adres e-mail</label>
+            <input asp-for="Email" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">Hasło</label>
+            <input asp-for="Password" type="password" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="PasswordConfirmation">Potwierdź hasło</label>
+            <input asp-for="PasswordConfirmation" type="password" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Stwórz</button>
+        <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+    </form>
+</div>

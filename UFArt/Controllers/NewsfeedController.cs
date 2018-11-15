@@ -5,27 +5,31 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using UFArt.Models;
 using UFArt.Models.Newsfeed;
+using UFArt.Models.TextAssets;
 
 namespace UFArt.Controllers
 {
     public class NewsfeedController : Controller
     {
         private readonly INewsfeedRepository _repo;
+        private readonly ITextAssetsRepository _textRepository;
 
-        public NewsfeedController(INewsfeedRepository repo)
+        public NewsfeedController(INewsfeedRepository repo, ITextAssetsRepository textRepository)
         {
             _repo = repo;
+            _textRepository = textRepository;
         }
 
         public IActionResult Index()
         {
-            return View(new NewsfeedViewModel(_repo));
+            return View(new NewsfeedViewModel(_textRepository, _repo));
         }
 
         [HttpPost]
         public IActionResult ShowMore(NewsfeedViewModel viewModel)
         {
             viewModel.Repo = _repo;
+            viewModel.TextRepository = _textRepository;
             if (viewModel.NewsDisplayed + viewModel.NewsIncrement > viewModel.Repo.News.Count())
                 viewModel.NewsDisplayed = viewModel.Repo.News.Count();
             else viewModel.NewsDisplayed += viewModel.NewsIncrement;
@@ -36,6 +40,7 @@ namespace UFArt.Controllers
         public IActionResult ShowLess(NewsfeedViewModel viewModel)
         {
             viewModel.Repo = _repo;
+            viewModel.TextRepository = _textRepository;
             if (viewModel.NewsDisplayed < 2 * viewModel.NewsIncrement)
                 viewModel.NewsDisplayed = viewModel.NewsIncrement;
             else viewModel.NewsDisplayed -= viewModel.NewsIncrement;

@@ -110,6 +110,11 @@
                                asp-controller="AboutEditor"
                                asp-action="Index">O autorce</a>
                         </li>
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="ContactEditor"
+                               asp-action="Index">Kontakt</a>
+                        </li>
                         @if (Context.User.IsInRole("admin"))
                         {
                             <li>

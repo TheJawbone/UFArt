@@ -1,26 +1,30 @@
 ﻿@model ContactViewModel
 
-<h1 class="text-dark">@Model.GetText("contact_header")</h1>
-<div class="d-inline-flex w-100">
-    <div class="w-49 pt-3 pr-4">
-        <table class="table">
-            <tr>
-                <td><b>@Model.GetText("contact_telephone"):</b></td><td>@Model.GetText("contact_telephone_number")</td>
-            </tr>
-            <tr>
-                <td><b>@Model.GetText("contact_email")</b></td><td>@Model.GetText("contact_email_address")</td>
-            </tr>
-        </table>
-    </div>
-    <div class="w-50 pt-3 pl-4">
-        <form method="post" asp-controller="Contact" asp-action="SendMessage">
-            <div class="form-group">
-                <label>Treść wiadomości</label>
-                <textarea id="content" name="content" class="form-control"></textarea>
-            </div>
-            <div class="text-center">
-                <input type=submit class="btn btn-primary" value="Wyślij wiadomość" />
-            </div>
-        </form>
+<div class="p-3">
+    <h1 class="text-dark">@Model.TextRepository.GetTranslatedValue("contact_header", Context)</h1>
+    <div class="d-inline-flex w-100">
+        <div class="w-49 pt-3 pr-4">
+            <table class="table">
+                <tr>
+                    <td><b>@Model.TextRepository.GetTranslatedValue("contact_telephone", Context):</b></td>
+                    <td>@Model.TextRepository.GetTranslatedValue("contact_telephone_number", Context)</td>
+                </tr>
+                <tr>
+                    <td><b>@Model.TextRepository.GetTranslatedValue("contact_email", Context)</b></td>
+                    <td>@Model.TextRepository.GetTranslatedValue("contact_email_address", Context)</td>
+                </tr>
+            </table>
+        </div>
+        <div class="w-50 pt-3 pl-4">
+            <form method="post" asp-controller="Contact" asp-action="SendMessage">
+                <div class="form-group">
+                    <label>Treść wiadomości</label>
+                    <textarea id="content" name="content" class="form-control"></textarea>
+                </div>
+                <div class="text-center">
+                    <input type=submit class="btn btn-primary" value="Wyślij wiadomość" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using UFArt.Models.TextAssets;
@@ -8,20 +10,18 @@ using UFArt.Models.ViewModels;
 
 namespace UFArt.Models.Contact
 {
-    public class ContactViewModel : ITextAssetsViewModel
+    public class ContactViewModel : ViewModel
     {
-        private readonly ITextAssetsRepository _repo;
-        private readonly HttpContext _context;
+        [BindNever]
+        public int Id { get; set; }
+        [Required(ErrorMessage = "Wprowadź adres email")]
+        public string Email { get; set; }
+        [Required(ErrorMessage = "Wprowadź numer telefonu")]
+        public string Telephone { get; set; }
 
-        public ContactViewModel(ITextAssetsRepository repo, HttpContext context)
-        {
-            _repo = repo;
-            _context = context;
-        }
+        public ContactViewModel() { }
 
-        public string GetText(string key)
-        {
-            return _repo.GetTranslatedValue(key, _context);
-        }
+        public ContactViewModel(ITextAssetsRepository textRepository)
+            : base(textRepository) { }
     }
 }

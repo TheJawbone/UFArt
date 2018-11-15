@@ -1,46 +1,45 @@
 ﻿@model NewsfeedViewModel
 
-<h1 class="text-dark">Aktualności</h1>
-<div asp-validation-summary="All"></div>
-@foreach (var news in Model.News)
-{
-    <div class="d-newsfeed">
-        @if (news.ImageUrl != null)
-        {
+<div class="p-3">
+    <h1 class="text-dark">@Model.TextRepository.GetTranslatedValue("news_header", Context)</h1>
+    <div asp-validation-summary="All"></div>
+    @foreach (var news in Model.News)
+    {
+        <div class="d-newsfeed">
             <div class="d-newsfeed-imagewrapper d-inline-block">
                 <img class="img-newsfeed" src="@news.ImageUrl" />
             </div>
-        }
-        <div class="@(news.ImageUrl == null ? "w-99" : "w-69") d-inline-block d-newsfeed-text" style="vertical-align: top">
-            @if (news.Header != null)
-            {
-                <h3 class="d-inline-block">@news.Header</h3>
-            }
-            <p class="d-inline-block newsfeed-timestamp">Dodano: @news.Timestamp</p>
-            <p class="text-justify">@news.Text</p>
+            <div class="w-69 d-inline-block d-newsfeed-text" style="vertical-align: top">
+                @if (news.Header != null)
+                {
+                    <h3 class="d-inline-block">@news.Header</h3>
+                }
+                <p class="d-inline-block newsfeed-timestamp">Dodano: @news.Timestamp</p>
+                <p class="text-justify">@news.Text</p>
+            </div>
         </div>
-    </div>
-}
+    }
 
-<div class="text-center w-100">
-    @if (Model.NewsDisplayed > Model.NewsIncrement)
-    {
-        <div class="d-inline-flex">
-            <form method="post" asp-controller="Newsfeed" asp-action="ShowLess">
-                <input asp-for="NewsDisplayed" type="hidden" value="@Model.NewsDisplayed" />
-                <input asp-for="NewsIncrement" type="hidden" value="@Model.NewsIncrement" />
-                <input type="submit" class="btn btn-primary" value="Pokaż mniej" />
-            </form>
-        </div>
-    }
-    @if (Model.NewsDisplayed < Model.Repo.News.Count())
-    {
-        <div class="d-inline-flex">
-            <form method="post" asp-controller="Newsfeed" asp-action="ShowMore">
-                <input asp-for="NewsDisplayed" type="hidden" value="@Model.NewsDisplayed" />
-                <input asp-for="NewsIncrement" type="hidden" value="@Model.NewsIncrement" />
-                <input type="submit" class="btn btn-primary" value="Pokaż więcej" />
-            </form>
-        </div>
-    }
+    <div class="text-center w-100">
+        @if (Model.NewsDisplayed > Model.NewsIncrement)
+        {
+            <div class="d-inline-flex">
+                <form method="post" asp-controller="Newsfeed" asp-action="ShowLess">
+                    <input asp-for="NewsDisplayed" type="hidden" value="@Model.NewsDisplayed" />
+                    <input asp-for="NewsIncrement" type="hidden" value="@Model.NewsIncrement" />
+                    <input type="submit" class="btn btn-primary" value="Pokaż mniej" />
+                </form>
+            </div>
+        }
+        @if (Model.NewsDisplayed < Model.Repo.News.Count())
+        {
+            <div class="d-inline-flex">
+                <form method="post" asp-controller="Newsfeed" asp-action="ShowMore">
+                    <input asp-for="NewsDisplayed" type="hidden" value="@Model.NewsDisplayed" />
+                    <input asp-for="NewsIncrement" type="hidden" value="@Model.NewsIncrement" />
+                    <input type="submit" class="btn btn-primary" value="Pokaż więcej" />
+                </form>
+            </div>
+        }
+    </div>
 </div>

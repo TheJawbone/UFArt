@@ -8,7 +8,7 @@ namespace UFArt.Models.ViewModels
 {
     public class ViewModel
     {
-        public ITextAssetsRepository TextRepository { get; private set; }
+        public ITextAssetsRepository TextRepository { get; set; }
 
         public ViewModel(ITextAssetsRepository textRepository)
         {

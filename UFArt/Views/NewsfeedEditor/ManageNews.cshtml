@@ -1,33 +1,35 @@
 ﻿@model INewsfeedRepository
 
-<table class="table table-striped">
-    <thead>
-        <tr class="text-center text-primary font-weight-bold">
-            <td>Zdjęcie</td>
-            <td>Tytuł</td>
-            <td>Data modyfikacji</td>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var element in Model.News)
-        {
-            <tr class="text-center">
-                <td class="text-center"><img class="img-editor" src="@element.ImageUrl" /></td>
-                <td class="align-middle">@element.Header</td>
-                <td class="align-middle">@element.Timestamp</td>
-                <td class="align-middle">
-                    <a asp-controller="NewsfeedEditor"
-                       asp-action="UpdateNews"
-                       asp-route-id="@element.ID"
-                       class="btn btn-primary">Zmień</a>
-                </td>
-                <td class="align-middle">
-                    <a asp-controller="NewsfeedEditor"
-                       asp-action="DeleteNews"
-                       asp-route-ID="@element.ID"
-                       class="btn btn-primary">Usuń</a>
-                </td>
+<div class="p-3">
+    <table class="table table-striped">
+        <thead>
+            <tr class="text-center text-primary font-weight-bold">
+                <td>Zdjęcie</td>
+                <td>Tytuł</td>
+                <td>Data modyfikacji</td>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var element in Model.News)
+            {
+                <tr class="text-center">
+                    <td class="text-center"><img class="img-editor" src="@element.ImageUrl" /></td>
+                    <td class="align-middle">@element.Header</td>
+                    <td class="align-middle">@element.Timestamp</td>
+                    <td class="align-middle">
+                        <a asp-controller="NewsfeedEditor"
+                           asp-action="UpdateNews"
+                           asp-route-id="@element.ID"
+                           class="btn btn-primary">Zmień</a>
+                    </td>
+                    <td class="align-middle">
+                        <a asp-controller="NewsfeedEditor"
+                           asp-action="DeleteNews"
+                           asp-route-ID="@element.ID"
+                           class="btn btn-primary">Usuń</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

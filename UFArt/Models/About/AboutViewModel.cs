@@ -15,6 +15,7 @@ namespace UFArt.Models.About
         public AboutViewModel() { }
         [BindNever]
         public int Id { get; set; }
+        [Required(ErrorMessage = "Wprowadź treść")]
         public string Text { get; set; }
         public string ImageUri { get; set; }
     }
