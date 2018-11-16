@@ -9,6 +9,7 @@ namespace UFArt.Models.TextAssets
     public interface ITextAssetsRepository
     {
         string GetTranslatedValue(string key, HttpContext context);
+        string GetTranslatedValue(TextAsset asset, HttpContext context);
         TextAsset GetAsset(string key);
         void SaveAsset(TextAsset asset);
     }

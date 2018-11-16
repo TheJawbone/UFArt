@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
 using UFArt.Models;
 using UFArt.Models.About;
 using UFArt.Models.Configuration;
 using UFArt.Models.TextAssets;
+using UFArt.Models.ViewModels;
 
 namespace UFArt.Controllers
 {
@@ -65,7 +67,13 @@ namespace UFArt.Controllers
                     }
                     _textRepository.SaveAsset(asset);
 
-                    return View("Success", new string[] { "Sekcja danych o autorce została zmodyfikowana", "/About" });
+                    var queryParams = new Dictionary<string, string>()
+                    {
+                        { "messageKey", "success_about_modified" },
+                        { "returnUri", "/About" }
+                    };
+                    var redirectUri = QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams);
+                    return Redirect(redirectUri);
                 }
                 else
                 {

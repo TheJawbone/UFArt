@@ -1,16 +1,21 @@
-﻿@model IEnumerable<IdentityRole>
+﻿@model RolesManageViewModel
 
 <div class="p-3">
     <div class="text-danger" asp-validation-summary="ModelOnly"></div>
     <table class="table table-sm table-bordered table-bordered">
-        <tr><th>ID</th><th>Nazwa</th><th>Użytkownicy</th><th></th></tr>
-        @if (Model.Count() == 0)
+        <tr>
+            <th>ID</th>
+            <th>@Model.TextRepository.GetTranslatedValue("username", Context)</th>
+            <th>@Model.TextRepository.GetTranslatedValue("users", Context)</th>
+            <th></th>
+        </tr>
+        @if (Model.Roles.Count() == 0)
         {
-            <tr><td colspan="4" class="text-center">Brak ról</td></tr>
+            <tr><td colspan="4" class="text-center">@Model.TextRepository.GetTranslatedValue("no_roles", Context)</td></tr>
         }
         else
         {
-            foreach (var role in Model)
+            foreach (var role in Model.Roles)
             {
                 <tr>
                     <td>@role.Id</td>
@@ -19,10 +24,10 @@
                     <td>
                         <form asp-action="Delete" asp-route-id="@role.Id" method="post">
                             <a class="btn btn-sm btn-primary" asp-action="Edit"
-                               asp-route-id="@role.Id">Edytuj</a>
+                               asp-route-id="@role.Id">@Model.TextRepository.GetTranslatedValue("edit", Context)</a>
                             <button type="submit"
                                     class="btn btn-sm btn-danger">
-                                Usuń
+                                @Model.TextRepository.GetTranslatedValue("delete", Context)
                             </button>
                         </form>
                     </td>
@@ -30,5 +35,7 @@
             }
         }
     </table>
-    <a class="btn btn-primary" asp-action="Create">Stwórz</a>
+    <div class="text-center">
+        <a class="btn btn-primary" asp-action="Create">@Model.TextRepository.GetTranslatedValue("create", Context)</a>
+    </div>
 </div>

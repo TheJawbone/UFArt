@@ -47,7 +47,8 @@ namespace UFArt.Models
 
         public async Task<bool> DeleteImageBlob(string uri)
         {
-            CloudBlockBlob blob = _imageBlobContainer.GetBlockBlobReference(uri);
+            string blobName = uri.Split('/').Last();
+            CloudBlockBlob blob = _imageBlobContainer.GetBlockBlobReference(blobName);
             var deleted = await blob.DeleteIfExistsAsync();
             return deleted;
         }

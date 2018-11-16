@@ -1,13 +1,15 @@
-﻿@model string
+﻿@model RoleCreateViewModel
 
 <div class="p-3">
     <div asp-validation-summary="All" class="text-danger"></div>
     <form asp-action="Create" method="post">
         <div class="form-group">
-            <label for="roleName">Nazwa</label>
-            <input name="roleName" class="form-control" />
+            <label asp-for="RoleName">@Model.TextRepository.GetTranslatedValue("name", Context)</label>
+            <input asp-for="RoleName" class="form-control" />
         </div>
-        <button type="submit" class="btn btn-primary">Stwórz</button>
-        <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">@Model.TextRepository.GetTranslatedValue("create", Context)</button>
+            <a asp-action="Index" class="btn btn-secondary">@Model.TextRepository.GetTranslatedValue("cancel", Context)</a>
+        </div>
     </form>
 </div>

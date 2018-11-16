@@ -1,21 +1,23 @@
-﻿@model User
+﻿@model UserEditViewModel
 
 <div class="p-3">
     <div asp-validation-summary="All" class="text-danger"></div>
     <form asp-action="EditUser" method="post">
         <div class="form-group">
-            <label asp-for="Id">ID</label>
-            <input asp-for="Id" class="form-control" disabled />
+            <label asp-for="User.Id">ID</label>
+            <input asp-for="User.Id" class="form-control" disabled />
         </div>
         <div class="form-group">
-            <label asp-for="Email">Email</label>
-            <input asp-for="Email" class="form-control" />
+            <label asp-for="User.Email">@Model.TextRepository.GetTranslatedValue("email", Context)</label>
+            <input asp-for="User.Email" class="form-control" />
         </div>
         <div class="form-group">
-            <label for="password">Hasło</label>
+            <label for="password">@Model.TextRepository.GetTranslatedValue("password", Context)</label>
             <input name="password" class="form-control" />
         </div>
-        <button type="submit" class="btn btn-primary">Zatwierdź</button>
-        <a asp-action="Index" class="btn btn-secondary">Anuluj</a>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">@Model.TextRepository.GetTranslatedValue("save", Context)</button>
+            <a asp-action="Index" class="btn btn-secondary">@Model.TextRepository.GetTranslatedValue("cancel", Context)</a>
+        </div>
     </form>
 </div>

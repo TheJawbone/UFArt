@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UFArt.Infrastructure.Mailing;
 using UFArt.Models.Identity;
+using UFArt.Models.TextAssets;
 
 namespace UFArt.Controllers
 {
@@ -20,24 +21,26 @@ namespace UFArt.Controllers
         private IPasswordValidator<User> _passwordValidator;
         private IEmailService _emailService;
         private IEmailConfiguration _emailConfiguration;
+        private ITextAssetsRepository _textRepository;
 
         public UsersAdminController(UserManager<User> userManager, IUserValidator<User> userValidator,
-            IPasswordHasher<User> passwordHasher, RoleManager<IdentityRole> roleManager,
+            IPasswordHasher<User> passwordHasher, RoleManager<IdentityRole> roleManager, ITextAssetsRepository textRepository,
             IPasswordValidator<User> passwordValidator, IEmailService emailService, IEmailConfiguration emailConfiguration)
         {
             _userManager = userManager;
             _userValidator = userValidator;
             _passwordHasher = passwordHasher;
             _roleManager = roleManager;
+            _textRepository = textRepository;
             _passwordValidator = passwordValidator;
             _emailService = emailService;
             _emailConfiguration = emailConfiguration;
         }
 
-        public IActionResult Index() => View(_userManager.Users);
+        public IActionResult Index() => View(new UsersManageViewModel(_userManager.Users, _textRepository));
 
         [AllowAnonymous]
-        public IActionResult CreateUser() => View();
+        public IActionResult CreateUser() => View(new UserCreateModel(_textRepository));
 
         [HttpPost]
         [AllowAnonymous]
@@ -108,7 +111,7 @@ namespace UFArt.Controllers
         public async Task<IActionResult> EditUser(string id)
         {
             User user = await _userManager.FindByIdAsync(id);
-            if (user != null) return View(user);
+            if (user != null) return View(new UserEditViewModel(user, _textRepository));
             else return RedirectToAction("Index");
         }
 

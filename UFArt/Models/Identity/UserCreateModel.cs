@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using UFArt.Models.TextAssets;
+using UFArt.Models.ViewModels;
 
 namespace UFArt.Models.Identity
 {
-    public class UserCreateModel
+    public class UserCreateModel : ViewModel
     {
         [Required(ErrorMessage = "Wprowadź nazwę użytkownka")]
         public string Name { get; set; }
@@ -16,5 +18,10 @@ namespace UFArt.Models.Identity
         public string Password { get; set; }
         [Required(ErrorMessage ="Wprowadź potwierdzenie hasła")]
         public string PasswordConfirmation { get; set; }
+
+        public UserCreateModel() { }
+
+        public UserCreateModel(ITextAssetsRepository textRepository)
+            : base(textRepository) { }
     }
 }

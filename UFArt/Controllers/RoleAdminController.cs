@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UFArt.Models.Identity;
+using UFArt.Models.TextAssets;
 
 namespace UFArt.Controllers
 {
@@ -15,16 +16,18 @@ namespace UFArt.Controllers
     {
         private RoleManager<IdentityRole> _roleManager;
         private UserManager<User> _userManager;
+        private readonly ITextAssetsRepository _textRepo;
 
-        public RoleAdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+        public RoleAdminController(RoleManager<IdentityRole> roleManager, UserManager<User> userManager, ITextAssetsRepository textRepo)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _textRepo = textRepo;
         }
 
-        public ViewResult Index() => View(_roleManager.Roles);
+        public ViewResult Index() => View(new RolesManageViewModel(_roleManager.Roles, _textRepo));
 
-        public IActionResult Create() => View();
+        public IActionResult Create() => View(new RoleCreateViewModel(_textRepo));
 
         [HttpPost]
         public async Task<IActionResult> Create([Required]string roleName)
@@ -51,7 +54,7 @@ namespace UFArt.Controllers
                 list.Add(user);
             }
 
-            return View(new RoleEditModel
+            return View(new RoleEditModel(_textRepo)
             {
                 Role = role,
                 Members = members,
@@ -91,9 +94,9 @@ namespace UFArt.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(string roleId)
+        public async Task<IActionResult> Delete(string id)
         {
-            IdentityRole role = await _roleManager.FindByIdAsync(roleId);
+            IdentityRole role = await _roleManager.FindByIdAsync(id);
             if (role != null)
             {
                 IdentityResult result = await _roleManager.DeleteAsync(role);
@@ -102,7 +105,7 @@ namespace UFArt.Controllers
             }
             else ModelState.AddModelError("", "No role found");
 
-            return View("Index", _roleManager.Roles);
+            return View("Index", new RolesManageViewModel(_roleManager.Roles, _textRepo));
         }
 
         private void AddErrorsFromResult(IdentityResult result)

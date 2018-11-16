@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UFArt.Infrastructure;
 using UFArt.Models.Identity;
+using UFArt.Models.TextAssets;
 
 namespace UFArt.Controllers
 {
@@ -15,18 +16,20 @@ namespace UFArt.Controllers
     {
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
+        private ITextAssetsRepository _textRepository;
 
-        public UsersController(UserManager<User> userManager, SignInManager<User> signinMgr)
+        public UsersController(UserManager<User> userManager, SignInManager<User> signInManager, ITextAssetsRepository textRepository)
         {
             _userManager = userManager;
-            _signInManager = signinMgr;
+            _signInManager = signInManager;
+            _textRepository = textRepository;
         }
 
         [AllowAnonymous]
         public IActionResult Login(string returnUrl)
         {
             ViewBag.returnUrl = returnUrl;
-            return View();
+            return View(new UserLoginModel(_textRepository));
         }
 
         public IActionResult AccessDenied(string returnUrl)

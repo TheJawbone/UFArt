@@ -12,13 +12,13 @@
             <li class="list-inline-item">
                 <a class="nav-link text-light"
                    asp-controller="About"
-                   asp-action="Index">O autorce</a>
+                   asp-action="Index">@Model.TextRepository.GetTranslatedValue("layout_about", Context)</a>
             </li>
 
             <!--GALLERY DROPDOWN-->
             <li class="list-inline-item dropdown">
                 <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Galeria
+                    @Model.TextRepository.GetTranslatedValue("layout_gallery", Context)
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <li>
@@ -57,14 +57,14 @@
             <li class="list-inline-item">
                 <a class="nav-link text-light"
                    asp-controller="Newsfeed"
-                   asp-action="Index">Aktualności</a>
+                   asp-action="Index">@Model.TextRepository.GetTranslatedValue("layout_news", Context)</a>
             </li>
 
             <!--CONTACT-->
             <li class="list-inline-item">
                 <a class="nav-link text-light"
                    asp-controller="Contact"
-                   asp-action="Index">Kontakt</a>
+                   asp-action="Index">@Model.TextRepository.GetTranslatedValue("layout_contact", Context)</a>
             </li>
 
             <!--EDITOR DROPDOWN-->
@@ -72,35 +72,35 @@
             {
                 <li class="list-inline-item dropdown">
                     <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Edytor
+                        @Model.TextRepository.GetTranslatedValue("editor", Context)
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            <a class="dropdown-item dropdown-toggle" href="#">Galeria</a>
+                            <a class="dropdown-item dropdown-toggle" href="#">@Model.TextRepository.GetTranslatedValue("layout_gallery", Context)</a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="GalleryEditor"
-                                       asp-action="AddGalleryElement">Dodaj pracę do galerii</a>
+                                       asp-action="AddGalleryElement">@Model.TextRepository.GetTranslatedValue("add_to_gallery", Context)</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="GalleryEditor"
-                                       asp-action="ManageGallery">Zarządzaj galerią</a>
+                                       asp-action="ManageGallery">@Model.TextRepository.GetTranslatedValue("manage_gallery", Context)</a>
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a class="dropdown-item dropdown-toggle" href="#">Aktualności</a>
+                            <a class="dropdown-item dropdown-toggle" href="#">@Model.TextRepository.GetTranslatedValue("layout_news", Context)</a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="NewsfeedEditor"
-                                       asp-action="AddNews">Dodaj wpis aktualności</a>
+                                       asp-action="AddNews">@Model.TextRepository.GetTranslatedValue("add_news", Context)</a>
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="NewsfeedEditor"
-                                       asp-action="ManageNews">Zarządzaj aktualnościami</a>
+                                       asp-action="ManageNews">@Model.TextRepository.GetTranslatedValue("manage_news", Context)</a>
                                 </li>
                             </ul>
 
@@ -108,24 +108,24 @@
                         <li>
                             <a class="dropdown-item"
                                asp-controller="AboutEditor"
-                               asp-action="Index">O autorce</a>
+                               asp-action="Index">@Model.TextRepository.GetTranslatedValue("layout_about", Context)</a>
                         </li>
                         <li>
                             <a class="dropdown-item"
                                asp-controller="ContactEditor"
-                               asp-action="Index">Kontakt</a>
+                               asp-action="Index">@Model.TextRepository.GetTranslatedValue("layout_contact", Context)</a>
                         </li>
                         @if (Context.User.IsInRole("admin"))
                         {
                             <li>
                                 <a class="dropdown-item"
                                    asp-controller="UsersAdmin"
-                                   asp-action="Index">Zarządzaj użytkownikami</a>
+                                   asp-action="Index">@Model.TextRepository.GetTranslatedValue("manage_users", Context)</a>
                             </li>
                             <li>
                                 <a class="dropdown-item"
                                    asp-controller="RoleAdmin"
-                                   asp-action="Index">Zarządzaj rolami</a>
+                                   asp-action="Index">@Model.TextRepository.GetTranslatedValue("manage_roles", Context)</a>
                             </li>
                         }
                     </ul>
@@ -142,33 +142,33 @@
                     <li class="list-inline-item">
                         <a class="nav-link text-light"
                            asp-controller="Users"
-                           asp-action="Login">Zaloguj</a>
+                           asp-action="Login">@Model.TextRepository.GetTranslatedValue("layout_login", Context)</a>
                     </li>
 
                     <!--REGISTER-->
                     <li class="list-inline-item">
                         <a class="nav-link text-light"
                            asp-controller="UsersAdmin"
-                           asp-action="CreateUser">Zarejestruj</a>
+                           asp-action="CreateUser">@Model.TextRepository.GetTranslatedValue("layout_register", Context)</a>
                     </li>
                 </ul>
             }
             else
             {
-                <p class="text-light pt-2 pb-2 pr-4 pl-4">Witaj @Context.User.Identity.Name</p>
+                <p class="text-light pt-2 pb-2 pr-4 pl-4">@Model.TextRepository.GetTranslatedValue("welcome", Context) @Context.User.Identity.Name</p>
                 <ul class="list-inline">
                     <!--MANAGE ACCOUNT-->
                     <li class="list-inline-item">
                         <a class="nav-link text-light"
                            asp-controller="Users"
-                           asp-action="ManageAccount">Moje konto</a>
+                           asp-action="ManageAccount">@Model.TextRepository.GetTranslatedValue("layout_my_account", Context)</a>
                     </li>
 
                     <!--LOG OUT-->
                     <li class="list-inline-item">
                         <a class="nav-link text-light"
                            asp-controller="Users"
-                           asp-action="Logout">Wyloguj</a>
+                           asp-action="Logout">@Model.TextRepository.GetTranslatedValue("layout_logout", Context)</a>
 
                     </li>
                 </ul>

@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UFArt.Models.Gallery;
+using UFArt.Models.TextAssets;
 
 namespace UFArt.Models.ViewModels
 {
-    public class ArtPieceCreationViewModel
+    public class ArtPieceCreationViewModel : ViewModel
     {
         public ITechniqueRepository TechniqueRepository { get; set; }
         public ArtPiece ArtPiece { get; set; }
@@ -22,6 +23,7 @@ namespace UFArt.Models.ViewModels
 
         public ArtPieceCreationViewModel() { }
 
-        public ArtPieceCreationViewModel(ITechniqueRepository repo) => TechniqueRepository = repo;
+        public ArtPieceCreationViewModel(ITechniqueRepository repo, ITextAssetsRepository textRepository)
+            : base(textRepository) => TechniqueRepository = repo;
     }
 }

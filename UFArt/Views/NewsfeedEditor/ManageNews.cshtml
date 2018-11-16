@@ -1,32 +1,32 @@
-﻿@model INewsfeedRepository
+﻿@model NewsManageViewModel
 
 <div class="p-3">
     <table class="table table-striped">
         <thead>
             <tr class="text-center text-primary font-weight-bold">
-                <td>Zdjęcie</td>
-                <td>Tytuł</td>
-                <td>Data modyfikacji</td>
+                <td>@Model.TextRepository.GetTranslatedValue("photo", Context)</td>
+                <td>@Model.TextRepository.GetTranslatedValue("header", Context)</td>
+                <td>@Model.TextRepository.GetTranslatedValue("newsfeed_last_modified", Context)</td>
             </tr>
         </thead>
         <tbody>
-            @foreach (var element in Model.News)
+            @foreach (var element in Model.NewsRepo.News)
             {
                 <tr class="text-center">
                     <td class="text-center"><img class="img-editor" src="@element.ImageUrl" /></td>
-                    <td class="align-middle">@element.Header</td>
+                    <td class="align-middle">@Model.TextRepository.GetTranslatedValue(element.Header, Context)</td>
                     <td class="align-middle">@element.Timestamp</td>
                     <td class="align-middle">
                         <a asp-controller="NewsfeedEditor"
                            asp-action="UpdateNews"
                            asp-route-id="@element.ID"
-                           class="btn btn-primary">Zmień</a>
+                           class="btn btn-primary">@Model.TextRepository.GetTranslatedValue("edit", Context)</a>
                     </td>
                     <td class="align-middle">
                         <a asp-controller="NewsfeedEditor"
                            asp-action="DeleteNews"
                            asp-route-ID="@element.ID"
-                           class="btn btn-primary">Usuń</a>
+                           class="btn btn-danger">@Model.TextRepository.GetTranslatedValue("delete", Context)</a>
                     </td>
                 </tr>
             }

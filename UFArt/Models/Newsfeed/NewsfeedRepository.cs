@@ -8,18 +8,20 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using UFArt.Models.Configuration;
+using UFArt.Models.TextAssets;
 
 namespace UFArt.Models.Newsfeed
 {
     public class NewsfeedRepository : INewsfeedRepository
     {
-        static CloudBlobClient blobClient;
-        static CloudBlobContainer blobContainer;
+        private static CloudBlobClient blobClient;
+        private static CloudBlobContainer blobContainer;
         private ApplicationDbContext _context;
         private IOptions<StorageSettings> _storageSettings;
-        const string blobContainerName = "webappstoragedotnet-imagecontainer";
+        private const string blobContainerName = "webappstoragedotnet-imagecontainer";
 
-        public IQueryable<News> News => _context.News.OrderByDescending(n => n.Timestamp);
+        public IQueryable<News> News => _context.News.Include(n => n.Header).Include(n => n.Text)
+            .OrderByDescending(n => n.Timestamp);
 
         public NewsfeedRepository(ApplicationDbContext context, IOptions<StorageSettings> storageSettings)
         {
@@ -44,7 +46,7 @@ namespace UFArt.Models.Newsfeed
                 _context.SaveChanges();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 if (ex is DbUpdateException || ex is DbUpdateConcurrencyException) return false;
                 throw;
@@ -68,20 +70,21 @@ namespace UFArt.Models.Newsfeed
 
         public async Task<bool> Delete(int id)
         {
-            News news = await _context.News.Where(n => n.ID == id).FirstOrDefaultAsync();
+            News news = await _context.News.Where(n => n.ID == id).Include(n => n.Header).Include(n => n.Text).FirstOrDefaultAsync();
             if (news != null)
             {
-                if(news.ImageUrl != null)
-                {
-                    Uri uri = new Uri(news.ImageUrl);
-                    string filename = Path.GetFileName(uri.LocalPath);
-                    var blob = blobContainer.GetBlockBlobReference(filename);
-                    await blob.DeleteIfExistsAsync();
-                }
+                Uri uri = new Uri(news.ImageUrl);
+                string filename = Path.GetFileName(uri.LocalPath);
+                var blob = blobContainer.GetBlockBlobReference(filename);
+                await blob.DeleteIfExistsAsync();
 
                 try
                 {
+                    var headerId = news.Header.Id;
+                    var textId = news.Text.Id;
                     _context.News.Remove(news);
+                    _context.TextAssets.Remove(_context.TextAssets.Where(ta => ta.Id == headerId).FirstOrDefault());
+                    _context.TextAssets.Remove(_context.TextAssets.Where(ta => ta.Id == textId).FirstOrDefault());
                     _context.SaveChanges();
                 }
                 catch (Exception ex)

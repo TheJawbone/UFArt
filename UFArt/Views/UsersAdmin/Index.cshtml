@@ -1,15 +1,19 @@
-﻿@model IEnumerable<User>
+﻿@model UsersManageViewModel
 
 <div class="p-3">
     <table class="table table-sm table-bordered">
-        <tr><th>ID</th><th>Nazwa</th><th>Email</th></tr>
-        @if (Model.Count() == 0)
+        <tr>
+            <th>ID</th>
+            <th>@Model.TextRepository.GetTranslatedValue("username", Context)</th>
+            <th>@Model.TextRepository.GetTranslatedValue("email", Context)</th>
+        </tr>
+        @if (Model.Users.Count() == 0)
         {
-            <tr><td colspan="3" class="text-center">Brak kont użytkowników</td></tr>
+            <tr><td colspan="3" class="text-center">@Model.TextRepository.GetTranslatedValue("no_user_accounts", Context)</td></tr>
         }
         else
         {
-            foreach (User user in Model)
+            foreach (User user in Model.Users)
             {
                 <tr>
                     <td>@user.Id</td>
@@ -18,13 +22,13 @@
                     <td>
                         <form asp-action="DeleteUser" asp-route-id="@user.Id" method="post">
                             <a class="btn btn-sm btn-primary" asp-action="EditUser"
-                               asp-route-id="@user.Id">Edytuj</a>
-                            <button type="submit" class="btn btn-sm btn-danger">Usuń</button>
+                               asp-route-id="@user.Id">@Model.TextRepository.GetTranslatedValue("edit", Context)</a>
+                            <button type="submit" class="btn btn-sm btn-danger">@Model.TextRepository.GetTranslatedValue("delete", Context)</button>
                         </form>
                     </td>
                 </tr>
             }
         }
     </table>
-    <div class="text-center"><a class="btn btn-primary" asp-action="CreateUser">Dodaj użytkownika</a></div>
+    <div class="text-center"><a class="btn btn-primary" asp-action="CreateUser">@Model.TextRepository.GetTranslatedValue("add_user", Context)</a></div>
 </div>

@@ -17,14 +17,20 @@
                 @if (Model.ForSale)
                 {
                     <tr>
-                        <td class="font-weight-bold text-primary align-middle">Dostępny na sprzedaż</td>
-                        <td><a asp-action="MakeOffer" asp-controller="Gallery" class="btn btn-primary align-middle">Złóż ofertę</a></td>
+                        <td class="font-weight-bold text-primary align-middle">@Model.TextRepository.GetTranslatedValue("for_sale", Context)</td>
+                        <td>
+                            <a asp-action="MakeOffer" asp-controller="Gallery" asp-route-id="@Model.ArtPiece.ID" class="btn btn-primary align-middle">
+                                @Model.TextRepository.GetTranslatedValue("make_offer", Context)
+                            </a>
+                        </td>
                     </tr>
                 }
             </table>
         </div>
     </div>
     <div class="text-center" style="margin-top: 20px;">
-        <a class="btn btn-primary" href="@Model.ReturnUrl">Powrót do galerii</a>
+        <a class="btn btn-primary" href="@Model.ReturnUrl">
+            @Model.TextRepository.GetTranslatedValue("return_to_gallery", Context)
+        </a>
     </div>
 </div>

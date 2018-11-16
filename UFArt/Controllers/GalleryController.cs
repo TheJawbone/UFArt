@@ -6,24 +6,29 @@ using Microsoft.AspNetCore.Mvc;
 using UFArt.Infrastructure.Mailing;
 using UFArt.Models;
 using UFArt.Models.Gallery;
+using UFArt.Models.TextAssets;
 using UFArt.Models.ViewModels;
 
 namespace UFArt.Controllers
 {
     public class GalleryController : Controller
     {
-        private IGalleryRepository _galleryRepo;
-        private ITechniqueRepository _techniqueRepo;
-        private IEmailConfiguration _emailConfiguration;
-        private IEmailService _emailService;
+        private readonly IEmailService _emailService;
+        private readonly IGalleryRepository _galleryRepo;
+        private readonly ITechniqueRepository _techniqueRepo;
+        private readonly ITextAssetsRepository _textRepository;
+        private readonly IEmailConfiguration _emailConfiguration;
+
         public int PageSize = 9;
 
-        public GalleryController(IGalleryRepository galleryRepo, ITechniqueRepository techniqueRepo, IEmailConfiguration emailConfiguration, IEmailService emailService)
+        public GalleryController(IGalleryRepository galleryRepo, ITechniqueRepository techniqueRepo,
+            IEmailConfiguration emailConfiguration, IEmailService emailService, ITextAssetsRepository textRepository)
         {
             _galleryRepo = galleryRepo;
             _techniqueRepo = techniqueRepo;
             _emailConfiguration = emailConfiguration;
             _emailService = emailService;
+            _textRepository = textRepository;
         }
 
         public IActionResult ListOilPaintings(int pageNumber = 1) =>
@@ -38,7 +43,11 @@ namespace UFArt.Controllers
         public IActionResult ListPottery(int pageNumber = 1) =>
             GenerateResultView("PO", pageNumber);
 
-        public IActionResult MakeOffer(int id) => View(new OfferViewModel() { ArtPieceId = id });
+        public IActionResult MakeOffer(int id)
+        {
+            var test = id;
+            return View(new OfferViewModel(_textRepository) { ArtPieceId = id });
+        }
 
         [HttpPost]
         public IActionResult SendOffer(OfferViewModel offer)
@@ -65,7 +74,7 @@ namespace UFArt.Controllers
         private IActionResult GenerateResultView(string techniqueCodeName, int pageNumber = 1)
         {
             var techniqueName = _techniqueRepo.Techniques.Where(t => t.CodeName == techniqueCodeName).FirstOrDefault().Name;
-            return View("List", new GalleryElementsViewModel
+            return View("List", new GalleryElementsViewModel(_textRepository)
             {
                 Elements = _galleryRepo.ArtPieces
                     .Where(ap => ap.Technique == techniqueName)
@@ -87,7 +96,7 @@ namespace UFArt.Controllers
         public IActionResult Details(int id, string returnUrl)
         {
             var artPiece = _galleryRepo.ArtPieces.Where(ap => ap.ID == id).FirstOrDefault();
-            if (artPiece != null) return View(new GalleryElementDetailsViewModel(artPiece, returnUrl));
+            if (artPiece != null) return View(new GalleryElementDetailsViewModel(_textRepository, artPiece, returnUrl, Request.HttpContext));
             else return View("Error");
         }
     }

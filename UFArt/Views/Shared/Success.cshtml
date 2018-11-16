@@ -1,6 +1,6 @@
-﻿@model string[]
+﻿@model ActionSuccessViewModel
 
-<div class="w-100 text-center">
-    <h2 class="text-success">@Model[0]</h2>
-    <a href="@Model[1]" class="btn btn-primary">Powrót do poprzedniej strony</a>
+<div class="w-100 text-center p-3">
+    <h2 class="text-success">@Model.TextRepository.GetTranslatedValue(Model.Message, Context)</h2>
+    <a href="@Model.ReturnUri" class="btn btn-primary">@Model.TextRepository.GetTranslatedValue("back_to_previous_page", Context)</a>
 </div>

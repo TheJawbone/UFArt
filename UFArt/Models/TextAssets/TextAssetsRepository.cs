@@ -35,6 +35,20 @@ namespace UFArt.Models.TextAssets
             else return asset;
         }
 
+        public string GetTranslatedValue(TextAsset asset, HttpContext context)
+        {
+            string language = context.Session.GetString("language");
+            switch (language)
+            {
+                case "pl":
+                    return asset.Value_pl;
+                case "en":
+                    return asset.Value_en;
+                default:
+                    return asset.Value_pl;
+            }
+        }
+
         public async void SaveAsset(TextAsset assetToAdd)
         {
             TextAsset asset = _context.TextAssets.Where(a => a.Key == assetToAdd.Key).FirstOrDefault();

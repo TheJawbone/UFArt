@@ -1,38 +1,38 @@
-﻿@model IGalleryRepository
+﻿@model GalleryViewModel
 
 <div class="p-3">
     <table class="table table-striped">
         <thead>
             <tr class="text-center text-primary font-weight-bold">
-                <td>Zdjęcie</td>
-                <td>Nazwa</td>
-                <td>Wymiary</td>
-                <td>Technika</td>
-                <td>Na sprzedaż</td>
-                <td>Data utworzenia</td>
+                <td>@Model.TextRepository.GetTranslatedValue("photo", Context)</td>
+                <td>@Model.TextRepository.GetTranslatedValue("name", Context)</td>
+                <td>@Model.TextRepository.GetTranslatedValue("dimensions", Context)</td>
+                <td>@Model.TextRepository.GetTranslatedValue("technique", Context)</td>
+                <td>@Model.TextRepository.GetTranslatedValue("for_sale", Context)</td>
+                <td>@Model.TextRepository.GetTranslatedValue("creation_date", Context)</td>
             </tr>
         </thead>
         <tbody>
-            @foreach (var element in Model.ArtPieces)
+            @foreach (var element in Model.GalleryRepository.ArtPieces)
             {
                 <tr class="text-center">
                     <td class="text-center"><img class="img-editor" src="@element.ImageUri" /></td>
                     <td class="align-middle">@element.Name</td>
                     <td class="align-middle">@element.Dimensions</td>
                     <td class="align-middle">@element.Technique</td>
-                    <td class="align-middle">@(element.ForSale ? "Tak" : "Nie")</td>
+                    <td class="align-middle">@(element.ForSale ? @Model.TextRepository.GetTranslatedValue("yes", Context) : @Model.TextRepository.GetTranslatedValue("no", Context))</td>
                     <td class="align-middle">@element.CreationDate</td>
                     <td class="align-middle">
                         <a asp-controller="GalleryEditor"
                            asp-action="UpdateGalleryElement"
                            asp-route-id="@element.ID"
-                           class="btn btn-primary">Zmień</a>
+                           class="btn btn-primary">@Model.TextRepository.GetTranslatedValue("edit", Context)</a>
                     </td>
                     <td class="align-middle">
                         <a asp-controller="GalleryEditor"
                            asp-action="DeleteGalleryElement"
                            asp-route-ID="@element.ID"
-                           class="btn btn-primary">Usuń</a>
+                           class="btn btn-danger">@Model.TextRepository.GetTranslatedValue("delete", Context)</a>
                     </td>
                 </tr>
             }
