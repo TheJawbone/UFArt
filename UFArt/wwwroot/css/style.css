@@ -1,4 +1,8 @@
-﻿html {
+﻿.d-inline-block {
+    display: inline-block !important;
+}
+
+html {
     height: 100%;
 }
 
@@ -29,6 +33,26 @@ td {
 .flag-icon {
     width: 20px;
     height: 10px;
+}
+
+.account-icon {
+    width: 30px;
+    height: 30px;
+}
+
+.navbar-toggler {
+    background-image: url("https://urszulafigielart.blob.core.windows.net/webappstoragedotnet-imagecontainer/burger_icon.png");
+    background-size: cover;
+    width: 20px;
+    height: 20px;
+    padding: 0 !important;
+    border: none !important;
+    margin-right: 10px;
+}
+
+.burger-icon {
+    width: 20px;
+    height: 20px;
 }
 
 .d-opaque-white-bg {
