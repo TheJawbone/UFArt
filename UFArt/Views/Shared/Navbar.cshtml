@@ -21,35 +21,16 @@
                     @Model.TextRepository.GetTranslatedValue("layout_gallery", Context)
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <li>
-                        <a class="dropdown-item dropdown-toggle" href="#">Obrazy</a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a class="dropdown-item"
-                                   asp-controller="Gallery"
-                                   asp-action="ListOilPaintings"
-                                   asp-route-pageNumber="1">Olej na płótnie</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item"
-                                   asp-controller="Gallery"
-                                   asp-action="ListWatercolorPaintings"
-                                   asp-route-pageNumber="1">Akwarele</a>
-                            </li>
-                            <li>
-                                <a class="dropdown-item"
-                                   asp-controller="Gallery"
-                                   asp-action="ListSketches"
-                                   asp-route-pageNumber="1">Szkice</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="dropdown-item"
-                           asp-controller="Gallery"
-                           asp-action="ListPottery"
-                           asp-route-pageNumber="1">Ceramika</a>
-                    </li>
+                    @foreach (var technique in Model.TextRepository.GetAssets("technique_value"))
+                    {
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="Gallery"
+                               asp-action="DispatchTechniqueListing"
+                               asp-route-techniqueNameId="@technique.Id"
+                               asp-route-pageNumber="1">@Model.TextRepository.GetTranslatedValue(technique, Context)</a>
+                        </li>
+                    }
                 </ul>
             </li>
 
@@ -76,17 +57,44 @@
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <li>
-                            <a class="dropdown-item dropdown-toggle" href="#">@Model.TextRepository.GetTranslatedValue("layout_gallery", Context)</a>
+                            <a class="dropdown-item dropdown-toggle" href="#">
+                                @Model.TextRepository.GetTranslatedValue("layout_gallery", Context)
+                            </a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="GalleryEditor"
-                                       asp-action="AddGalleryElement">@Model.TextRepository.GetTranslatedValue("add_to_gallery", Context)</a>
+                                       asp-action="AddGalleryElement">
+                                        @Model.TextRepository.GetTranslatedValue("add_to_gallery", Context)
+                                    </a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item"
                                        asp-controller="GalleryEditor"
-                                       asp-action="ManageGallery">@Model.TextRepository.GetTranslatedValue("manage_gallery", Context)</a>
+                                       asp-action="ManageGallery">
+                                        @Model.TextRepository.GetTranslatedValue("manage_gallery", Context)
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item dropdown-toggle" href="#">
+                                        @Model.TextRepository.GetTranslatedValue("techniques", Context)
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="GalleryEditor"
+                                               asp-action="AddTechnique">
+                                                @Model.TextRepository.GetTranslatedValue("add_technique", Context)
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item"
+                                               asp-controller="GalleryEditor"
+                                               asp-action="ManageTechniques">
+                                                @Model.TextRepository.GetTranslatedValue("manage_techniques", Context)
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </li>
                             </ul>
                         </li>
@@ -161,7 +169,7 @@
                     <li class="list-inline-item">
                         <a class="nav-link text-light"
                            asp-controller="Users"
-                           asp-action="ManageAccount">@Model.TextRepository.GetTranslatedValue("layout_my_account", Context)</a>
+                           asp-action="AccountOverview">@Model.TextRepository.GetTranslatedValue("layout_my_account", Context)</a>
                     </li>
 
                     <!--LOG OUT-->

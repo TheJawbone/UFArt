@@ -18,7 +18,12 @@ namespace UFArt.Models.Gallery
         private IOptions<StorageSettings> _storageSettings;
         const string blobContainerName = "webappstoragedotnet-imagecontainer";
 
-        public IQueryable<ArtPiece> ArtPieces => _context.ArtPieces;
+        public IQueryable<ArtPiece> ArtPieces => _context.ArtPieces
+            .Include(ap => ap.AdditionalInfo)
+            .Include(ap => ap.Description)
+            .Include(ap => ap.Name)
+            .Include(ap => ap.Technique)
+            .ThenInclude(t => t.Name);
 
         public GalleryRepository(ApplicationDbContext context, IOptions<StorageSettings> storageSettings)
         {

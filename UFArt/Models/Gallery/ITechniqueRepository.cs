@@ -7,8 +7,8 @@ namespace UFArt.Models.Gallery
 {
     public interface ITechniqueRepository
     {
-        IQueryable<TechniqueDict> Techniques { get; }
-        bool Save(TechniqueDict technique);
+        IQueryable<Technique> Techniques { get; }
+        bool Save(Technique technique);
         bool Delete(int id);
     }
 }

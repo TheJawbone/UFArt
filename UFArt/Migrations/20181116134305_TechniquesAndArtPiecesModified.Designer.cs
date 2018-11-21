@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UFArt.Models;
 
 namespace UFArt.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181116134305_TechniquesAndArtPiecesModified")]
+    partial class TechniquesAndArtPiecesModified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,11 +27,11 @@ namespace UFArt.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AdditionalInfoId");
+                    b.Property<string>("AdditionalInfo");
 
                     b.Property<string>("CreationDate");
 
-                    b.Property<int?>("DescriptionId");
+                    b.Property<string>("Description");
 
                     b.Property<string>("Dimensions");
 
@@ -37,17 +39,11 @@ namespace UFArt.Migrations
 
                     b.Property<string>("ImageUri");
 
-                    b.Property<int?>("NameId");
+                    b.Property<string>("Name");
 
                     b.Property<int>("TechniqueID");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("AdditionalInfoId");
-
-                    b.HasIndex("DescriptionId");
-
-                    b.HasIndex("NameId");
 
                     b.HasIndex("TechniqueID");
 
@@ -149,18 +145,6 @@ namespace UFArt.Migrations
 
             modelBuilder.Entity("UFArt.Models.Gallery.ArtPiece", b =>
                 {
-                    b.HasOne("UFArt.Models.TextAssets.TextAsset", "AdditionalInfo")
-                        .WithMany()
-                        .HasForeignKey("AdditionalInfoId");
-
-                    b.HasOne("UFArt.Models.TextAssets.TextAsset", "Description")
-                        .WithMany()
-                        .HasForeignKey("DescriptionId");
-
-                    b.HasOne("UFArt.Models.TextAssets.TextAsset", "Name")
-                        .WithMany()
-                        .HasForeignKey("NameId");
-
                     b.HasOne("UFArt.Models.Gallery.Technique", "Technique")
                         .WithMany()
                         .HasForeignKey("TechniqueID")

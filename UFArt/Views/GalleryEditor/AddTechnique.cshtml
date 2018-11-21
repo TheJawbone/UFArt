@@ -1,0 +1,18 @@
+﻿@model TechniqueAddViewModel
+
+<div class="p-3">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <form method="post" asp-controller="GalleryEditor" asp-action="AddTechnique">
+        <div class="form-group">
+            <label asp-for="NamePl">@Model.TextRepository.GetTranslatedValue("technique_name_pl", Context)</label>
+            <input asp-for="NamePl" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="NameEn">@Model.TextRepository.GetTranslatedValue("technique_name_en", Context)</label>
+            <input asp-for="NameEn" class="form-control" />
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary">@Model.TextRepository.GetTranslatedValue("save", Context)</button>
+        </div>
+    </form>
+</div>

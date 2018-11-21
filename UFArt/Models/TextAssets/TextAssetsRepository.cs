@@ -18,6 +18,9 @@ namespace UFArt.Models.TextAssets
         public TextAsset GetAsset(string key) =>
             _context.TextAssets.Where(ta => ta.Key == key).FirstOrDefault();
 
+        public IQueryable<TextAsset> GetAssets(string key) =>
+            _context.TextAssets.Where(ta => ta.Key == key);
+
         public string GetTranslatedValue(string key, HttpContext context)
         {
             string language = context.Session.GetString("language");
@@ -51,7 +54,7 @@ namespace UFArt.Models.TextAssets
 
         public async void SaveAsset(TextAsset assetToAdd)
         {
-            TextAsset asset = _context.TextAssets.Where(a => a.Key == assetToAdd.Key).FirstOrDefault();
+            TextAsset asset = _context.TextAssets.Where(a => a.Id == assetToAdd.Id).FirstOrDefault();
             if(asset == null)  await _context.TextAssets.AddAsync(assetToAdd);
             else
             {
@@ -60,6 +63,12 @@ namespace UFArt.Models.TextAssets
                 _context.TextAssets.Update(asset);
             }
             _context.SaveChanges();
+        }
+
+        public async void DeleteAsset(TextAsset assetToDelete)
+        {
+            _context.TextAssets.Remove(assetToDelete);
+            await _context.SaveChangesAsync();
         }
     }
 }

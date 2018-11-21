@@ -4,19 +4,23 @@
     <div asp-validation-summary=" All" class="text-danger"></div>
     <form asp-action="AddUserAsync" method="post">
         <div class="form-group">
-            <label asp-for="Name">@Model.TextRepository.GetTranslatedValue("username", Context)</label>
+            <label asp-for="Name">@Model.TextRepository.GetTranslatedValue("username", Context)<span class="text-danger font-weight-bold">*</span></label>
             <input asp-for="Name" class="form-control" />
         </div>
         <div class="form-group">
-            <label asp-for="Email">@Model.TextRepository.GetTranslatedValue("email_address", Context)</label>
+            <label asp-for="Email">@Model.TextRepository.GetTranslatedValue("email_address", Context)<span class="text-danger font-weight-bold">*</span></label>
             <input asp-for="Email" class="form-control" />
         </div>
         <div class="form-group">
-            <label asp-for="Password">@Model.TextRepository.GetTranslatedValue("password", Context)</label>
+            <label asp-for="PhoneNumber">@Model.TextRepository.GetTranslatedValue("telephone_number", Context)</label>
+            <input asp-for="PhoneNumber" class="form-control" />
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">@Model.TextRepository.GetTranslatedValue("password", Context)<span class="text-danger font-weight-bold">*</span></label>
             <input asp-for="Password" type="password" class="form-control" />
         </div>
         <div class="form-group">
-            <label asp-for="PasswordConfirmation">@Model.TextRepository.GetTranslatedValue("confirm_password", Context)</label>
+            <label asp-for="PasswordConfirmation">@Model.TextRepository.GetTranslatedValue("confirm_password", Context)<span class="text-danger font-weight-bold">*</span></label>
             <input asp-for="PasswordConfirmation" type="password" class="form-control" />
         </div>
         <div class="text-center">

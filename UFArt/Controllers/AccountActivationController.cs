@@ -5,16 +5,19 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UFArt.Models.Identity;
+using UFArt.Models.TextAssets;
 
 namespace UFArt.Controllers
 {
     public class AccountActivationController : Controller
     {
         private UserManager<User> _userManager;
+        private ITextAssetsRepository _textRepo;
 
-        public AccountActivationController(UserManager<User> userManager)
+        public AccountActivationController(UserManager<User> userManager, ITextAssetsRepository textRepo)
         {
             _userManager = userManager;
+            _textRepo = textRepo;
         }
 
         public async Task<IActionResult> Index(string code)
@@ -24,7 +27,7 @@ namespace UFArt.Controllers
             {
                 user.EmailConfirmed = true;
                 var result = await _userManager.UpdateAsync(user);
-                if (result.Succeeded) return View("ActivationSuccess");
+                if (result.Succeeded) return View("ActivationSuccess", new AccountActivationViewModel(_textRepo));
                 else return View("Error");
             }
             else 

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using UFArt.Infrastructure.Mailing;
 using UFArt.Models.Identity;
 using UFArt.Models.TextAssets;
@@ -15,17 +17,19 @@ namespace UFArt.Controllers
     public class UsersAdminController : Controller
     {
         private UserManager<User> _userManager;
+        private RoleManager<IdentityRole> _roleManager;
         private IUserValidator<User> _userValidator;
         private IPasswordHasher<User> _passwordHasher;
-        private RoleManager<IdentityRole> _roleManager;
         private IPasswordValidator<User> _passwordValidator;
         private IEmailService _emailService;
         private IEmailConfiguration _emailConfiguration;
         private ITextAssetsRepository _textRepository;
+        private IHttpContextAccessor _contextAccessor;
 
         public UsersAdminController(UserManager<User> userManager, IUserValidator<User> userValidator,
             IPasswordHasher<User> passwordHasher, RoleManager<IdentityRole> roleManager, ITextAssetsRepository textRepository,
-            IPasswordValidator<User> passwordValidator, IEmailService emailService, IEmailConfiguration emailConfiguration)
+            IPasswordValidator<User> passwordValidator, IEmailService emailService, IEmailConfiguration emailConfiguration,
+            IHttpContextAccessor contextAccessor)
         {
             _userManager = userManager;
             _userValidator = userValidator;
@@ -35,6 +39,7 @@ namespace UFArt.Controllers
             _passwordValidator = passwordValidator;
             _emailService = emailService;
             _emailConfiguration = emailConfiguration;
+            _contextAccessor = contextAccessor;
         }
 
         public IActionResult Index() => View(new UsersManageViewModel(_userManager.Users, _textRepository));
@@ -46,12 +51,12 @@ namespace UFArt.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> AddUserAsync(UserCreateModel model)
         {
-            if(model.Password != model.PasswordConfirmation)
+            if (model.Password != model.PasswordConfirmation)
                 ModelState.AddModelError("PasswordMismatchError", "Hasła muszą się zgadzać");
 
             if (ModelState.IsValid)
             {
-                User user = new User { UserName = model.Name, Email = model.Email };
+                User user = new User { UserName = model.Name, Email = model.Email, PhoneNumber = model.PhoneNumber };
                 var validPassword = await _passwordValidator.ValidateAsync(_userManager, user, model.Password);
                 if (validPassword.Succeeded)
                 {
@@ -62,7 +67,13 @@ namespace UFArt.Controllers
                     {
                         var message = new EmailMessageFactory(_emailConfiguration).CreateActivationMessage(user, Request);
                         _emailService.Send(message);
-                        return View("Success", new string[] { "Pomyślnie dodano użytkownika", "/UsersAdmin/" });
+                        var queryParams = new Dictionary<string, string>();
+                        queryParams["returnUri"] = "/About";
+                        if (_contextAccessor.HttpContext.User.IsInRole("admin"))
+                            queryParams["messageKey"] = "success_user_added";
+                        else
+                            queryParams["messageKey"] = "success_confirmation_email_sent";
+                        return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
                     }
                     else
                     {
@@ -111,39 +122,63 @@ namespace UFArt.Controllers
         public async Task<IActionResult> EditUser(string id)
         {
             User user = await _userManager.FindByIdAsync(id);
-            if (user != null) return View(new UserEditViewModel(user, _textRepository));
+            if (user != null) return View(new UserEditViewModel(_textRepository)
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Username = user.UserName,
+                PhoneNumber = user.PhoneNumber
+
+            });
             else return RedirectToAction("Index");
         }
 
         [HttpPost]
-        public async Task<IActionResult> EditUser(string id, string email, string password)
+        public async Task<IActionResult> EditUser(UserEditViewModel viewModel)
         {
-            User user = await _userManager.FindByIdAsync(id);
+            User user = await _userManager.FindByIdAsync(viewModel.Id);
 
             if (user != null)
             {
-                user.Email = email;
+                user.Email = viewModel.Email;
+                user.PhoneNumber = viewModel.PhoneNumber;
+                user.UserName = viewModel.Username;
+                user.EmailConfirmed = true;
                 IdentityResult validEmail = await _userValidator.ValidateAsync(_userManager, user);
                 if (!validEmail.Succeeded) AddErrorsFromResult(validEmail);
 
                 IdentityResult validPassword = null;
-                if (!string.IsNullOrEmpty(password))
+                if (!string.IsNullOrEmpty(viewModel.NewPassword))
                 {
-                    validPassword = await _passwordValidator.ValidateAsync(_userManager, user, password);
-                    if (validPassword.Succeeded) user.PasswordHash = _passwordHasher.HashPassword(user, password);
+                    validPassword = await _passwordValidator.ValidateAsync(_userManager, user, viewModel.NewPassword);
+                    if (validPassword.Succeeded) user.PasswordHash = _passwordHasher.HashPassword(user, viewModel.NewPassword);
                     else AddErrorsFromResult(validPassword);
                 }
 
-                if ((validEmail.Succeeded && validPassword == null) || (validEmail.Succeeded && password != string.Empty && validPassword.Succeeded))
+                if ((validEmail.Succeeded && validPassword == null) || (validEmail.Succeeded && viewModel.NewPassword != string.Empty && validPassword.Succeeded))
                 {
                     IdentityResult result = await _userManager.UpdateAsync(user);
-                    if (result.Succeeded) return View("Success", new string[] { "Pomyślnie zaktualizowano użytkownika", "/UsersAdmin/Index"});
+                    if (result.Succeeded)
+                    {
+                        var queryParams = new Dictionary<string, string>()
+                        {
+                            { "returnUri", "/UsersAdmin/Index" },
+                            { "messageKey", "success_user_updated" }
+                        };
+                        return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                    }
                     else AddErrorsFromResult(result);
                 }
             }
             else ModelState.AddModelError("", "User Not Found");
 
-            return View(user);
+            return View(new UserEditViewModel(_textRepository)
+            {
+                Id = viewModel.Id,
+                Email = viewModel.Email,
+                Username = viewModel.Username,
+                PhoneNumber = viewModel.PhoneNumber
+            });
         }
     }
 }

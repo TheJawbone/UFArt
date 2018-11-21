@@ -4,16 +4,24 @@
     <div asp-validation-summary="All" class="text-danger"></div>
     <form asp-action="EditUser" method="post">
         <div class="form-group">
-            <label asp-for="User.Id">ID</label>
-            <input asp-for="User.Id" class="form-control" disabled />
+            <label asp-for="Id">ID</label>
+            <input asp-for="Id" class="form-control" value="@Model.Id" disabled />
         </div>
         <div class="form-group">
-            <label asp-for="User.Email">@Model.TextRepository.GetTranslatedValue("email", Context)</label>
-            <input asp-for="User.Email" class="form-control" />
+            <label asp-for="Username">@Model.TextRepository.GetTranslatedValue("username", Context)</label>
+            <input asp-for="Username" class="form-control" value="@Model.Username" />
         </div>
         <div class="form-group">
-            <label for="password">@Model.TextRepository.GetTranslatedValue("password", Context)</label>
-            <input name="password" class="form-control" />
+            <label asp-for="Email">@Model.TextRepository.GetTranslatedValue("email", Context)</label>
+            <input asp-for="Email" class="form-control" value="@Model.Email" />
+        </div>
+        <div class="form-group">
+            <label asp-for="PhoneNumber">@Model.TextRepository.GetTranslatedValue("telephone_number", Context)</label>
+            <input asp-for="PhoneNumber" class="form-control" value="@Model.PhoneNumber" />
+        </div>
+        <div class="form-group">
+            <label asp-for="NewPassword">@Model.TextRepository.GetTranslatedValue("password", Context)</label>
+            <input asp-for="NewPassword" class="form-control" />
         </div>
         <div class="text-center">
             <button type="submit" class="btn btn-primary">@Model.TextRepository.GetTranslatedValue("save", Context)</button>

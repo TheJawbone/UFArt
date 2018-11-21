@@ -18,11 +18,11 @@
         <div class="w-50 pt-3 pl-4">
             <form method="post" asp-controller="Contact" asp-action="SendMessage">
                 <div class="form-group">
-                    <label>Treść wiadomości</label>
+                    <label>@Model.TextRepository.GetTranslatedValue("message_content", Context)</label>
                     <textarea id="content" name="content" class="form-control"></textarea>
                 </div>
                 <div class="text-center">
-                    <input type=submit class="btn btn-primary" value="Wyślij wiadomość" />
+                    <input type=submit class="btn btn-primary" value="@Model.TextRepository.GetTranslatedValue("send", Context)" />
                 </div>
             </form>
         </div>

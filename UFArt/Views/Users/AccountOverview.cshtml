@@ -1,0 +1,26 @@
+﻿@model UserViewModel
+
+<div class="p-3">
+    <table class="table">
+        <tr>
+            <td>@Model.TextRepository.GetTranslatedValue("username", Context)</td>
+            <td>@Model.User.UserName</td>
+        </tr>
+        <tr>
+            <td>@Model.TextRepository.GetTranslatedValue("email", Context)</td>
+            <td>@Model.User.Email</td>
+        </tr>
+        <tr>
+            <td>@Model.TextRepository.GetTranslatedValue("telephone_number", Context)</td>
+            <td>@Model.User.PhoneNumber</td>
+        </tr>
+    </table>
+    <div class="text-center">
+        <a class="btn btn-primary"
+           asp-controller="Users"
+           asp-action="ChangeAccountData">@Model.TextRepository.GetTranslatedValue("change_account_data", Context)</a>
+        <a class="btn btn-primary"
+           asp-controller="Users"
+           asp-action="ChangePassword">@Model.TextRepository.GetTranslatedValue("change_password", Context)</a>
+    </div>
+</div>

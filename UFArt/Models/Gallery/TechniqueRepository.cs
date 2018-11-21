@@ -10,14 +10,14 @@ namespace UFArt.Models.Gallery
     {
         private ApplicationDbContext _context;
 
-        public IQueryable<TechniqueDict> Techniques => _context.Techniques;
+        public IQueryable<Technique> Techniques => _context.Techniques.Include(t => t.Name);
 
         public TechniqueRepository(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public bool Save(TechniqueDict technique)
+        public bool Save(Technique technique)
         {
             try
             {
@@ -37,12 +37,15 @@ namespace UFArt.Models.Gallery
 
         public bool Delete(int id)
         {
-            ArtPiece artPiece = _context.ArtPieces.Where(p => p.ID == id).FirstOrDefault();
-            if (artPiece != null)
+            Technique technique = _context.Techniques.Where(t => t.ID == id).Include(t => t.Name).FirstOrDefault();
+            if (technique != null)
             {
                 try
                 {
-                    _context.ArtPieces.Remove(artPiece);
+                    var asset = _context.TextAssets.Where(ta => ta.Id == technique.Name.Id).FirstOrDefault();
+                    _context.Techniques.Remove(technique);
+                    if (asset != null)
+                        _context.TextAssets.Remove(asset);
                     _context.SaveChanges();
                     return true;
                 }

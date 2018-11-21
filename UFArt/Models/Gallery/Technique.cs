@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UFArt.Models.TextAssets;
 
 namespace UFArt.Models.Gallery
 {
-    public class TechniqueDict
+    public class Technique
     {
         public int ID { get; set; }
-        public string Name { get; set; }
-        public string CodeName { get; set; }
+        public TextAsset Name { get; set; }
     }
 }

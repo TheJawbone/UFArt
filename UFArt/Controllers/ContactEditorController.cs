@@ -23,7 +23,7 @@ namespace UFArt.Controllers
             var viewModel = new ContactViewModel(_textRepository);
             viewModel.Email = _textRepository.GetTranslatedValue("contact_email_address", Request.HttpContext);
             viewModel.Telephone = _textRepository.GetTranslatedValue("contact_telephone_number", Request.HttpContext);
-            return View();
+            return View(viewModel);
         }
 
         public IActionResult UploadAsync(ContactViewModel viewModel)

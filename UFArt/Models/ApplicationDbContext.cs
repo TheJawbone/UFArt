@@ -17,7 +17,7 @@ namespace UFArt.Models
             : base(options) { }
 
         public DbSet<ArtPiece> ArtPieces { get; set; }
-        public DbSet<TechniqueDict> Techniques { get; set; }
+        public DbSet<Technique> Techniques { get; set; }
         public DbSet<News> News { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<TextAsset> TextAssets { get; set; } 

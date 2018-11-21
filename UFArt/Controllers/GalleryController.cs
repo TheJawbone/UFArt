@@ -31,17 +31,34 @@ namespace UFArt.Controllers
             _textRepository = textRepository;
         }
 
-        public IActionResult ListOilPaintings(int pageNumber = 1) =>
-            GenerateResultView("OP", pageNumber);
+        public IActionResult DispatchTechniqueListing(int techniqueNameId, int pageNumber = 1)
+        {
+            int techniqueId = _techniqueRepo.Techniques.Where(t => t.Name.Id == techniqueNameId).FirstOrDefault().ID;
+            return GenerateResultView(techniqueId, pageNumber);
+        }
 
-        public IActionResult ListWatercolorPaintings(int pageNumber = 1) =>
-            GenerateResultView("WP", pageNumber);
-
-        public IActionResult ListSketches(int pageNumber = 1) =>
-            GenerateResultView("SK", pageNumber);
-
-        public IActionResult ListPottery(int pageNumber = 1) =>
-            GenerateResultView("PO", pageNumber);
+        private IActionResult GenerateResultView(int techniqueId, int pageNumber = 1)
+        {
+            var elements = _galleryRepo.ArtPieces
+                    .Where(ap => ap.Technique.ID == techniqueId)
+                    .OrderBy(ap => ap.Name)
+                    .Skip((pageNumber - 1) * PageSize)
+                    .Take(PageSize);
+            var pagingInfo = new PagingInfo()
+            {
+                CurrentPage = pageNumber,
+                ItemsPerPage = PageSize,
+                TotalItems = _galleryRepo.ArtPieces
+                    .Where(p => p.Technique == _techniqueRepo.Techniques.Where(t => t.ID == techniqueId).FirstOrDefault())
+                    .Count()
+            };
+            var viewModel = new GalleryElementsViewModel(_textRepository)
+            {
+                Elements = elements,
+                PagingInfo = pagingInfo
+            };
+            return View("List", viewModel);
+        }
 
         public IActionResult MakeOffer(int id)
         {
@@ -69,28 +86,6 @@ namespace UFArt.Controllers
 
             }
             else return View("MakeOffer", offer);
-        }
-
-        private IActionResult GenerateResultView(string techniqueCodeName, int pageNumber = 1)
-        {
-            var techniqueName = _techniqueRepo.Techniques.Where(t => t.CodeName == techniqueCodeName).FirstOrDefault().Name;
-            return View("List", new GalleryElementsViewModel(_textRepository)
-            {
-                Elements = _galleryRepo.ArtPieces
-                    .Where(ap => ap.Technique == techniqueName)
-                    .OrderBy(ap => ap.Name)
-                    .Skip((pageNumber - 1) * PageSize)
-                    .Take(PageSize),
-                PagingInfo = new PagingInfo
-                {
-                    CurrentPage = pageNumber,
-                    ItemsPerPage = PageSize,
-                    TotalItems = _galleryRepo.ArtPieces
-                    .Where(p => p.Technique == _techniqueRepo.Techniques
-                        .Where(t => t.CodeName == techniqueCodeName).FirstOrDefault().Name)
-                    .Count()
-                }
-            });
         }
 
         public IActionResult Details(int id, string returnUrl)

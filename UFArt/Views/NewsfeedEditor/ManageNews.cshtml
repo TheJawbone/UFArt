@@ -7,6 +7,20 @@
                 <td>@Model.TextRepository.GetTranslatedValue("photo", Context)</td>
                 <td>@Model.TextRepository.GetTranslatedValue("header", Context)</td>
                 <td>@Model.TextRepository.GetTranslatedValue("newsfeed_last_modified", Context)</td>
+                <td colspan="2">
+                    <form method="post" asp-controller="NewsfeedEditor" asp-action="DeleteOlderThan">
+                        <button type="submit" class="btn btn-danger">
+                            @Model.TextRepository.GetTranslatedValue("newsfeed_delete_older_than", Context)
+                        </button>
+                        <select name="numberOfDays">
+                            <option value="7">@Model.TextRepository.GetTranslatedValue("week", Context)</option>
+                            <option value="30">@Model.TextRepository.GetTranslatedValue("month", Context)</option>
+                            <option value="90">@Model.TextRepository.GetTranslatedValue("three_months", Context)</option>
+                            <option value="-1">@Model.TextRepository.GetTranslatedValue("all", Context)</option>
+                        </select>
+                    </form>
+                    @Model.TextRepository.GetTranslatedValue("delete_older_than", Context)
+                </td>
             </tr>
         </thead>
         <tbody>

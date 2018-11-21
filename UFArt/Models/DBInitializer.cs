@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using UFArt.Models.Gallery;
 using UFArt.Models.Identity;
 using UFArt.Models.Newsfeed;
+using UFArt.Models.TextAssets;
 
 namespace UFArt.Models
 {
@@ -33,12 +34,18 @@ namespace UFArt.Models
             context.Database.Migrate();
 
             var techniqueRepository = new TechniqueRepository(context);
+            var textRepository = new TextAssetsRepository(context);
             if (techniqueRepository.Techniques.Count() == 0)
             {
-                techniqueRepository.Save(new TechniqueDict() { Name = "Olej na płótnie", CodeName = "OP" });
-                techniqueRepository.Save(new TechniqueDict() { Name = "Akwarele", CodeName = "WP" });
-                techniqueRepository.Save(new TechniqueDict() { Name = "Szkic", CodeName = "SK" });
-                techniqueRepository.Save(new TechniqueDict() { Name = "Ceramika", CodeName = "PO" });
+                var techniqueNames = textRepository.GetAssets("technique_value");
+                foreach(var techniqueName in techniqueNames)
+                {
+                    textRepository.DeleteAsset(techniqueName);
+                }
+
+                var newTechniqueName = new TextAsset() { Key = "technique_value", Value_pl = "Olej na płótnie", Value_en = "Oil paint" };
+                textRepository.SaveAsset(newTechniqueName);
+                techniqueRepository.Save(new Technique() { Name = newTechniqueName });
             }
 
             context.SaveChanges();

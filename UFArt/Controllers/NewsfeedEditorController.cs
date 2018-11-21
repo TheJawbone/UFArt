@@ -22,7 +22,8 @@ namespace UFArt.Controllers
         private readonly ITextAssetsRepository _textRepository;
         private StorageFacade _storageFacade;
 
-        public NewsfeedEditorController(IOptions<StorageSettings> options, ITextAssetsRepository textRepository, INewsfeedRepository repo)
+        public NewsfeedEditorController(IOptions<StorageSettings> options, ITextAssetsRepository textRepository,
+            INewsfeedRepository repo)
         {
             _repo = repo;
             _textRepository = textRepository;
@@ -121,6 +122,25 @@ namespace UFArt.Controllers
                 ViewData["trace"] = ex.StackTrace;
                 return View("Error");
             }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteOlderThan(int numberOfDays)
+        {
+            IQueryable<News> newsToDelete;
+            if(numberOfDays < 0) newsToDelete = _repo.News;
+            else
+            {
+                DateTime deleteTreshold = DateTime.Now.AddDays(-numberOfDays);
+                newsToDelete = _repo.News.Where(n => n.Timestamp < deleteTreshold);
+            }
+
+            foreach (var news in newsToDelete)
+            {
+                await _repo.Delete(news.ID);
+            }
+
+            return RedirectToAction("ManageNews");
         }
 
         public async Task<IActionResult> DeleteNews(int id)

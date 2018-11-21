@@ -26,15 +26,23 @@ namespace UFArt.Models.ViewModels
             ForSale = artPiece.ForSale;
             ReturnUrl = returnUrl;
 
-            if (artPiece.Name != null) LabelValueDict[textRepository.GetTranslatedValue("name", context)] = artPiece.Name;
-            if (artPiece.Description != null) LabelValueDict[textRepository.GetTranslatedValue("description", context)] = artPiece.Description;
-            LabelValueDict[textRepository.GetTranslatedValue("technique", context)] = artPiece.Technique;
-            if (artPiece.CreationDate != null) LabelValueDict[textRepository.GetTranslatedValue("creation_date", context)] = artPiece.CreationDate;
-            if (artPiece.AdditionalInfo != null) LabelValueDict[textRepository.GetTranslatedValue("additional_info", context)] = artPiece.AdditionalInfo;
+            if (textRepository.GetTranslatedValue(artPiece.Name, context) != null)
+                LabelValueDict[textRepository.GetTranslatedValue("name", context)] =
+                    TextRepository.GetTranslatedValue(artPiece.Name, context);
+            if (textRepository.GetTranslatedValue(artPiece.Description, context) != null)
+                LabelValueDict[textRepository.GetTranslatedValue("description", context)] =
+                    TextRepository.GetTranslatedValue(artPiece.Description, context);
+            LabelValueDict[textRepository.GetTranslatedValue("technique", context)] =
+                textRepository.GetTranslatedValue(artPiece.Technique.Name, context);
+            if (artPiece.CreationDate != null)
+                LabelValueDict[textRepository.GetTranslatedValue("creation_date", context)] =
+                    artPiece.CreationDate;
+            if (textRepository.GetTranslatedValue(artPiece.AdditionalInfo, context) != null)
+                LabelValueDict[textRepository.GetTranslatedValue("additional_info", context)] =
+                    TextRepository.GetTranslatedValue(artPiece.AdditionalInfo, context);
         }
 
-        public GalleryElementDetailsViewModel(ITextAssetsRepository textRepository) : base(textRepository)
-        {
-        }
+        public GalleryElementDetailsViewModel(ITextAssetsRepository textRepository)
+            : base(textRepository) { }
     }
 }
