@@ -17,9 +17,9 @@
             {
                 <tr class="text-center">
                     <td class="text-center"><img class="img-editor" src="@element.ImageUri" /></td>
-                    <td class="align-middle">@element.Name</td>
+                    <td class="align-middle">@Model.TextRepository.GetTranslatedValue(element.Name, Context)</td>
                     <td class="align-middle">@element.Dimensions</td>
-                    <td class="align-middle">@element.Technique</td>
+                    <td class="align-middle">@Model.TextRepository.GetTranslatedValue(element.Technique.Name, Context)</td>
                     <td class="align-middle">@(element.ForSale ? @Model.TextRepository.GetTranslatedValue("yes", Context) : @Model.TextRepository.GetTranslatedValue("no", Context))</td>
                     <td class="align-middle">@element.CreationDate</td>
                     <td class="align-middle">

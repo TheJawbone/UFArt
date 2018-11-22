@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Options;
-using Microsoft.WindowsAzure.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
-using UFArt.Infrastructure;
 using UFArt.Models;
 using UFArt.Models.Configuration;
 using UFArt.Models.Gallery;
@@ -48,11 +44,12 @@ namespace UFArt.Controllers
 
         public IActionResult ManageTechniques() => View(new TechniquesViewModel(_textRepo, _techniqueRepo.Techniques));
 
-        public IActionResult UpdateGalleryElement(int id)
+        public IActionResult UpdateGalleryElement(int id, string language = "pl", bool success = false)
         {
-            var viewModel = new ArtPieceCreationViewModel(_techniqueRepo, _textRepo);
+            ArtPieceCreationViewModel viewModel;
             var artPiece = _galleryRepo.ArtPieces.Where(ap => ap.ID == id).FirstOrDefault();
-            if (artPiece != null) viewModel = _factory.CreateViewModel(artPiece, Request.HttpContext);
+            if (artPiece != null) viewModel = _factory.CreateViewModel(artPiece, _textRepo, _techniqueRepo, language, success);
+            else viewModel = new ArtPieceCreationViewModel(_techniqueRepo, _textRepo) { Language = language, SuccessFlag = success };
             return View("AddGalleryElement", viewModel);
         }
 
@@ -110,30 +107,31 @@ namespace UFArt.Controllers
                     }
                     if (viewModel.Id == 0)
                     {
-                        var artPiece = _factory.CreateArtPiece(viewModel, Request.HttpContext);
+                        var artPiece = _factory.CreateArtPiece(viewModel);
                         _galleryRepo.Save(artPiece);
-                        var queryParams = new Dictionary<string, string>()
+                        return RedirectToAction("UpdateGalleryElement", new
                         {
-                            { "messageKey", "success_gallery_element_added" },
-                            { "returnUri", "/GalleryEditor/AddGalleryElement" }
-                        };
-                        return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                            id = viewModel.Id,
+                            language = viewModel.Language,
+                            success = true
+                        });
                     }
                     else
                     {
-                        var artPiece = _factory.UpdateArtPiece(viewModel, Request.HttpContext);
+                        var artPiece = _factory.UpdateArtPiece(viewModel, viewModel.Language);
                         _galleryRepo.Update(artPiece);
-                        var queryParams = new Dictionary<string, string>()
+                        return RedirectToAction("UpdateGalleryElement", new
                         {
-                            { "messageKey", "success_gallery_element_modified" },
-                            { "returnUri", "/GalleryEditor/AddGalleryElement" }
-                        };
-                        return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                            id = viewModel.Id,
+                            language = viewModel.Language,
+                            success = true
+                        });
                     }
                 }
                 else
                 {
                     viewModel.TechniqueRepository = _techniqueRepo;
+                    viewModel.TextRepository = _textRepo;
                     return View("AddGalleryElement", viewModel);
                 }
             }
@@ -155,6 +153,16 @@ namespace UFArt.Controllers
         {
             _techniqueRepo.Delete(id);
             return RedirectToAction("ManageTechniques");
+        }
+
+        public IActionResult ChangeLanguageToPl(int id)
+        {
+            return RedirectToAction("UpdateGalleryElement", new { id, language = "pl" });
+        }
+
+        public IActionResult ChangeLanguageToEn(int id)
+        {
+            return RedirectToAction("UpdateGalleryElement", new { id, language = "en" });
         }
     }
 }

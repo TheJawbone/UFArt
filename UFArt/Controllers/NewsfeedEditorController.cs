@@ -151,22 +151,12 @@ namespace UFArt.Controllers
 
         public IActionResult ChangeLanguageToPl(int id)
         {
-            var queryParams = new Dictionary<string, string>()
-            {
-                { "id", id.ToString() },
-                { "language", "pl" }
-            };
-            return Redirect(QueryHelpers.AddQueryString("/NewsfeedEditor/UpdateNews", queryParams));
+            return RedirectToAction("UpdateGalleryElement", new { id, language = "pl" });
         }
 
         public IActionResult ChangeLanguageToEn(int id)
         {
-            var queryParams = new Dictionary<string, string>()
-            {
-                { "id", id.ToString() },
-                { "language", "en" }
-            };
-            return Redirect(QueryHelpers.AddQueryString("/NewsfeedEditor/UpdateNews", queryParams));
+            return RedirectToAction("UpdateGalleryElement", new { id, language = "en" });
         }
     }
 }

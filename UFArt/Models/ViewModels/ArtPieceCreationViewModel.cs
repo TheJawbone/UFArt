@@ -22,6 +22,8 @@ namespace UFArt.Models.ViewModels
         [RegularExpression(@"^((((0)[0-9])|((1)[0-2]))(-)\d{4})|(\d{4})$", ErrorMessage = "Wprowadź datę w formacie rrrr lub mm-rrrr")]
         public string CreationDate { get; set; }
         public string AdditionalInfo { get; set; }
+        public string Language { get; set; }
+        public bool SuccessFlag { get; set; }
 
         public ITechniqueRepository TechniqueRepository { get; set; }
         
@@ -38,6 +40,10 @@ namespace UFArt.Models.ViewModels
         public ArtPieceCreationViewModel() { }
 
         public ArtPieceCreationViewModel(ITechniqueRepository repo, ITextAssetsRepository textRepository)
-            : base(textRepository) => TechniqueRepository = repo;
+            : base(textRepository)
+        {
+            TechniqueRepository = repo;
+            Language = "pl";
+        }
     }
 }

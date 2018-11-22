@@ -21,7 +21,7 @@ namespace UFArt.Models.Gallery
             _techniqueRepo = techniqueRepo;
         }
 
-        public ArtPiece CreateArtPiece(ArtPieceCreationViewModel viewModel, HttpContext context)
+        public ArtPiece CreateArtPiece(ArtPieceCreationViewModel viewModel)
         {
             var artPiece = new ArtPiece();
             var technique = new Technique();
@@ -30,10 +30,10 @@ namespace UFArt.Models.Gallery
             var descriptionAsset = new TextAsset() { Key = "art_piece_description" };
             var additionalInfoAsset = new TextAsset() { Key = "art_piece_additional_info" };
 
-            return AssignValues(context, nameAsset, descriptionAsset, additionalInfoAsset, technique, viewModel, artPiece);
+            return AssignValues(viewModel.Language, nameAsset, descriptionAsset, additionalInfoAsset, technique, viewModel, artPiece);
         }
 
-        public ArtPiece UpdateArtPiece(ArtPieceCreationViewModel viewModel, HttpContext context)
+        public ArtPiece UpdateArtPiece(ArtPieceCreationViewModel viewModel, string languageCode)
         {
             var artPiece = _galleryRepo.ArtPieces.Where(ap => ap.ID == viewModel.Id).FirstOrDefault();
             if (artPiece == null) return null;
@@ -43,28 +43,33 @@ namespace UFArt.Models.Gallery
             var descriptionAsset = artPiece.Description;
             var additionalInfoAsset = artPiece.AdditionalInfo;
 
-            return AssignValues(context, nameAsset, descriptionAsset, additionalInfoAsset, technique, viewModel, artPiece);
+            return AssignValues(languageCode, nameAsset, descriptionAsset, additionalInfoAsset, technique, viewModel, artPiece);
         }
 
-        public ArtPieceCreationViewModel CreateViewModel(ArtPiece artPiece, HttpContext context)
+        public ArtPieceCreationViewModel CreateViewModel(ArtPiece artPiece, ITextAssetsRepository textRepo,
+            ITechniqueRepository techniqueRepo, string languageCode, bool success)
         {
-            var viewModel = new ArtPieceCreationViewModel()
+            var viewModel = new ArtPieceCreationViewModel(techniqueRepo, textRepo)
             {
                 Id = artPiece.ID,
-                Description = _textRepo.GetTranslatedValue(artPiece.Description, context),
-                Technique = _textRepo.GetTranslatedValue(artPiece.Technique.Name, context),
+                Name = _textRepo.GetTranslatedValue(artPiece.Name, languageCode),
+                Dimensions = artPiece.Dimensions,
+                Description = _textRepo.GetTranslatedValue(artPiece.Description, languageCode),
+                Technique = _textRepo.GetTranslatedValue(artPiece.Technique.Name, languageCode),
                 ImageUri = artPiece.ImageUri,
                 ForSale = artPiece.ForSale,
                 CreationDate = artPiece.CreationDate,
-                AdditionalInfo = _textRepo.GetTranslatedValue(artPiece.AdditionalInfo, context)
+                AdditionalInfo = _textRepo.GetTranslatedValue(artPiece.AdditionalInfo, languageCode),
+                Language = languageCode,
+                SuccessFlag = success
             };
             return viewModel;
         }
 
-        private ArtPiece AssignValues(HttpContext context, TextAsset nameAsset, TextAsset descriptionAsset,
+        private ArtPiece AssignValues(string languageCode, TextAsset nameAsset, TextAsset descriptionAsset,
             TextAsset additionalInfoAsset, Technique technique, ArtPieceCreationViewModel viewModel, ArtPiece artPiece)
         {
-            switch (context.Session.GetString("language"))
+            switch (languageCode)
             {
                 case "pl":
                     nameAsset.Value_pl = viewModel.Name;
@@ -86,6 +91,7 @@ namespace UFArt.Models.Gallery
 
             artPiece.Name = nameAsset;
             artPiece.Description = descriptionAsset;
+            artPiece.Dimensions = viewModel.Dimensions;
             artPiece.Technique = technique;
             artPiece.ImageUri = viewModel.ImageUri;
             artPiece.ForSale = viewModel.ForSale;

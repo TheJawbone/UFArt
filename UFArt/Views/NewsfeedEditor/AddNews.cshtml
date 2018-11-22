@@ -1,9 +1,9 @@
 ﻿@model NewsAddViewModel
 
-@if(Model.SuccessFlag)
+@if (Model.SuccessFlag)
 {
     <p class="text-white font-weight-bold text-center bg-success m-0">
-        @Model.TextRepository.GetTranslatedValue("operation_successfull", Context);
+        @Model.TextRepository.GetTranslatedValue("operation_successfull", Context)
     </p>
 }
 
@@ -66,10 +66,19 @@
         }
         <input asp-for="Language" type="hidden" value="@Model.Language" />
         <div class="text-center">
-            <input type="submit" class="btn btn-primary" value="@Model.TextRepository.GetTranslatedValue("create", Context)" />
+            <input type="submit" class="btn btn-primary" id="submitButton" value="@Model.TextRepository.GetTranslatedValue("save", Context)" />
             <a asp-controller="NewsfeedEditor" asp-action="ManageNews" class="btn btn-secondary">
                 @Model.TextRepository.GetTranslatedValue("cancel", Context)
             </a>
         </div>
     </form>
+    <p id="processingText" class="invisible">@Model.TextRepository.GetTranslatedValue("processing", Context)</p>
 </div>
+
+<script>
+    document.getElementById("submitButton").onclick = function () {
+        this.classList.remove("btn-primary");
+        this.classList.add("btn-secondary");
+        this.value = document.getElementById("processingText").innerHTML;
+    }
+</script>
