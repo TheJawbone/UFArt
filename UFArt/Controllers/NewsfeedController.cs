@@ -20,9 +20,16 @@ namespace UFArt.Controllers
             _textRepository = textRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(NewsfeedViewModel viewModel)
         {
-            return View(new NewsfeedViewModel(_textRepository, _repo));
+            if (viewModel.NewsDisplayed == 0)
+                viewModel = new NewsfeedViewModel(_textRepository, _repo);
+            else
+            {
+                viewModel.Repo = _repo;
+                viewModel.TextRepository = _textRepository;
+            }
+            return View(viewModel);
         }
 
         [HttpPost]
@@ -33,7 +40,7 @@ namespace UFArt.Controllers
             if (viewModel.NewsDisplayed + viewModel.NewsIncrement > viewModel.Repo.News.Count())
                 viewModel.NewsDisplayed = viewModel.Repo.News.Count();
             else viewModel.NewsDisplayed += viewModel.NewsIncrement;
-            return View("Index", viewModel);
+            return RedirectToAction("Index", viewModel);
         }
 
         [HttpPost]
@@ -44,7 +51,7 @@ namespace UFArt.Controllers
             if (viewModel.NewsDisplayed < 2 * viewModel.NewsIncrement)
                 viewModel.NewsDisplayed = viewModel.NewsIncrement;
             else viewModel.NewsDisplayed -= viewModel.NewsIncrement;
-            return View("Index", viewModel);
+            return RedirectToAction("Index", viewModel);
         }
     }
 }

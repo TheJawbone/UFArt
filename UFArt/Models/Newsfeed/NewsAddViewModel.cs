@@ -18,18 +18,20 @@ namespace UFArt.Models.Newsfeed
         public string Header { get; set; }
         public string ImageUri { get; set; }
         public DateTime Timestamp { get; set; }
+        public string Language { get; set; }
+        public bool SuccessFlag { get; set; }
 
         public NewsAddViewModel() { }
 
         public NewsAddViewModel(ITextAssetsRepository textRepository)
             : base(textRepository) { }
 
-        public NewsAddViewModel(News news, HttpContext context, ITextAssetsRepository textRepository)
+        public NewsAddViewModel(News news, string language, ITextAssetsRepository textRepository)
             : base(textRepository)
         {
             ID = news.ID;
-            Text = TextRepository.GetTranslatedValue(news.Text, context);
-            Header = TextRepository.GetTranslatedValue(news.Header, context);
+            Text = TextRepository.GetTranslatedValue(news.Text, language);
+            Header = TextRepository.GetTranslatedValue(news.Header, language);
             ImageUri = news.ImageUrl;
             Timestamp = news.Timestamp;
         }

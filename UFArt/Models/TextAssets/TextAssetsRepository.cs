@@ -24,8 +24,25 @@ namespace UFArt.Models.TextAssets
         public string GetTranslatedValue(string key, HttpContext context)
         {
             string language = context.Session.GetString("language");
+            if (language == null) context.Session.SetString("language", "pl");
             string asset = null;
             switch (language)
+            {
+                case "pl":
+                    asset = _context.TextAssets.Where(ta => ta.Key == key).Select(ta => ta.Value_pl).FirstOrDefault();
+                    break;
+                case "en":
+                    asset = _context.TextAssets.Where(ta => ta.Key == key).Select(ta => ta.Value_en).FirstOrDefault();
+                    break;
+            }
+            if (asset == null) return _context.TextAssets.Where(ta => ta.Key == key).Select(ta => ta.Value_pl).FirstOrDefault();
+            else return asset;
+        }
+
+        public string GetTranslatedValue(string key, string languageCode)
+        {
+            string asset = null;
+            switch (languageCode)
             {
                 case "pl":
                     asset = _context.TextAssets.Where(ta => ta.Key == key).Select(ta => ta.Value_pl).FirstOrDefault();
@@ -42,6 +59,19 @@ namespace UFArt.Models.TextAssets
         {
             string language = context.Session.GetString("language");
             switch (language)
+            {
+                case "pl":
+                    return asset.Value_pl;
+                case "en":
+                    return asset.Value_en;
+                default:
+                    return asset.Value_pl;
+            }
+        }
+
+        public string GetTranslatedValue(TextAsset asset, string languageCode)
+        {
+            switch (languageCode)
             {
                 case "pl":
                     return asset.Value_pl;

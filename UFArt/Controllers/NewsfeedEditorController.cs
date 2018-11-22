@@ -19,30 +19,30 @@ namespace UFArt.Controllers
     public class NewsfeedEditorController : Controller
     {
         private readonly INewsfeedRepository _repo;
-        private readonly ITextAssetsRepository _textRepository;
+        private readonly ITextAssetsRepository _textRepo;
         private StorageFacade _storageFacade;
 
         public NewsfeedEditorController(IOptions<StorageSettings> options, ITextAssetsRepository textRepository,
             INewsfeedRepository repo)
         {
             _repo = repo;
-            _textRepository = textRepository;
+            _textRepo = textRepository;
             _storageFacade = new StorageFacade(options);
         }
 
-        public IActionResult AddNews() => View(new NewsAddViewModel(_textRepository));
+        public IActionResult AddNews() => View(new NewsAddViewModel(_textRepo));
 
-        public IActionResult ManageNews() => View(new NewsManageViewModel(_repo, _textRepository));
+        public IActionResult ManageNews() => View(new NewsManageViewModel(_repo, _textRepo));
 
-        public IActionResult UpdateNews(int id)
+        public IActionResult UpdateNews(int id, string language = "pl", bool success = false)
         {
             var news = _repo.News.Where(n => n.ID == id).FirstOrDefault();
             if (news != null)
             {
-                var viewModel = new NewsAddViewModel(news, Request.HttpContext, _textRepository);
+                var viewModel = new NewsAddViewModel(news, language, _textRepo) { Language = language, SuccessFlag = success };
                 return View("AddNews", viewModel);
             }
-            else return View("Error");
+            else return View("AddNews", new NewsAddViewModel(_textRepo) { Language = language, SuccessFlag = success });
         }
 
         [HttpPost]
@@ -71,7 +71,7 @@ namespace UFArt.Controllers
                         var textAsset = new TextAsset() { Key = "news_piece_text" };
                         news.Header = headerAsset;
                         news.Text = textAsset;
-                        switch (Request.HttpContext.Session.GetString("language"))
+                        switch (viewModel.Language)
                         {
                             case "pl":
                                 news.Header.Value_pl = viewModel.Header;
@@ -82,19 +82,19 @@ namespace UFArt.Controllers
                                 news.Text.Value_en = viewModel.Text;
                                 break;
                         }
-                        _textRepository.SaveAsset(headerAsset);
-                        _textRepository.SaveAsset(textAsset);
+                        _textRepo.SaveAsset(headerAsset);
+                        _textRepo.SaveAsset(textAsset);
                         _repo.Save(news);
-                        var queryParams = new Dictionary<string, string>()
+                        return RedirectToAction("UpdateNews", new
                         {
-                            { "messageKey", "success_news_added" },
-                            { "returnUri", "/NewsfeedEditor/AddNews" }
-                        };
-                        return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                            id = news.ID,
+                            language = viewModel.Language,
+                            success = true
+                        });
                     }
                     else
                     {
-                        switch (Request.HttpContext.Session.GetString("language"))
+                        switch (viewModel.Language)
                         {
                             case "pl":
                                 news.Header.Value_pl = viewModel.Header;
@@ -106,12 +106,12 @@ namespace UFArt.Controllers
                                 break;
                         }
                         _repo.Update(news);
-                        var queryParams = new Dictionary<string, string>()
+                        return RedirectToAction("UpdateNews", new
                         {
-                            { "messageKey", "success_news_modified" },
-                            { "returnUri", "/NewsfeedEditor/ManageNews" }
-                        };
-                        return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                            id = news.ID,
+                            language = viewModel.Language,
+                            success = true
+                        });
                     }
                 }
                 else return View("AddNews", viewModel);
@@ -147,6 +147,26 @@ namespace UFArt.Controllers
         {
             await _repo.Delete(id);
             return RedirectToAction("ManageNews");
+        }
+
+        public IActionResult ChangeLanguageToPl(int id)
+        {
+            var queryParams = new Dictionary<string, string>()
+            {
+                { "id", id.ToString() },
+                { "language", "pl" }
+            };
+            return Redirect(QueryHelpers.AddQueryString("/NewsfeedEditor/UpdateNews", queryParams));
+        }
+
+        public IActionResult ChangeLanguageToEn(int id)
+        {
+            var queryParams = new Dictionary<string, string>()
+            {
+                { "id", id.ToString() },
+                { "language", "en" }
+            };
+            return Redirect(QueryHelpers.AddQueryString("/NewsfeedEditor/UpdateNews", queryParams));
         }
     }
 }

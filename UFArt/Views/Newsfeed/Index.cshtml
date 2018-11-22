@@ -7,12 +7,18 @@
     {
         <div class="d-newsfeed">
             <div class="d-newsfeed-imagewrapper d-inline-block">
-                <img class="img-newsfeed" src="@news.ImageUrl" />
+                <img class="img-newsfeed border-medium mt-2" src="@news.ImageUrl" />
             </div>
             <div class="w-69 d-inline-block d-newsfeed-text" style="vertical-align: top">
-                <h3 class="d-inline-block">@Model.TextRepository.GetTranslatedValue(news.Header, Context)</h3>
-                <p class="d-inline-block newsfeed-timestamp">@Model.TextRepository.GetTranslatedValue("newsfeed_last_modified", Context): @news.Timestamp</p>
-                <p class="text-justify">@Model.TextRepository.GetTranslatedValue(news.Text, Context)</p>
+                <div class="w-69 d-inline-block">
+                    <p class="news-header">@Model.TextRepository.GetTranslatedValue(news.Header, Context)</p>
+                </div>
+                <div class="w-29 d-inline-block news-timestamp" style="height: 0">
+                    <p>@Model.TextRepository.GetTranslatedValue("newsfeed_last_modified", Context):<br />@news.Timestamp</p>
+                </div>
+                <div class="w-100">
+                    <p class="text-justify">@Model.TextRepository.GetTranslatedValue(news.Text, Context)</p>
+                </div>
             </div>
         </div>
     }
