@@ -1,4 +1,42 @@
-﻿.d-inline-block {
+﻿@media screen and (min-width: 768px) {
+    .d-flags {
+        padding-left: 1rem;
+    }
+
+    .image-about {
+        width: 30%;
+        float: left;
+    }
+
+    .entry-text > h1 {
+        font-size: 7em;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .image-about {
+        width: 80%;
+    }
+
+    .wrapper-image-about {
+        width: 100%;
+        text-align: center;
+    }
+
+    .entry-text > h1 {
+        font-size: 4em;
+    }
+}
+
+h1 {
+    padding-bottom: 1rem;
+}
+
+.border-thick {
+    border: 10px solid #343a40;
+}
+
+.d-inline-block {
     display: inline-block !important;
 }
 
@@ -87,9 +125,6 @@ td {
     top: 38%;
     text-align: center;
 }
-    .entry-text > h1 {
-        font-size: 7em;
-    }
 
 .img-editor {
     height: 100px;

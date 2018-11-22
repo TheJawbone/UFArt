@@ -4,15 +4,15 @@
     <form method="post" asp-controller="Gallery" asp-action="SendOffer">
         <div class="form-group">
             <label asp-for="ClientName">@Model.TextRepository.GetTranslatedValue("real_name", Context)</label>
-            <input asp-for="ClientName" class="form-control" />
+            <input asp-for="ClientName" class="form-control" value="@Model.User?.UserName" />
         </div>
         <div class="form-group">
             <label asp-for="Email">@Model.TextRepository.GetTranslatedValue("email", Context)</label>
-            <input asp-for="Email" class="form-control" />
+            <input asp-for="Email" class="form-control" value="@Model.User?.Email" />
         </div>
         <div class="form-group">
             <label asp-for="Phone">@Model.TextRepository.GetTranslatedValue("telephone_number", Context)</label>
-            <input asp-for="Phone" class="form-control" />
+            <input asp-for="Phone" class="form-control" value="@Model.User?.PhoneNumber" />
         </div>
         <input asp-for="ArtPieceId" type="hidden" value="@Model.ArtPieceId" />
         <input type="submit" class="btn btn-primary" value="@Model.TextRepository.GetTranslatedValue("send", Context)" />

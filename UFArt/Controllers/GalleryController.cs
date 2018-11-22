@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UFArt.Infrastructure.Mailing;
 using UFArt.Models;
 using UFArt.Models.Gallery;
+using UFArt.Models.Identity;
 using UFArt.Models.TextAssets;
 using UFArt.Models.ViewModels;
 
@@ -18,10 +21,11 @@ namespace UFArt.Controllers
         private readonly ITechniqueRepository _techniqueRepo;
         private readonly ITextAssetsRepository _textRepository;
         private readonly IEmailConfiguration _emailConfiguration;
+        private UserManager<User> _userManager;
 
         public int PageSize = 9;
 
-        public GalleryController(IGalleryRepository galleryRepo, ITechniqueRepository techniqueRepo,
+        public GalleryController(IGalleryRepository galleryRepo, ITechniqueRepository techniqueRepo, UserManager<User> userManager,
             IEmailConfiguration emailConfiguration, IEmailService emailService, ITextAssetsRepository textRepository)
         {
             _galleryRepo = galleryRepo;
@@ -29,6 +33,7 @@ namespace UFArt.Controllers
             _emailConfiguration = emailConfiguration;
             _emailService = emailService;
             _textRepository = textRepository;
+            _userManager = userManager;
         }
 
         public IActionResult DispatchTechniqueListing(int techniqueNameId, int pageNumber = 1)
@@ -60,10 +65,11 @@ namespace UFArt.Controllers
             return View("List", viewModel);
         }
 
-        public IActionResult MakeOffer(int id)
+        public async Task<IActionResult> MakeOffer(int id)
         {
-            var test = id;
-            return View(new OfferViewModel(_textRepository) { ArtPieceId = id });
+            var userId = Request.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userManager.FindByIdAsync(userId);
+            return View(new OfferViewModel(_textRepository) { ArtPieceId = id, User = user });
         }
 
         [HttpPost]
