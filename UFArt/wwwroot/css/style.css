@@ -1,11 +1,43 @@
 ﻿@media screen and (min-width: 768px) {
+    .d-gallery-element-wrapper {
+        width: 30%;
+        margin-bottom: 2rem;
+        margin-left: 1%;
+        margin-right: 1%;
+        height: 180px;
+        display: inline-block;
+    }
+
+    .img-gallery {
+        height: 100%;
+        box-shadow: 0 0 20px 2px black;
+    }
+
     .d-flags {
         padding-left: 1rem;
     }
 
     .image-about {
-        width: 30%;
+        width: 140%;
+        margin-left: -20%;
+        margin-top: 20%;
         float: left;
+    }
+
+    .wrapper-image-about {
+        width: 15%;
+        margin-left: 5%;
+        text-align: center;
+        height: 800px;
+        display: inline-block;
+        vertical-align: top;
+        background-image: linear-gradient(#343a40, #FFF);
+    }
+
+    .d-about-text-wrapper {
+        display: inline-block;
+        width: 72%;
+        margin-left: 6%;
     }
 
     .entry-text {
@@ -53,7 +85,35 @@
     }
 }
 
+@media screen and (max-width: 1024px) {
+    .d-gallery-element-wrapper {
+        width: 30%;
+        margin-bottom: 2rem;
+        margin-left: 1%;
+        margin-right: 1%;
+        height: 130px;
+        display: inline-block;
+    }
+}
+
 @media screen and (max-width: 768px) {
+    .d-gallery-element-wrapper {
+        width: 80%;
+        height: 200px;
+        margin-bottom: 2rem;
+        margin-left: 10%;
+        display: block;
+    }
+
+    .img-gallery {
+        height: 100%;
+        box-shadow: 0 0 20px 2px black;
+    }
+    
+    .d-flags {
+        padding: 0;
+    }
+
     .image-about {
         width: 80%;
     }
@@ -61,6 +121,8 @@
     .wrapper-image-about {
         width: 100%;
         text-align: center;
+        background-color: #343a40;
+        margin-bottom: 5%;
     }
 
     .entry-text {
@@ -96,7 +158,6 @@
     .d-newsfeed-header {
         width: 100%;
         display: block !important;
-        text-align: justify;
     }
 
     .d-newsfeed-timestamp {
@@ -122,6 +183,21 @@
         font-size: 1rem;
         line-height: 27px;
     }
+}
+
+.image-about {
+    box-shadow: 0 0 20px 5px black;
+}
+
+.wrapper-image-about {
+}
+
+.d-about-text-wrapper {
+}
+
+.d-gallery-element-wrapper {
+    background-color: #DDD;
+    text-align: center;
 }
 
 h1 {
@@ -281,10 +357,6 @@ td {
     min-height: 100%;
     box-shadow: 0 0 20px gray;
     padding: 0 !important;
-}
-
-.img-gallery {
-    height: 200px;
 }
 
 .img-newsfeed {

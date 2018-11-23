@@ -1,14 +1,14 @@
 ﻿@model GalleryElementsViewModel
 
-<div class="gallery-wrapper p-3">
+<div class="gallery-wrapper pt-4">
     @foreach (var p in Model.Elements)
     {
-        <div class="d-inline-flex gallery-element-container">
+        <div class="d-gallery-element-wrapper">
             <a asp-controller="Gallery"
                asp-action="Details"
                asp-route-id=@p.ID
                asp-route-returnUrl=@ViewContext.HttpContext.Request.PathAndQuery()>
-                <img class="img-gallery img-thumbnail" src="@p.ImageUri" />
+                <img class="img-gallery" src="@p.ImageUri" />
             </a>
         </div>
     }
