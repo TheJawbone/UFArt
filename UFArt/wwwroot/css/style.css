@@ -109,7 +109,7 @@
         height: 100%;
         box-shadow: 0 0 20px 2px black;
     }
-    
+
     .d-flags {
         padding: 0;
     }
@@ -162,6 +162,16 @@
 
     .d-newsfeed-timestamp {
         display: none;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .d-gallery-element-wrapper {
+        width: 80%;
+        height: 140px;
+        margin-bottom: 2rem;
+        margin-left: 10%;
+        display: block;
     }
 }
 
