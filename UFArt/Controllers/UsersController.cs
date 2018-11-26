@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using UFArt.Infrastructure;
 using UFArt.Models.Identity;
 using UFArt.Models.TextAssets;
+using UFArt.Models.ViewModels;
 
 namespace UFArt.Controllers
 {
@@ -65,7 +66,7 @@ namespace UFArt.Controllers
                 User user = await _userManager.FindByEmailAsync(details.Email);
                 if (user != null)
                 {
-                    if (user.EmailConfirmed == false) return View("AccountInactive");
+                    if (user.EmailConfirmed == false) return View("AccountInactive", new ViewModel(_textRepo));
                     else
                     {
                         await _signInManager.SignOutAsync();

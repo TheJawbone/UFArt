@@ -22,9 +22,9 @@ namespace UFArt.Controllers
             _textRepository = textRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(bool messageSent = false)
         {
-            return View(new ContactViewModel(_textRepository));
+            return View(new ContactViewModel(_textRepository) { MessageSent = messageSent });
         }
 
         [HttpPost]
@@ -33,7 +33,7 @@ namespace UFArt.Controllers
             var message = new EmailMessageFactory(_emailConfiguration).CreateContactMessage(content);
             var result = _emailService.Send(message);
             if(result.Succeeded)
-                return View("Success", new string[] { "Pomyślnie wysłano wiadomość", "/Contact" });
+                return RedirectToAction("Index", new { messageSent = true });
             else return View("Error");
         }
     }

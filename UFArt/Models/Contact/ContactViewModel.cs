@@ -18,6 +18,7 @@ namespace UFArt.Models.Contact
         public string Email { get; set; }
         [Required(ErrorMessage = "Wprowadź numer telefonu")]
         public string Telephone { get; set; }
+        public bool MessageSent { get; set; }
 
         public ContactViewModel() { }
 
