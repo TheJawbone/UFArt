@@ -3,7 +3,7 @@
 <div class="p-3">
     <h1 class="text-dark">@Model.TextRepository.GetTranslatedValue("contact_header", Context)</h1>
     <div class="w-100">
-        <div class="d-half-column pt-3 pr-4">
+        <div class="d-half-column" id="contact-column-left">
             <table class="table">
                 <tr>
                     <td><b>@Model.TextRepository.GetTranslatedValue("contact_telephone", Context):</b></td>
@@ -15,7 +15,7 @@
                 </tr>
             </table>
         </div>
-        <div class="d-half-column pt-3 pl-4">
+        <div class="d-half-column" id="contact-column-right">
             <form method="post" asp-controller="Contact" asp-action="SendMessage">
                 <div class="form-group">
                     <label>@Model.TextRepository.GetTranslatedValue("contact_message_instruction", Context)</label>
