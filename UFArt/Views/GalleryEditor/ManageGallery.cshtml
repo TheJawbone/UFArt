@@ -6,10 +6,10 @@
             <tr class="text-center text-primary font-weight-bold">
                 <td>@Model.TextRepository.GetTranslatedValue("photo", Context)</td>
                 <td>@Model.TextRepository.GetTranslatedValue("name", Context)</td>
-                <td>@Model.TextRepository.GetTranslatedValue("dimensions", Context)</td>
-                <td>@Model.TextRepository.GetTranslatedValue("technique", Context)</td>
-                <td>@Model.TextRepository.GetTranslatedValue("for_sale", Context)</td>
-                <td>@Model.TextRepository.GetTranslatedValue("creation_date", Context)</td>
+                <td class="hidden-md">@Model.TextRepository.GetTranslatedValue("dimensions", Context)</td>
+                <td class="hidden-md">@Model.TextRepository.GetTranslatedValue("technique", Context)</td>
+                <td class="hidden-md">@Model.TextRepository.GetTranslatedValue("for_sale", Context)</td>
+                <td class="hidden-md">@Model.TextRepository.GetTranslatedValue("creation_date", Context)</td>
             </tr>
         </thead>
         <tbody>
@@ -18,10 +18,10 @@
                 <tr class="text-center">
                     <td class="text-center"><img class="img-editor" src="@element.ImageUri" /></td>
                     <td class="align-middle">@Model.TextRepository.GetTranslatedValue(element.Name, Context)</td>
-                    <td class="align-middle">@element.Dimensions</td>
-                    <td class="align-middle">@Model.TextRepository.GetTranslatedValue(element.Technique.Name, Context)</td>
-                    <td class="align-middle">@(element.ForSale ? @Model.TextRepository.GetTranslatedValue("yes", Context) : @Model.TextRepository.GetTranslatedValue("no", Context))</td>
-                    <td class="align-middle">@element.CreationDate</td>
+                    <td class="align-middle hidden-md">@element.Dimensions</td>
+                    <td class="align-middle hidden-md">@Model.TextRepository.GetTranslatedValue(element.Technique.Name, Context)</td>
+                    <td class="align-middle hidden-md">@(element.ForSale ? @Model.TextRepository.GetTranslatedValue("yes", Context) : @Model.TextRepository.GetTranslatedValue("no", Context))</td>
+                    <td class="align-middle hidden-md">@element.CreationDate</td>
                     <td class="align-middle">
                         <a asp-controller="GalleryEditor"
                            asp-action="UpdateGalleryElement"

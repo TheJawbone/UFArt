@@ -109,6 +109,10 @@
         height: 130px;
         display: inline-block;
     }
+
+    .hidden-md {
+        display: none;
+    }
 }
 
 @media screen and (max-width: 768px) {

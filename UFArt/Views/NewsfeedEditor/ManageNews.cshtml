@@ -6,7 +6,7 @@
             <tr class="text-center text-primary font-weight-bold">
                 <td>@Model.TextRepository.GetTranslatedValue("photo", Context)</td>
                 <td>@Model.TextRepository.GetTranslatedValue("header", Context)</td>
-                <td>@Model.TextRepository.GetTranslatedValue("newsfeed_last_modified", Context)</td>
+                <td class="hidden-md">@Model.TextRepository.GetTranslatedValue("newsfeed_last_modified", Context)</td>
                 <td colspan="2">
                     <form method="post" asp-controller="NewsfeedEditor" asp-action="DeleteOlderThan">
                         <button type="submit" class="btn btn-danger">
@@ -29,7 +29,7 @@
                 <tr class="text-center">
                     <td class="text-center"><img class="img-editor" src="@element.ImageUrl" /></td>
                     <td class="align-middle">@Model.TextRepository.GetTranslatedValue(element.Header, Context)</td>
-                    <td class="align-middle">@element.Timestamp</td>
+                    <td class="align-middle hidden-md">@element.Timestamp</td>
                     <td class="align-middle">
                         <a asp-controller="NewsfeedEditor"
                            asp-action="UpdateNews"
