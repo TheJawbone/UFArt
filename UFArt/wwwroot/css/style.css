@@ -83,6 +83,11 @@
         width: 29%;
         display: inline-block !important;
     }
+
+    .d-half-column {
+        width: 49.5%;
+        display: inline-block;
+    }
 }
 
 @media screen and (max-width: 1024px) {
@@ -162,6 +167,11 @@
 
     .d-newsfeed-timestamp {
         display: none;
+    }
+
+    .d-half-column {
+        width: 100%;
+        display: block;
     }
 }
 

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UFArt.Models.Gallery;
 using UFArt.Models.Identity;
+using UFArt.Models.ViewModels;
 
 namespace UFArt.Infrastructure.Mailing
 {
@@ -18,18 +19,19 @@ namespace UFArt.Infrastructure.Mailing
             _emailConfiguration = emailConfiguration;
         }
 
-        public EmailMessage CreateOfferMessage(OfferViewModel offer)
+        public EmailMessage CreateOfferMessage(GalleryElementDetailsViewModel viewModel)
         {
             var message = new EmailMessage();
-            message.FromAddress = new EmailAddress() { Address = offer.Email };
+            message.FromAddress = new EmailAddress() { Address = viewModel.Email };
             message.ToAddresses.Add(new EmailAddress() { Address = _emailConfiguration.SmtpUsername });
             message.Subject = "UFArt - Oferta kupna obrazu";
+
             StringBuilder contentBuilder = new StringBuilder();
-            contentBuilder.AppendLine(string.Format("Numer ID obrazu: {0}", offer.ArtPieceId));
-            contentBuilder.AppendLine(string.Format("Imię klienta: {0}", offer.ClientName));
-            contentBuilder.AppendLine(string.Format("Adres email klienta: {0}", offer.Email));
-            if (offer.Phone != null)
-                contentBuilder.AppendLine(string.Format("Numer telefonu klienta: {0}", offer.Phone));
+            contentBuilder.AppendLine(string.Format("<img src=\"{0}\" height=\"150\"><br>", viewModel.ImageUri));
+            contentBuilder.AppendLine(string.Format("Imię klienta: {0}<br>", viewModel.ClientName));
+            contentBuilder.AppendLine(string.Format("Adres email klienta: {0}<br>", viewModel.Email));
+            if (viewModel.Phone != null)
+                contentBuilder.AppendLine(string.Format("Numer telefonu klienta: {0}<br>", viewModel.Phone));
             message.Content = contentBuilder.ToString();
             return message;
         }
@@ -44,16 +46,16 @@ namespace UFArt.Infrastructure.Mailing
             return message;
         }
 
-        internal EmailMessage CreateOfferConfirmationMessage(OfferViewModel offer)
+        internal EmailMessage CreateOfferConfirmationMessage(GalleryElementDetailsViewModel viewModel)
         {
             var message = new EmailMessage();
             message.FromAddress = new EmailAddress() { Address = _emailConfiguration.SmtpUsername };
-            message.ToAddresses.Add(new EmailAddress() { Address = offer.Email });
+            message.ToAddresses.Add(new EmailAddress() { Address = viewModel.Email });
             message.Subject = "UFArt - Potwierdzenie złożenia oferty";
-            message.Content = string.Format("Witaj {0},\r\nDziękujemy za wyrażenie zainteresowania kupnem przedmiotu. " +
-                "Skontaktujemy się z Tobą jak najszybciej w celu omówienia szczegółów.\r\n\r\n" +
-                "Pozdrawiamy,\r\nZespół Urszula Figiel Art\r\n\r\n" +
-                "Wiadomość została wygenerowana automatycznie.", offer.ClientName);
+            message.Content = string.Format("Witaj {0},<br><br>Dziękujemy za wyrażenie zainteresowania kupnem przedmiotu. " +
+                "Skontaktujemy się z Tobą jak najszybciej w celu omówienia szczegółów.<br><br>" +
+                "Pozdrawiamy,<br>Zespół Urszula Figiel Art<br><br>" +
+                "Wiadomość została wygenerowana automatycznie.", viewModel.ClientName);
             return message;
         }
 
@@ -64,8 +66,8 @@ namespace UFArt.Infrastructure.Mailing
             message.FromAddress = new EmailAddress() { Address = _emailConfiguration.SmtpUsername };
             message.ToAddresses.Add(new EmailAddress() { Address = user.Email });
             message.Subject = "UFArt - aktywacja konta";
-            message.Content = string.Format("Witaj {0},\r\nDziękujemy za założenie konta w serwisie Urszula Figiel Art. " +
-                "Kliknij poniższy link, aby aktywować konto. \r\n{1}\r\n\r\nPozdrawiamy,\r\nZespół Urszula Figiel Art.",
+            message.Content = string.Format("Witaj {0},<br><br>Dziękujemy za założenie konta w serwisie Urszula Figiel Art. " +
+                "Kliknij poniższy link, aby aktywować konto. <br><br>{1}<br><br>Pozdrawiamy,<br>Zespół Urszula Figiel Art.",
                 user.UserName, link);
             return message;
         }

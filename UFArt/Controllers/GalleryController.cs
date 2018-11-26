@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using UFArt.Infrastructure.Mailing;
 using UFArt.Models;
 using UFArt.Models.Gallery;
@@ -44,6 +45,7 @@ namespace UFArt.Controllers
 
         private IActionResult GenerateResultView(int techniqueId, int pageNumber = 1)
         {
+            var technique = _techniqueRepo.Techniques.Where(t => t.ID == techniqueId).FirstOrDefault();
             var elements = _galleryRepo.ArtPieces
                     .Where(ap => ap.Technique.ID == techniqueId)
                     .OrderBy(ap => ap.Name)
@@ -53,6 +55,7 @@ namespace UFArt.Controllers
             {
                 CurrentPage = pageNumber,
                 ItemsPerPage = PageSize,
+                TechniqueNameId = technique.Name.Id,
                 TotalItems = _galleryRepo.ArtPieces
                     .Where(p => p.Technique == _techniqueRepo.Techniques.Where(t => t.ID == techniqueId).FirstOrDefault())
                     .Count()
@@ -65,39 +68,40 @@ namespace UFArt.Controllers
             return View("List", viewModel);
         }
 
-        public async Task<IActionResult> MakeOffer(int id)
-        {
-            var userId = Request.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            var user = await _userManager.FindByIdAsync(userId);
-            return View(new OfferViewModel(_textRepository) { ArtPieceId = id, User = user });
-        }
-
         [HttpPost]
-        public IActionResult SendOffer(OfferViewModel offer)
+        public IActionResult SendOffer(GalleryElementDetailsViewModel viewModel)
         {
-            if (ModelState.IsValid)
-            {
-                var message = new EmailMessageFactory(_emailConfiguration).CreateOfferMessage(offer);
+                var message = new EmailMessageFactory(_emailConfiguration).CreateOfferMessage(viewModel);
                 var result = _emailService.Send(message);
                 if (result.Succeeded)
                 {
-                    message = new EmailMessageFactory(_emailConfiguration).CreateOfferConfirmationMessage(offer);
+                    message = new EmailMessageFactory(_emailConfiguration).CreateOfferConfirmationMessage(viewModel);
                     result = _emailService.Send(message);
-                    if(result.Succeeded)
-                        return View("Success", new string[] { "Pomyślnie wysłano ofertę", "/" });
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Details", new
+                        {
+                            id = viewModel.ArtPieceId,
+                            returnUrl = viewModel.ReturnUrl,
+                            offerSent = true
+                        });
+                    }
                     else return View("Error");
                 }
                 else return View("Error");
-
-
-            }
-            else return View("MakeOffer", offer);
         }
 
-        public IActionResult Details(int id, string returnUrl)
+        public async Task<IActionResult> Details(int id, string returnUrl, bool offerSent = false)
         {
             var artPiece = _galleryRepo.ArtPieces.Where(ap => ap.ID == id).FirstOrDefault();
-            if (artPiece != null) return View(new GalleryElementDetailsViewModel(_textRepository, artPiece, returnUrl, Request.HttpContext));
+            var userId = Request.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await _userManager.FindByIdAsync(userId);
+            if (artPiece != null)
+                return View(new GalleryElementDetailsViewModel(_textRepository, artPiece, returnUrl, Request.HttpContext)
+                {
+                    User = user,
+                    OfferSuccesfullySent = offerSent,
+                });
             else return View("Error");
         }
     }

@@ -38,7 +38,19 @@ namespace UFArt.Controllers
 
         public IActionResult AddGalleryElement() => View(new ArtPieceCreationViewModel(_techniqueRepo, _textRepo));
 
-        public IActionResult AddTechnique() => View(new TechniqueAddViewModel(_textRepo));
+        public IActionResult AddTechnique(int id)
+        {
+            var viewModel = new TechniqueAddViewModel(_textRepo);
+            var technique = _techniqueRepo.Techniques.Where(t => t.ID == id).FirstOrDefault();
+            if (technique != null)
+            {
+                viewModel.Id = technique.ID;
+                viewModel.NamePl = technique.Name.Value_pl;
+                viewModel.NameEn = technique.Name.Value_en;
+            }
+            return View(viewModel);
+
+        }
 
         public IActionResult ManageGallery() => View(new GalleryViewModel(_textRepo, _galleryRepo));
 
@@ -58,10 +70,11 @@ namespace UFArt.Controllers
             var technique = _techniqueRepo.Techniques.Where(t => t.ID == id).FirstOrDefault();
             var viewModel = new TechniqueAddViewModel(_textRepo)
             {
+                Id = id,
                 NamePl = technique.Name.Value_pl,
                 NameEn = technique.Name.Value_en
             };
-            return RedirectToAction("AddTechnique", technique);
+            return RedirectToAction("AddTechnique", viewModel);
         }
 
         [HttpPost]
@@ -69,18 +82,35 @@ namespace UFArt.Controllers
         {
             if (ModelState.IsValid)
             {
-                var asset = new TextAsset() { Key = "technique_value" };
-                asset.Value_pl = viewModel.NamePl;
-                asset.Value_en = viewModel.NameEn;
-                _textRepo.SaveAsset(asset);
-                var technique = new Technique() { Name = asset };
-                _techniqueRepo.Save(technique);
-                var queryParams = new Dictionary<string, string>()
+                if (viewModel.Id == 0)
                 {
-                    { "messageKey", "success_gallery_element_added" },
-                    { "returnUri", "/GalleryEditor/ManageTechniques" }
-                };
-                return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                    var asset = new TextAsset() { Key = "technique_value" };
+                    asset.Value_pl = viewModel.NamePl;
+                    asset.Value_en = viewModel.NameEn;
+                    _textRepo.SaveAsset(asset);
+                    var technique = new Technique() { Name = asset };
+                    _techniqueRepo.Save(technique);
+                    var queryParams = new Dictionary<string, string>()
+                    {
+                        { "messageKey", "success_technique_added" },
+                        { "returnUri", "/GalleryEditor/ManageTechniques" }
+                    };
+                    return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                }
+                else
+                {
+                    var technique = _techniqueRepo.Techniques.Where(t => t.ID == viewModel.Id).FirstOrDefault();
+                    technique.Name.Value_pl = viewModel.NamePl;
+                    technique.Name.Value_en = viewModel.NameEn;
+                    _textRepo.UpdateAsset(technique.Name);
+                    _techniqueRepo.Update(technique);
+                    var queryParams = new Dictionary<string, string>()
+                    {
+                        { "messageKey", "success_technique_updated" },
+                        { "returnUri", "/GalleryEditor/ManageTechniques" }
+                    };
+                    return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                }
             }
             else
             {

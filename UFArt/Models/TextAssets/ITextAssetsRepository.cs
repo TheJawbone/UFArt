@@ -15,5 +15,6 @@ namespace UFArt.Models.TextAssets
         TextAsset GetAsset(string key);
         IQueryable<TextAsset> GetAssets(string key);
         void SaveAsset(TextAsset asset);
+        bool UpdateAsset(TextAsset asset);
     }
 }

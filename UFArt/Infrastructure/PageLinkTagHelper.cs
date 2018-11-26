@@ -39,7 +39,11 @@ namespace UFArt.Infrastructure
             for (int i = 1; i <= PageModel.TotalPages; i++)
             {
                 TagBuilder tag = new TagBuilder("a");
-                tag.Attributes["href"] = urlHelper.Action(PageAction, new { pageNumber = i });
+                tag.Attributes["href"] = urlHelper.Action(PageAction, new
+                {
+                    techniqueNameId = PageModel.TechniqueNameId,
+                    pageNumber = i
+                });
                 tag.InnerHtml.Append(i.ToString());
                 result.InnerHtml.AppendHtml(tag);
 

@@ -2,8 +2,8 @@
 
 <div class="p-3">
     <h1 class="text-dark">@Model.TextRepository.GetTranslatedValue("contact_header", Context)</h1>
-    <div class="d-inline-flex w-100">
-        <div class="w-49 pt-3 pr-4">
+    <div class="w-100">
+        <div class="d-half-column pt-3 pr-4">
             <table class="table">
                 <tr>
                     <td><b>@Model.TextRepository.GetTranslatedValue("contact_telephone", Context):</b></td>
@@ -15,10 +15,10 @@
                 </tr>
             </table>
         </div>
-        <div class="w-50 pt-3 pl-4">
+        <div class="d-half-column pt-3 pl-4">
             <form method="post" asp-controller="Contact" asp-action="SendMessage">
                 <div class="form-group">
-                    <label>@Model.TextRepository.GetTranslatedValue("message_content", Context)</label>
+                    <label>@Model.TextRepository.GetTranslatedValue("contact_message_instruction", Context)</label>
                     <textarea id="content" name="content" class="form-control"></textarea>
                 </div>
                 <div class="text-center">

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace UFArt.Models.Gallery
 {
     public class TechniqueAddViewModel : ViewModel
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Wprowadź polską nazwę techniki")]
         public string NamePl { get; set; }
         [Required(ErrorMessage = "Wprowadź angielską nazwę techniki")]

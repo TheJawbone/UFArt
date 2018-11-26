@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,6 +94,24 @@ namespace UFArt.Models.TextAssets
                 _context.TextAssets.Update(asset);
             }
             _context.SaveChanges();
+        }
+
+        public bool UpdateAsset(TextAsset asset)
+        {
+            try
+            {
+                _context.TextAssets.Update(asset);
+                _context.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                if (ex is DbUpdateException || ex is DbUpdateConcurrencyException)
+                {
+                    return false;
+                }
+                throw;
+            }
         }
 
         public async void DeleteAsset(TextAsset assetToDelete)

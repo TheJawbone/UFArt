@@ -94,6 +94,7 @@ namespace UFArt.Controllers
                     }
                     else
                     {
+                        news.ImageUrl = viewModel.ImageUri;
                         switch (viewModel.Language)
                         {
                             case "pl":
@@ -151,12 +152,12 @@ namespace UFArt.Controllers
 
         public IActionResult ChangeLanguageToPl(int id)
         {
-            return RedirectToAction("UpdateGalleryElement", new { id, language = "pl" });
+            return RedirectToAction("UpdateNews", new { id, language = "pl" });
         }
 
         public IActionResult ChangeLanguageToEn(int id)
         {
-            return RedirectToAction("UpdateGalleryElement", new { id, language = "en" });
+            return RedirectToAction("UpdateNews", new { id, language = "en" });
         }
     }
 }

@@ -21,6 +21,7 @@ namespace UFArt.Infrastructure.Mailing
             foreach (EmailAddress to in message.ToAddresses)
             {
                 var mailMessage = new MailMessage(message.FromAddress.Address, to.Address, message.Subject, message.Content);
+                mailMessage.IsBodyHtml = true;
                 using (var emailClient = new SmtpClient())
                 {
                     emailClient.Host = _emailConfiguration.SmtpServer;

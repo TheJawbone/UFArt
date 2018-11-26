@@ -1,11 +1,19 @@
 ﻿@model GalleryElementDetailsViewModel
 
+@if (Model.OfferSuccesfullySent)
+{
+    <p class="text-white font-weight-bold text-center bg-success">
+        @Model.TextRepository.GetTranslatedValue("success_offer_sent", Context)
+    </p>
+}
+
 <div class="w-100 p-3">
     <div>
         <div class="d-inline-responsive w-details-image text-center test">
             <img class="img-thumbnail img-details" src="@Model.ImageUri" />
         </div>
         <div class="d-inline-responsive w-details-table text-center">
+            <div asp-validation-summary="All" class="text-danger"></div>
             <table class="table table-borderless text-left">
                 @foreach (var labelValue in Model.LabelValueDict)
                 {
@@ -19,7 +27,7 @@
                     <tr>
                         <td class="font-weight-bold text-primary align-middle">@Model.TextRepository.GetTranslatedValue("for_sale", Context)</td>
                         <td>
-                            <a asp-action="MakeOffer" asp-controller="Gallery" asp-route-id="@Model.ArtPiece.ID" class="btn btn-primary align-middle">
+                            <a class="btn btn-primary text-white" data-toggle="modal" data-target="#makeOffer">
                                 @Model.TextRepository.GetTranslatedValue("make_offer", Context)
                             </a>
                         </td>
@@ -32,5 +40,41 @@
         <a class="btn btn-primary" href="@Model.ReturnUrl">
             @Model.TextRepository.GetTranslatedValue("return_to_gallery", Context)
         </a>
+    </div>
+</div>
+
+<div class="modal" id="makeOffer">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    @Model.TextRepository.GetTranslatedValue("make_offer", Context)
+                </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>@Model.TextRepository.GetTranslatedValue("make_offer_text", Context)</p>
+                <form method="post" asp-controller="Gallery" asp-action="SendOffer">
+                    <div class="form-group">
+                        <label asp-for="ClientName">@Model.TextRepository.GetTranslatedValue("real_name", Context)</label>
+                        <input asp-for="ClientName" class="form-control" value="@Model.User?.UserName" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Email">@Model.TextRepository.GetTranslatedValue("email", Context)</label>
+                        <input asp-for="Email" class="form-control" value="@Model.User?.Email" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Phone">@Model.TextRepository.GetTranslatedValue("telephone_number", Context)</label>
+                        <input asp-for="Phone" class="form-control" value="@Model.User?.PhoneNumber" />
+                    </div>
+                    <input asp-for="ArtPieceId" type="hidden" value="@Model.ArtPiece.ID" />
+                    <input asp-for="ReturnUrl" type="hidden" value="@Model.ReturnUrl" />
+                    <input asp-for="ImageUri" type="hidden" value="@Model.ImageUri" />
+                    <div class="text-center">
+                        <input type="submit" class="btn btn-primary" value="@Model.TextRepository.GetTranslatedValue("send", Context)" />
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

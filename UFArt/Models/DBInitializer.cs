@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UFArt.Models.Configuration;
 using UFArt.Models.Gallery;
 using UFArt.Models.Identity;
 using UFArt.Models.Newsfeed;
@@ -29,11 +31,13 @@ namespace UFArt.Models
 
         public static async void EnsurePopulated(IApplicationBuilder app)
         {
+            IOptions<StorageSettings> storageSettings = (IOptions<StorageSettings>)app
+                .ApplicationServices.GetService(typeof(IOptions<StorageSettings>));
             ApplicationDbContext context = (ApplicationDbContext)app
                 .ApplicationServices.GetService(typeof(ApplicationDbContext));
             context.Database.Migrate();
 
-            var techniqueRepository = new TechniqueRepository(context);
+            var techniqueRepository = new TechniqueRepository(context, storageSettings);
             var textRepository = new TextAssetsRepository(context);
             if (techniqueRepository.Techniques.Count() == 0)
             {

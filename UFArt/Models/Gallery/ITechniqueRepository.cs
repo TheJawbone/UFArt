@@ -9,6 +9,7 @@ namespace UFArt.Models.Gallery
     {
         IQueryable<Technique> Techniques { get; }
         bool Save(Technique technique);
-        bool Delete(int id);
+        bool Update(Technique technique);
+        Task<bool> Delete(int id);
     }
 }
