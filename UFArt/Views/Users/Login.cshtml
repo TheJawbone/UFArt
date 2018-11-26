@@ -5,11 +5,11 @@
     <form asp-action="Login" method="post">
         <input type="hidden" name="returnUrl" value="@ViewBag.returnUrl" />
         <div class="form-group">
-            <label asp-for="Email">@Model.TextRepository.GetTranslatedValue("layout_email", Context)</label>
+            <label asp-for="Email">@Model.TextRepository.GetTranslatedValue("email", Context)</label>
             <input asp-for="Email" class="form-control" />
         </div>
         <div class="form-group">
-            <label asp-for="Password">@Model.TextRepository.GetTranslatedValue("layout_password", Context)</label>
+            <label asp-for="Password">@Model.TextRepository.GetTranslatedValue("password", Context)</label>
             <input asp-for="Password" class="form-control" />
         </div>
         <div class="text-center">

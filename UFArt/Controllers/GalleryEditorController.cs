@@ -125,7 +125,8 @@ namespace UFArt.Controllers
             try
             {
                 var file = Request.Form.Files.FirstOrDefault();
-                if (file == null && viewModel.ImageUri == null) ModelState.AddModelError("FileNotSelected", "Plik ze zdjęciem nie został wybrany");
+                if (file == null && viewModel.ImageUri == null)
+                    ModelState.AddModelError("FileNotSelected", "Plik ze zdjęciem nie został wybrany");
 
                 if (ModelState.IsValid)
                 {
@@ -141,7 +142,7 @@ namespace UFArt.Controllers
                         _galleryRepo.Save(artPiece);
                         return RedirectToAction("UpdateGalleryElement", new
                         {
-                            id = viewModel.Id,
+                            id = artPiece.ID,
                             language = viewModel.Language,
                             success = true
                         });
@@ -152,7 +153,7 @@ namespace UFArt.Controllers
                         _galleryRepo.Update(artPiece);
                         return RedirectToAction("UpdateGalleryElement", new
                         {
-                            id = viewModel.Id,
+                            id = artPiece.ID,
                             language = viewModel.Language,
                             success = true
                         });

@@ -89,14 +89,14 @@ namespace UFArt.Models.Gallery
             _textRepo.SaveAsset(descriptionAsset);
             _textRepo.SaveAsset(additionalInfoAsset);
 
-            artPiece.Name = nameAsset;
+            artPiece.AdditionalInfo = additionalInfoAsset;
+            artPiece.CreationDate = viewModel.CreationDate;
             artPiece.Description = descriptionAsset;
             artPiece.Dimensions = viewModel.Dimensions;
             artPiece.Technique = technique;
             artPiece.ImageUri = viewModel.ImageUri;
             artPiece.ForSale = viewModel.ForSale;
-            artPiece.CreationDate = viewModel.CreationDate;
-            artPiece.AdditionalInfo = additionalInfoAsset;
+            artPiece.Name = nameAsset;
 
             return artPiece;
         }

@@ -39,7 +39,7 @@ namespace UFArt.Controllers
             var news = _repo.News.Where(n => n.ID == id).FirstOrDefault();
             if (news != null)
             {
-                var viewModel = new NewsAddViewModel(news, language, _textRepo) { Language = language, SuccessFlag = success };
+                var viewModel = new NewsAddViewModel(news, language, _textRepo) { SuccessFlag = success };
                 return View("AddNews", viewModel);
             }
             else return View("AddNews", new NewsAddViewModel(_textRepo) { Language = language, SuccessFlag = success });
@@ -94,6 +94,7 @@ namespace UFArt.Controllers
                     }
                     else
                     {
+                        if(file != null) await _storageFacade.DeleteImageBlob(news.ImageUrl);
                         news.ImageUrl = viewModel.ImageUri;
                         switch (viewModel.Language)
                         {

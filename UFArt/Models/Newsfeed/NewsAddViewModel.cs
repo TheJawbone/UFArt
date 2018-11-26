@@ -21,15 +21,16 @@ namespace UFArt.Models.Newsfeed
         public string Language { get; set; }
         public bool SuccessFlag { get; set; }
 
-        public NewsAddViewModel() { }
+        public NewsAddViewModel() => Language = "pl";
 
         public NewsAddViewModel(ITextAssetsRepository textRepository)
-            : base(textRepository) { }
+            : base(textRepository) => Language = "pl";
 
         public NewsAddViewModel(News news, string language, ITextAssetsRepository textRepository)
             : base(textRepository)
         {
             ID = news.ID;
+            Language = language;
             Text = TextRepository.GetTranslatedValue(news.Text, language);
             Header = TextRepository.GetTranslatedValue(news.Header, language);
             ImageUri = news.ImageUrl;
