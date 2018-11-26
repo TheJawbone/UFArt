@@ -12,6 +12,10 @@ namespace UFArt.Models.Identity
     {
         public IEnumerable<User> Users { get; private set; }
 
+        public bool UserCreated { get; set; }
+
+        public bool UserUpdated { get; set; }
+
         public UsersManageViewModel(IEnumerable<User> users, ITextAssetsRepository textRepo)
             : base(textRepo) => Users = users;
     }

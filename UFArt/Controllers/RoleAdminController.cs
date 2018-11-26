@@ -25,7 +25,12 @@ namespace UFArt.Controllers
             _textRepo = textRepo;
         }
 
-        public ViewResult Index() => View(new RolesManageViewModel(_roleManager.Roles, _textRepo));
+        public ViewResult Index(bool roleAdded = false, bool roleUpdated = false)
+            => View(new RolesManageViewModel(_roleManager.Roles, _textRepo)
+            {
+                RoleAdded = roleAdded,
+                RoleUpdated = roleUpdated
+            });
 
         public IActionResult Create() => View(new RoleCreateViewModel(_textRepo));
 
@@ -35,7 +40,7 @@ namespace UFArt.Controllers
             if (ModelState.IsValid)
             {
                 IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(roleName));
-                if (result.Succeeded) return RedirectToAction("Index");
+                if (result.Succeeded) return RedirectToAction("Index", new { roleAdded = true });
                 else AddErrorsFromResult(result);
             }
 
@@ -89,7 +94,7 @@ namespace UFArt.Controllers
                 }
             }
 
-            if (ModelState.IsValid) return View("Success", new string[] { "Pomyślnie zmodyfikowano rolę", "/RoleAdmin"});
+            if (ModelState.IsValid) return RedirectToAction("Index", new { roleUpdated = true });
             else return await Edit(model.RoleId);
         }
 

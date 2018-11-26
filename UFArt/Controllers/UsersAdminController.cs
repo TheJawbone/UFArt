@@ -42,7 +42,12 @@ namespace UFArt.Controllers
             _contextAccessor = contextAccessor;
         }
 
-        public IActionResult Index() => View(new UsersManageViewModel(_userManager.Users, _textRepository));
+        public IActionResult Index(bool userCreated = false, bool userUpdated = false) =>
+            View(new UsersManageViewModel(_userManager.Users, _textRepository)
+            {
+                UserCreated = userCreated,
+                UserUpdated = userUpdated
+            });
 
         [AllowAnonymous]
         public IActionResult CreateUser() => View(new UserCreateModel(_textRepository));
@@ -67,13 +72,15 @@ namespace UFArt.Controllers
                     {
                         var message = new EmailMessageFactory(_emailConfiguration).CreateActivationMessage(user, Request);
                         _emailService.Send(message);
-                        var queryParams = new Dictionary<string, string>();
-                        queryParams["returnUri"] = "/About";
                         if (_contextAccessor.HttpContext.User.IsInRole("admin"))
-                            queryParams["messageKey"] = "success_user_added";
+                            return RedirectToAction("Index", new { userCreated = true });
                         else
+                        {
+                            var queryParams = new Dictionary<string, string>();
+                            queryParams["returnUri"] = "/About";
                             queryParams["messageKey"] = "success_confirmation_email_sent";
-                        return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                            return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                        }
                     }
                     else
                     {
@@ -160,12 +167,17 @@ namespace UFArt.Controllers
                     IdentityResult result = await _userManager.UpdateAsync(user);
                     if (result.Succeeded)
                     {
-                        var queryParams = new Dictionary<string, string>()
+                        if (User.IsInRole("admin"))
+                            return RedirectToAction("Index", new { userUpdated = true });
+                        else
+                        {
+                            var queryParams = new Dictionary<string, string>()
                         {
                             { "returnUri", "/UsersAdmin/Index" },
                             { "messageKey", "success_user_updated" }
                         };
-                        return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                            return Redirect(QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams));
+                        }
                     }
                     else AddErrorsFromResult(result);
                 }
