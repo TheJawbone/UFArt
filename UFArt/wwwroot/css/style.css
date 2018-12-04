@@ -227,6 +227,28 @@
     }
 }
 
+.home-language-controls {
+    position: absolute;
+    bottom: 10%;
+    margin-left: 50%;
+    left: -58px;
+}
+
+.home-language-control {
+    background-color: rgba(50, 50, 50, 0.4);
+    border: none;
+    box-sizing: border-box;
+    width: 50px;
+}
+
+.d-flags-home {
+    position: absolute;
+    bottom: 10%;
+    margin-left: 50%;
+    left: -10px;
+    display: inline-block;
+}
+
 .image-about {
     box-shadow: 0 0 20px 5px black;
 }

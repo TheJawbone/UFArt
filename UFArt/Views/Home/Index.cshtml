@@ -27,7 +27,32 @@
             <span class="sr-only">Next</span>
         </a>
     </div>
-    <a href="/About" class="btn btn-primary entry-button">Przejdź do strony</a>
+    @switch (Context.Session.GetString("language"))
+    {
+        case "pl":
+            <a href="/About" class="btn btn-primary entry-button">Przejdź do strony</a>
+            break;
+        case "en":
+            <a href="/About" class="btn btn-primary entry-button">Enter website</a>
+            break;
+        default:
+            <a href="/About" class="btn btn-primary entry-button">Przejdź do strony</a>
+            break;
+    }
+    <div class="home-language-controls text-center">
+        <div class="d-inline-block mr-4">
+            <form method="post" class="flag-icon" asp-controller="Home" asp-action="SetLanguageToPl">
+                <input type="hidden" id="returnUri" name="returnUri" value="@Context.Request.PathAndQuery()" />
+                <input type="submit" class="btn btn-primary home-language-control" value="PL" />
+            </form>
+        </div>
+        <div class="d-inline-block ml-4">
+            <form method="post" class="flag-icon" asp-controller="Home" asp-action="SetLanguageToEn">
+                <input type="hidden" id="returnUri" name="returnUri" value="@Context.Request.PathAndQuery()" />
+                <input type="submit" class="btn btn-primary home-language-control" value="EN" />
+            </form>
+        </div>
+    </div>
     <script src="~/js/jquery.min.js"></script>
     <script src="~/js/vendor.min.js"></script>
     <script src="~/js/dropdown.js"></script>
