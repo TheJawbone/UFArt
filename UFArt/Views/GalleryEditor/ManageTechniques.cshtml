@@ -11,44 +11,58 @@
         <tbody>
             @foreach (var element in Model.Techniques)
             {
-            <tr class="text-center">
-                <td>@element.Name.Value_pl</td>
-                <td>@element.Name.Value_en</td>
-                <td class="align-middle">
-                    <a asp-controller="GalleryEditor"
-                       asp-action="UpdateTechnique"
-                       asp-route-id="@element.ID"
-                       class="btn btn-primary">@Model.TextRepository.GetTranslatedValue("edit", Context)</a>
-                </td>
-                <td class="align-middle">
-                    <a class="btn btn-danger text-white" data-toggle="modal" data-target="#confirmDelete" data-id="@element.ID">
-                        @Model.TextRepository.GetTranslatedValue("delete", Context)
-                    </a>
-                </td>
-                <div class="modal" id="confirmDelete">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h4 class="modal-title">
-                                    @Model.TextRepository.GetTranslatedValue("technique_delete_confirmation_header", Context)
-                                </h4>
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body">
-                                <p>@Model.TextRepository.GetTranslatedValue("technique_delete_confirmation_content", Context)</p>
-                                <div class="text-center">
-                                    <a asp-controller="GalleryEditor"
-                                       asp-action="DeleteTechnique"
-                                       asp-route-id="@element.ID"
-                                       class="btn btn-danger">@Model.TextRepository.GetTranslatedValue("delete", Context)</a>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </tr>
+                <tr class="text-center">
+                    <td>@element.Name.Value_pl</td>
+                    <td>@element.Name.Value_en</td>
+                    <td class="align-middle">
+                        <a asp-controller="GalleryEditor"
+                           asp-action="UpdateTechnique"
+                           asp-route-id="@element.ID"
+                           class="btn btn-primary">@Model.TextRepository.GetTranslatedValue("edit", Context)</a>
+                    </td>
+                    <td class="align-middle">
+                        <a class="btn btn-danger text-white modal-toggle" data-toggle="modal" data-target="#confirmDelete" id="@element.ID">
+                            @Model.TextRepository.GetTranslatedValue("delete", Context)
+                        </a>
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
 </div>
+
+<div class="modal" id="confirmDelete">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    @Model.TextRepository.GetTranslatedValue("technique_delete_confirmation_header", Context)
+                </h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>@Model.TextRepository.GetTranslatedValue("technique_delete_confirmation_content", Context)</p>
+                <div class="text-center">
+                    <a id="confirmation-button"
+                       asp-controller="GalleryEditor"
+                       asp-action="DeleteTechnique"
+                       class="btn btn-danger">@Model.TextRepository.GetTranslatedValue("delete", Context)</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    var modalToggles = document.getElementsByClassName("modal-toggle");
+    for (i = 0; i < modalToggles.length; i++) {
+        modalToggles[i].addEventListener('click', function (event) {
+            var targetElement = event.target || event.srcElement;
+            var confirmationButton = document.getElementById("confirmation-button");
+            var oldHref = confirmationButton.getAttribute("href");
+            var newHref = oldHref + "/" + targetElement.getAttribute("id");
+            confirmationButton.setAttribute("href", newHref);
+        });
+    }
+</script>

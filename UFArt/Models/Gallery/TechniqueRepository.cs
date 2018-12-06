@@ -57,22 +57,23 @@ namespace UFArt.Models.Gallery
             }
         }
 
-        public async Task<bool> Delete(int id)
+        public bool Delete(int id)
         {
-            Technique technique = _context.Techniques.Where(t => t.ID == id).Include(t => t.Name).FirstOrDefault();
+            var technique = _context.Techniques.Where(t => t.ID == id).Include(t => t.Name).FirstOrDefault();
             if (technique != null)
             {
                 try
                 {
                     var storageFacade = new StorageFacade(_storageSettings);
-                    foreach(ArtPiece artPiece in _context.ArtPieces.Where(ap => ap.Technique.ID == technique.ID))
-                    {
-                        await storageFacade.DeleteImageBlob(artPiece.ImageUri);
-                    }
+                    var imageUris = _context.ArtPieces.Where(ap => ap.Technique.ID == technique.ID).Select(ap => ap.ImageUri).ToList();
                     var asset = _context.TextAssets.Where(ta => ta.Id == technique.Name.Id).FirstOrDefault();
                     _context.Techniques.Remove(technique);
                     if (asset != null)
                         _context.TextAssets.Remove(asset);
+                    foreach (var imageUri in imageUris)
+                    {
+                        storageFacade.DeleteImageBlob(imageUri);
+                    }
                     _context.SaveChanges();
                     return true;
                 }

@@ -67,14 +67,29 @@
                         <label asp-for="Phone">@Model.TextRepository.GetTranslatedValue("telephone_number", Context)</label>
                         <input asp-for="Phone" class="form-control" value="@Model.User?.PhoneNumber" />
                     </div>
+                    <div class="form-group">
+                        <label class="text-small">@Model.TextRepository.GetTranslatedValue("rodo_formula", Context)</label>
+                        <input type="checkbox" name="rodo-confirmator" />
+                    </div>
                     <input asp-for="ArtPieceId" type="hidden" value="@Model.ArtPiece.ID" />
                     <input asp-for="ReturnUrl" type="hidden" value="@Model.ReturnUrl" />
                     <input asp-for="ImageUri" type="hidden" value="@Model.ImageUri" />
                     <div class="text-center">
-                        <input type="submit" class="btn btn-primary" value="@Model.TextRepository.GetTranslatedValue("send", Context)" />
+                        <input type="submit" id="submit-button" class="btn btn-primary" value="@Model.TextRepository.GetTranslatedValue("send", Context)" />
                     </div>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.getElementById("submit-button").disabled = true;
+    document.querySelector("input[name=rodo-confirmator]").addEventListener('change', function () {
+        if (this.checked) {
+            document.getElementById("submit-button").disabled = false;
+        } else {
+            document.getElementById("submit-button").disabled = true;
+        }
+    });
+</script>

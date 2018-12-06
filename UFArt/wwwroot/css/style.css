@@ -227,6 +227,10 @@
     }
 }
 
+.text-small {
+    font-size: 0.75rem;
+}
+
 .home-language-controls {
     position: absolute;
     bottom: 10%;

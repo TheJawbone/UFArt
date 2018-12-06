@@ -1,6 +1,33 @@
 ﻿@model AboutViewModel
 
-<p class="text-center text-white bg-primary"><b>@Model.TextRepository.GetTranslatedValue("edit_language_message", Context)</b></p>
+@if (Model.SuccessFlag)
+{
+    <p class="text-white font-weight-bold text-center bg-success m-0">
+        @Model.TextRepository.GetTranslatedValue("operation_successfull", Context)
+    </p>
+}
+
+<div class="text-center text-white font-weight-bold bg-primary pb-2">
+    @switch (@Model.Language)
+    {
+        case "pl":
+            <p>@Model.TextRepository.GetTranslatedValue("edit_language_pl_message", Context)</p>
+            break;
+        case "en":
+            <p>@Model.TextRepository.GetTranslatedValue("edit_language_en_message", Context)</p>
+            break;
+        default:
+            <p>@Model.TextRepository.GetTranslatedValue("edit_language_pl_message", Context)</p>
+            break;
+    }
+    <a asp-controller="AboutEditor" asp-action="ChangeLanguageToPl" asp-route-id="@Model.Id" class="btn btn-secondary w-25">
+        @Model.TextRepository.GetTranslatedValue("language_version_pl", Context)
+    </a>
+    <a asp-controller="AboutEditor" asp-action="ChangeLanguageToEn" asp-route-id="@Model.Id" class="btn btn-secondary w-25">
+        @Model.TextRepository.GetTranslatedValue("language_version_en", Context)
+    </a>
+</div>
+
 <div class="p-3">
     <div asp-validation-summary="All" class="text-danger"></div>
     <form method="post" enctype="multipart/form-data" asp-controller="AboutEditor" asp-action="UploadAsync">
@@ -15,6 +42,8 @@
             { <label>Wybierz zdjęcie<span class="text-danger font-weight-bold">*</span></label>}
             <input type="file" class="btn" name="files" accept="image" />
         </div>
+        <input type="hidden" asp-for="SuccessFlag" value="@Model.SuccessFlag" />
+        <input type="hidden" asp-for="Language" value="@Model.Language" />
         <div class="text-center">
             <input type="submit" class="btn btn-primary" value="Zatwierdź" />
         </div>

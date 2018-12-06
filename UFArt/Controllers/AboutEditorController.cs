@@ -25,10 +25,18 @@ namespace UFArt.Controllers
             _textRepository = textRepository;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string language = "pl", bool success = false)
         {
-            var viewModel = new AboutViewModel(_textRepository);
-            viewModel.Text = _textRepository.GetTranslatedValue("about_text", Request.HttpContext);
+            var viewModel = new AboutViewModel(_textRepository) { Language = language, SuccessFlag = success };
+            switch(language)
+            {
+                case "pl":
+                    viewModel.Text = _textRepository.GetAsset("about_text").Value_pl;
+                    break;
+                case "en":
+                    viewModel.Text = _textRepository.GetAsset("about_text").Value_en;
+                    break;
+            }
             viewModel.ImageUri = _textRepository.GetTranslatedValue("about_image_uri", Request.HttpContext);
             return View(viewModel);
         }
@@ -56,7 +64,7 @@ namespace UFArt.Controllers
                     _textRepository.SaveAsset(asset);
 
                     asset = _textRepository.GetAsset("about_text");
-                    switch (Request.HttpContext.Session.GetString("language"))
+                    switch (viewModel.Language)
                     {
                         case "pl":
                             asset.Value_pl = viewModel.Text;
@@ -67,13 +75,7 @@ namespace UFArt.Controllers
                     }
                     _textRepository.SaveAsset(asset);
 
-                    var queryParams = new Dictionary<string, string>()
-                    {
-                        { "messageKey", "success_about_modified" },
-                        { "returnUri", "/About" }
-                    };
-                    var redirectUri = QueryHelpers.AddQueryString("/InformationScreens/Success", queryParams);
-                    return Redirect(redirectUri);
+                    return RedirectToAction("Index", new { language = viewModel.Language, success = true });
                 }
                 else
                 {
@@ -86,6 +88,16 @@ namespace UFArt.Controllers
                 ViewData["trace"] = ex.StackTrace;
                 return View("Error");
             }
+        }
+
+        public IActionResult ChangeLanguageToPl()
+        {
+            return RedirectToAction("Index", new { language = "pl" });
+        }
+
+        public IActionResult ChangeLanguageToEn()
+        {
+            return RedirectToAction("Index", new { language = "en" });
         }
     }
 }
